@@ -8,6 +8,10 @@
 * [RFC-002: Data Point Classifiers](rfc/rfc-002-data-point-classifiers.md)
 * [RFC-003: Nomenclature and Classification System](rfc/rfc-003-nomenclature-classification.md)
 
+## Research and Development
+
+* [Latest Ethereum Research Integration](research/latest-ethereum-research.md) - Cutting-edge Ethereum technologies and EIPs
+
 ## Technical Documentation
 
 ### Architecture
