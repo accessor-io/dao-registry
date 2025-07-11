@@ -36,6 +36,7 @@ The decentralized finance (DeFi) ecosystem has seen exponential growth in Decent
 - **Limited Analytics**: No comprehensive analytics for DAO performance and governance
 - **Inconsistent Standards**: Lack of standardized data formats and APIs
 - **Cross-chain Complexity**: Difficulty in tracking DAOs across multiple blockchain networks
+- **ENS Integration Gap**: Limited integration with Ethereum Name Service for human-readable DAO identification
 
 ### 1.2 Goals
 
@@ -45,7 +46,8 @@ This specification aims to address these challenges by providing:
 - Standardized data models and APIs
 - Multi-chain support and integration
 - Advanced analytics and governance tools
-- ENS integration for metadata management
+- Deep ENS integration for human-readable DAO identification and metadata management
+- ENS-based DAO discovery and verification systems
 
 ### 1.3 Scope
 
@@ -55,6 +57,7 @@ This RFC covers:
 - Data models and relationships
 - API specifications and endpoints
 - Smart contract interfaces
+- ENS integration and domain management
 - Security and privacy considerations
 - Implementation guidelines
 
@@ -123,12 +126,15 @@ This RFC covers:
 - Metadata management and updates
 - Cross-chain DAO linking
 - Governance structure tracking
+- ENS domain registration and management
 
 **Key Features**:
 - Multi-chain DAO registration
 - Metadata validation and sanitization
-- ENS integration for domain resolution
+- Deep ENS integration for domain resolution and management
+- ENS-based DAO discovery and verification
 - Cross-chain DAO discovery
+- ENS subdomain management for DAO components
 
 #### 3.2.2 Analytics Engine
 
@@ -175,6 +181,11 @@ interface DAO {
   symbol: string;                // DAO token symbol
   description: string;           // DAO description
   
+  // ENS Information
+  ensDomain: string;            // Primary ENS domain (e.g., "dao-name.eth")
+  ensSubdomains: ENSSubdomains; // ENS subdomains for DAO components
+  ensMetadata: ENSMetadata;     // ENS text records and metadata
+  
   // Blockchain Information
   chainId: number;              // Blockchain network ID
   contractAddress: string;      // Main DAO contract address
@@ -200,6 +211,21 @@ interface DAO {
   // Status
   status: DAOStatus;           // Current status
   verified: boolean;           // Verification status
+}
+
+interface ENSSubdomains {
+  governance: string;           // governance.dao-name.eth
+  treasury: string;             // treasury.dao-name.eth
+  token: string;                // token.dao-name.eth
+  docs: string;                 // docs.dao-name.eth
+  forum: string;                // forum.dao-name.eth
+  analytics: string;            // analytics.dao-name.eth
+}
+
+interface ENSMetadata {
+  textRecords: Record<string, string>; // ENS text records
+  contentHash?: string;         // ENS content hash
+  reverseRecord?: string;       // Reverse ENS record
 }
 ```
 
@@ -303,7 +329,35 @@ Body: UpdateDAORequest
 
 // Delete DAO
 DELETE /api/v1/daos/{daoId}
-```
+
+// ENS Integration Endpoints
+
+// Get ENS metadata for DAO
+GET /api/v1/daos/{daoId}/ens
+Response: ENSMetadata
+
+// Resolve ENS domain to DAO
+GET /api/v1/ens/resolve/{domain}
+Response: DAO
+
+// Get all DAOs by ENS domain pattern
+GET /api/v1/ens/daos
+Query Parameters:
+- pattern: string (e.g., "*.eth", "governance.*.eth")
+- page: number
+- limit: number
+
+// Register DAO with ENS
+POST /api/v1/daos/{daoId}/ens
+Body: ENSRegistrationRequest
+
+// Update ENS records for DAO
+PUT /api/v1/daos/{daoId}/ens
+Body: ENSUpdateRequest
+
+// Verify ENS domain ownership
+POST /api/v1/ens/verify-ownership
+Body: ENSOwnershipVerificationRequest
 
 #### 5.1.2 Proposal Management
 
@@ -349,6 +403,12 @@ type Query {
   ): [Proposal!]!
   
   proposal(id: ID!): Proposal
+  
+  # ENS Integration Queries
+  ensMetadata(domain: String!): ENSMetadata
+  ensResolve(domain: String!): DAO
+  ensDomains(pattern: String!): [String!]!
+  ensVerifyOwnership(domain: String!, address: String!): Boolean!
 }
 
 type Mutation {
@@ -358,6 +418,11 @@ type Mutation {
   
   createProposal(input: CreateProposalInput!): Proposal!
   vote(proposalId: ID!, input: VoteInput!): Vote!
+  
+  # ENS Integration Mutations
+  registerDAOWithENS(daoId: ID!, input: ENSRegistrationInput!): ENSRegistration!
+  updateENSRecords(daoId: ID!, input: ENSUpdateInput!): Boolean!
+  verifyENSOwnership(domain: String!, address: String!): Boolean!
 }
 ```
 
@@ -474,6 +539,64 @@ interface ITreasury {
     ) external;
     
     function getTreasuryInfo() external view returns (TreasuryInfo memory);
+}
+```
+
+### 6.3 ENS Integration Contract
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
+
+interface IENSIntegration {
+    struct ENSRegistration {
+        string primaryDomain;
+        string governanceSubdomain;
+        string treasurySubdomain;
+        string tokenSubdomain;
+        address daoAddress;
+        bool verified;
+        uint256 registrationDate;
+    }
+    
+    event DAOENSRegistered(
+        address indexed daoAddress,
+        string primaryDomain,
+        uint256 registrationDate
+    );
+    
+    event ENSSubdomainUpdated(
+        address indexed daoAddress,
+        string subdomain,
+        string newValue
+    );
+    
+    function registerDAOWithENS(
+        string memory primaryDomain,
+        string memory governanceSubdomain,
+        string memory treasurySubdomain,
+        string memory tokenSubdomain,
+        address daoAddress
+    ) external returns (uint256 registrationId);
+    
+    function updateENSSubdomain(
+        address daoAddress,
+        string memory subdomain,
+        string memory newValue
+    ) external;
+    
+    function verifyENSRegistration(
+        address daoAddress,
+        string memory domain
+    ) external;
+    
+    function getENSRegistration(
+        address daoAddress
+    ) external view returns (ENSRegistration memory);
+    
+    function getDAOByENSDomain(
+        string memory domain
+    ) external view returns (address daoAddress);
 }
 ```
 

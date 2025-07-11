@@ -32,7 +32,7 @@
 * [WebSocket API](api/websocket-api.md)
 
 ### Integration
-* [ENS Integration](integration/ens-integration.md)
+* [ENS Integration](integration/ens-integration.md) - Comprehensive ENS domain management and integration
 * [Blockchain Integration](integration/blockchain-integration.md)
 * [Third-party Services](integration/third-party-services.md)
 
