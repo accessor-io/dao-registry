@@ -1,4 +1,9 @@
-import { ENSResolverService } from './ens-resolver-service';
+import { URLEncodingService, SubdomainEncodingService, URL_ENCODING_PATTERNS } from './url-encoding-service';
+
+// Mock ENS resolver service for now - will be replaced with actual implementation
+interface ENSResolverService {
+  resolveAddress(domain: string): Promise<string | null>;
+}
 
 /**
  * Reserved subdomain priority levels
@@ -19,6 +24,14 @@ export interface SubdomainValidationResult {
   domain?: string;
   priority?: ReservedSubdomainPriority;
   isReserved?: boolean;
+  sanitized?: string;
+  encodingStats?: {
+    originalLength: number;
+    encodedLength: number;
+    hasUnicode: boolean;
+    isPunycode: boolean;
+    encodingRatio: number;
+  };
 }
 
 /**
@@ -30,6 +43,7 @@ export interface ENSValidationResult {
   domain: string;
   exists?: boolean;
   owner?: string;
+  sanitized?: string | undefined;
 }
 
 /**
@@ -737,14 +751,16 @@ export class ReservedSubdomainsService {
    * Check if a subdomain is reserved
    */
   isReserved(subdomain: string): boolean {
-    return this.reservedWords.has(subdomain.toLowerCase());
+    const sanitized = URLEncodingService.sanitizeSubdomain(subdomain);
+    return this.reservedWords.has(sanitized);
   }
 
   /**
    * Get priority level for a subdomain
    */
   getPriority(subdomain: string): ReservedSubdomainPriority {
-    const info = this.reservedWords.get(subdomain.toLowerCase());
+    const sanitized = URLEncodingService.sanitizeSubdomain(subdomain);
+    const info = this.reservedWords.get(sanitized);
     return info ? info.priority : ReservedSubdomainPriority.LOW;
   }
 
@@ -752,56 +768,46 @@ export class ReservedSubdomainsService {
    * Get reserved subdomain information
    */
   getReservedSubdomainInfo(subdomain: string): ReservedSubdomainInfo | null {
-    return this.reservedWords.get(subdomain.toLowerCase()) || null;
+    const sanitized = URLEncodingService.sanitizeSubdomain(subdomain);
+    return this.reservedWords.get(sanitized) || null;
   }
 
   /**
-   * Validate subdomain format and reserved word status
+   * Validate subdomain format and reserved word status with URL encoding
    */
   validateSubdomain(subdomain: string): SubdomainValidationResult {
-    const errors: string[] = [];
-    const normalizedSubdomain = subdomain.toLowerCase();
+    // First, validate and sanitize using URL encoding service
+    const urlValidation = URLEncodingService.validateSubdomainFormat(subdomain);
+    const encodingStats = URLEncodingService.getEncodingStats(subdomain);
+    
+    const errors: string[] = [...urlValidation.errors];
+    const sanitized = urlValidation.sanitized;
 
-    // Length validation
-    if (normalizedSubdomain.length < 2) {
-      errors.push('Subdomain must be at least 2 characters long');
+    if (!sanitized) {
+      return {
+        isValid: false,
+        errors,
+        encodingStats
+      };
     }
 
-    if (normalizedSubdomain.length > 63) {
-      errors.push('Subdomain cannot exceed 63 characters');
-    }
-
-    // Character validation
-    if (!/^[a-z0-9-]+$/.test(normalizedSubdomain)) {
-      errors.push('Subdomain can only contain lowercase letters, numbers, and hyphens');
-    }
-
-    // Hyphen validation
-    if (normalizedSubdomain.startsWith('-') || normalizedSubdomain.endsWith('-')) {
-      errors.push('Subdomain cannot start or end with a hyphen');
-    }
-
-    if (normalizedSubdomain.includes('--')) {
-      errors.push('Subdomain cannot contain consecutive hyphens');
-    }
-
-    // Reserved word validation
-    if (this.isReserved(normalizedSubdomain)) {
-      const info = this.getReservedSubdomainInfo(normalizedSubdomain);
+    // Check if subdomain is reserved
+    if (this.isReserved(sanitized)) {
+      const info = this.getReservedSubdomainInfo(sanitized);
       errors.push(`Subdomain "${subdomain}" is reserved (${info?.category})`);
     }
 
-    // Reserved prefix validation
+    // Check if subdomain starts with reserved prefix
     for (const prefix of this.reservedPrefixes) {
-      if (normalizedSubdomain.startsWith(prefix)) {
+      if (sanitized.startsWith(prefix)) {
         errors.push(`Subdomain cannot start with reserved prefix "${prefix}"`);
         break;
       }
     }
 
-    // Reserved suffix validation
+    // Check if subdomain ends with reserved suffix
     for (const suffix of this.reservedSuffixes) {
-      if (normalizedSubdomain.endsWith(suffix)) {
+      if (sanitized.endsWith(suffix)) {
         errors.push(`Subdomain cannot end with reserved suffix "${suffix}"`);
         break;
       }
@@ -810,23 +816,34 @@ export class ReservedSubdomainsService {
     return {
       isValid: errors.length === 0,
       errors,
-      isReserved: this.isReserved(normalizedSubdomain),
-      priority: this.getPriority(normalizedSubdomain)
+      isReserved: this.isReserved(sanitized),
+      priority: this.getPriority(sanitized),
+      sanitized,
+      encodingStats
     };
   }
 
   /**
-   * Validate ENS subdomain with full domain context
+   * Validate ENS subdomain with full domain context and URL encoding
    */
   async validateENSSubdomain(parentDomain: string, subdomain: string): Promise<ENSValidationResult> {
-    const fullDomain = `${subdomain}.${parentDomain}`;
-    const errors: string[] = [];
-
-    // Basic subdomain validation
-    const subdomainValidation = this.validateSubdomain(subdomain);
-    if (!subdomainValidation.isValid) {
-      errors.push(...subdomainValidation.errors);
+    // Validate parent domain format
+    const parentDomainValidation = URLEncodingService.validateDomainFormat(parentDomain);
+    if (!parentDomainValidation.isValid) {
+      return {
+        isValid: false,
+        errors: parentDomainValidation.errors,
+        domain: `${subdomain}.${parentDomain}`
+      };
     }
+
+    // Validate subdomain format
+    const subdomainValidation = this.validateSubdomain(subdomain);
+    const errors: string[] = [...subdomainValidation.errors];
+
+    const fullDomain = subdomainValidation.sanitized 
+      ? `${subdomainValidation.sanitized}.${parentDomainValidation.sanitized}`
+      : `${subdomain}.${parentDomain}`;
 
     // Check if domain already exists
     try {
@@ -842,7 +859,8 @@ export class ReservedSubdomainsService {
       isValid: errors.length === 0,
       errors,
       domain: fullDomain,
-      exists: errors.some(error => error.includes('already exists'))
+      exists: errors.some(error => error.includes('already exists')),
+      sanitized: subdomainValidation.sanitized || undefined
     };
   }
 
@@ -912,7 +930,8 @@ export class ReservedSubdomainsService {
    * Check if user can register a reserved subdomain
    */
   canRegisterReservedSubdomain(subdomain: string, userRole: string): boolean {
-    const info = this.getReservedSubdomainInfo(subdomain);
+    const sanitized = URLEncodingService.sanitizeSubdomain(subdomain);
+    const info = this.getReservedSubdomainInfo(sanitized);
     if (!info) return true; // Not reserved
 
     return info.allowedFor.includes(userRole);
@@ -931,5 +950,41 @@ export class ReservedSubdomainsService {
     }
 
     return available;
+  }
+
+  /**
+   * Generate safe subdomain variations
+   */
+  generateSafeVariations(input: string): string[] {
+    return SubdomainEncodingService.generateVariations(input);
+  }
+
+  /**
+   * Find available subdomain from input
+   */
+  findAvailableSubdomain(input: string): string | null {
+    const reservedList = Array.from(this.reservedWords.keys());
+    return SubdomainEncodingService.findAvailableSubdomain(input, reservedList);
+  }
+
+  /**
+   * Check if subdomain is DNS safe
+   */
+  isDNSSafe(subdomain: string): boolean {
+    return URLEncodingService.isDNSSafe(subdomain);
+  }
+
+  /**
+   * Check if subdomain is ENS safe
+   */
+  isENSSafe(subdomain: string): boolean {
+    return URLEncodingService.isENSSafe(subdomain);
+  }
+
+  /**
+   * Normalize subdomain for consistent handling
+   */
+  normalizeSubdomain(subdomain: string): string {
+    return URLEncodingService.sanitizeSubdomain(subdomain);
   }
 } 
