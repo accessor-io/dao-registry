@@ -49,7 +49,6 @@ This RFC covers:
 
 - ENS domain and metadata classifiers
 - User input validation classifiers
-- Blockchain event classifiers
 - Transaction status classifiers
 - Off-chain data classifiers
 - Implementation guidelines and security considerations

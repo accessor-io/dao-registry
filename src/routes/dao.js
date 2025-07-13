@@ -11,7 +11,7 @@ const daoService = new DAOService();
 // Validation schemas
 const createDAOSchema = Joi.object({
   name: Joi.string().min(1).max(100).required(),
-  symbol: Joi.string().min(1).max(10).required(),
+  symbol: Joi.string().min(1).max(10).required(), 
   description: Joi.string().min(1).max(1000).required(),
   contractAddress: Joi.string().required(),
   tokenAddress: Joi.string().required(),
@@ -62,11 +62,7 @@ const querySchema = Joi.object({
   sortOrder: Joi.string().valid('asc', 'desc').default('desc')
 });
 
-/**
- * @route GET /api/v1/daos
- * @desc Get all DAOs with filtering and pagination
- * @access Public
- */
+// Get all DAOs
 router.get('/', validateRequest(querySchema, 'query'), async (req, res, next) => {
   try {
     const {
@@ -123,11 +119,7 @@ router.get('/', validateRequest(querySchema, 'query'), async (req, res, next) =>
   }
 });
 
-/**
- * @route GET /api/v1/daos/:id
- * @desc Get DAO by ID
- * @access Public
- */
+// Get DAO by ID
 router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -151,17 +143,12 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
-/**
- * @route POST /api/v1/daos
- * @desc Create new DAO
- * @access Private
- */
+// Create new DAO
 router.post('/', validateRequest(createDAOSchema), async (req, res, next) => {
   try {
     const daoData = req.body;
-    const userId = req.user.id; // From auth middleware
+    const userId = req.user.id;
 
-    // Check if DAO already exists
     const existingDAO = await daoService.getDAOByAddress(daoData.contractAddress, daoData.chainId);
     if (existingDAO) {
       return res.status(409).json({
@@ -190,18 +177,13 @@ router.post('/', validateRequest(createDAOSchema), async (req, res, next) => {
   }
 });
 
-/**
- * @route PUT /api/v1/daos/:id
- * @desc Update DAO
- * @access Private (DAO owner only)
- */
+// Update DAO
 router.put('/:id', validateRequest(updateDAOSchema), async (req, res, next) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
     const userId = req.user.id;
 
-    // Check if user owns the DAO
     const dao = await daoService.getDAOById(id);
     if (!dao) {
       return res.status(404).json({
@@ -235,17 +217,12 @@ router.put('/:id', validateRequest(updateDAOSchema), async (req, res, next) => {
   }
 });
 
-/**
- * @route DELETE /api/v1/daos/:id
- * @desc Delete DAO
- * @access Private (DAO owner only)
- */
+// Delete DAO
 router.delete('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
 
-    // Check if user owns the DAO
     const dao = await daoService.getDAOById(id);
     if (!dao) {
       return res.status(404).json({
@@ -277,11 +254,7 @@ router.delete('/:id', async (req, res, next) => {
   }
 });
 
-/**
- * @route GET /api/v1/daos/:id/proposals
- * @desc Get DAO proposals
- * @access Public
- */
+// Get DAO proposals
 router.get('/:id/proposals', async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -332,11 +305,7 @@ router.get('/:id/proposals', async (req, res, next) => {
   }
 });
 
-/**
- * @route GET /api/v1/daos/:id/members
- * @desc Get DAO members
- * @access Public
- */
+// Get DAO members
 router.get('/:id/members', async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -385,11 +354,7 @@ router.get('/:id/members', async (req, res, next) => {
   }
 });
 
-/**
- * @route GET /api/v1/daos/:id/analytics
- * @desc Get DAO analytics
- * @access Public
- */
+// Get DAO analytics
 router.get('/:id/analytics', async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -411,18 +376,13 @@ router.get('/:id/analytics', async (req, res, next) => {
   }
 });
 
-/**
- * @route POST /api/v1/daos/:id/verify
- * @desc Verify DAO (admin only)
- * @access Private (Admin only)
- */
+// Verify DAO (admin only)
 router.post('/:id/verify', async (req, res, next) => {
   try {
     const { id } = req.params;
     const { verified } = req.body;
     const userId = req.user.id;
 
-    // Check if user is admin
     if (!req.user.isAdmin) {
       return res.status(403).json({
         success: false,
@@ -448,18 +408,13 @@ router.post('/:id/verify', async (req, res, next) => {
   }
 });
 
-/**
- * @route POST /api/v1/daos/:id/status
- * @desc Change DAO status (admin only)
- * @access Private (Admin only)
- */
+// Change DAO status (admin only)
 router.post('/:id/status', async (req, res, next) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
     const userId = req.user.id;
 
-    // Check if user is admin
     if (!req.user.isAdmin) {
       return res.status(403).json({
         success: false,
@@ -485,11 +440,7 @@ router.post('/:id/status', async (req, res, next) => {
   }
 });
 
-/**
- * @route GET /api/v1/daos/search/suggestions
- * @desc Get DAO search suggestions
- * @access Public
- */
+// Get DAO search suggestions
 router.get('/search/suggestions', async (req, res, next) => {
   try {
     const { q } = req.query;
@@ -517,11 +468,7 @@ router.get('/search/suggestions', async (req, res, next) => {
   }
 });
 
-/**
- * @route GET /api/v1/daos/stats/overview
- * @desc Get DAO registry overview statistics
- * @access Public
- */
+// Get DAO registry overview statistics
 router.get('/stats/overview', async (req, res, next) => {
   try {
     const stats = await daoService.getRegistryStats();
@@ -537,11 +484,7 @@ router.get('/stats/overview', async (req, res, next) => {
   }
 });
 
-/**
- * @route GET /api/v1/daos/stats/trending
- * @desc Get trending DAOs
- * @access Public
- */
+// Get trending DAOs
 router.get('/stats/trending', async (req, res, next) => {
   try {
     const { timeframe = '7d', limit = 10 } = req.query;
@@ -559,4 +502,4 @@ router.get('/stats/trending', async (req, res, next) => {
   }
 });
 
-module.exports = router; 
+module.exports = router;

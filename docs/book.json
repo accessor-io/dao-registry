@@ -1,6 +1,6 @@
 {
   "title": "DAO Registry Documentation",
-  "description": "Comprehensive documentation for the DAO Registry system - a decentralized platform for tracking, analyzing, and governing Decentralized Autonomous Organizations (DAOs) across multiple blockchain networks.",
+  "description": "Comprehensive documentation for the DAO Registry system with multi-chain support, governance analytics, and ISO metadata standards",
   "author": "DAO Registry Team",
   "language": "en",
   "structure": {
@@ -10,7 +10,11 @@
   "plugins": [
     "expandable-chapters",
     "copy-code-button",
-    "search",
+    "search-plus",
+    "highlight",
+    "sharing-plus",
+    "fontsettings",
+    "livereload",
     "github",
     "theme-default",
     "prism",
@@ -18,19 +22,34 @@
   ],
   "pluginsConfig": {
     "github": {
-      "url": "https://github.com/dao-registry/dao-registry"
+      "url": "https://github.com/your-org/dao-registry"
     },
     "prism": {
       "css": [
         "prismjs/themes/prism-tomorrow.css"
       ]
     },
-    "theme-default": {
-      "showLevel": true
+    "sharing": {
+      "facebook": true,
+      "twitter": true,
+      "google": false,
+      "weibo": false,
+      "instapaper": false,
+      "vk": false,
+      "all": [
+        "facebook", "google", "twitter", "weibo", "instapaper"
+      ]
+    },
+    "fontsettings": {
+      "theme": "white",
+      "family": "sans",
+      "size": 2
     }
   },
   "variables": {
-    "version": "1.0.0",
-    "lastUpdated": "2024-01-01"
+    "projectName": "DAO Registry",
+    "projectVersion": "1.0.0",
+    "githubUrl": "https://github.com/your-org/dao-registry",
+    "docsUrl": "https://docs.dao-registry.com"
   }
 } 
