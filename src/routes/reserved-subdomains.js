@@ -1,6 +1,5 @@
 const express = require('express');
-const { ReservedSubdomainsService } = require('../services/metadata/reserved-subdomains-service');
-const { ENSResolverService } = require('../services/metadata/ens-resolver-service');
+const { ReservedSubdomainsService, ENSResolverService } = require('../services/metadata');
 
 const router = express.Router();
 

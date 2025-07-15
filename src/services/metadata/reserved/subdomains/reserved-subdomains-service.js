@@ -1,4 +1,4 @@
-const { URLEncodingService } = require('./url-encoding-service');
+const { URLEncodingService } = require('../encoding/url-encoding-service');
 
 class ReservedSubdomainsService {
   constructor(ensResolver) {

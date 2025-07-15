@@ -42,14 +42,14 @@ async function testURLEncoding() {
   for (const input of testInputs) {
     console.log(`\nInput: "${input}"`);
     
-    const sanitized = require('../src/services/metadata/url-encoding-service').URLEncodingService.sanitizeSubdomain(input);
-    const validation = require('../src/services/metadata/url-encoding-service').URLEncodingService.validateSubdomainFormat(input);
-    const stats = require('../src/services/metadata/url-encoding-service').URLEncodingService.getEncodingStats(input);
+    const sanitized = require('../src/services/metadata/reserved/encoding/url-encoding-service').URLEncodingService.sanitizeSubdomain(input);
+const validation = require('../src/services/metadata/reserved/encoding/url-encoding-service').URLEncodingService.validateSubdomainFormat(input);
+const stats = require('../src/services/metadata/reserved/encoding/url-encoding-service').URLEncodingService.getEncodingStats(input);
     
     console.log(`  Sanitized: "${sanitized}"`);
     console.log(`  Valid: ${validation.isValid}`);
-    console.log(`  DNS Safe: ${require('../src/services/metadata/url-encoding-service').URLEncodingService.isDNSSafe(sanitized)}`);
-    console.log(`  ENS Safe: ${require('../src/services/metadata/url-encoding-service').URLEncodingService.isENSSafe(sanitized)}`);
+    console.log(`  DNS Safe: ${require('../src/services/metadata/reserved/encoding/url-encoding-service').URLEncodingService.isDNSSafe(sanitized)}`);
+console.log(`  ENS Safe: ${require('../src/services/metadata/reserved/encoding/url-encoding-service').URLEncodingService.isENSSafe(sanitized)}`);
     console.log(`  Stats: ${JSON.stringify(stats)}`);
     
     if (!validation.isValid) {
