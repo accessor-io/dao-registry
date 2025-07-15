@@ -46,25 +46,25 @@ The system is built with a modular architecture:
 
 ## Key Features
 
-### 🔗 Multi-Chain Support
+### Multi-Chain Support
 - Ethereum Mainnet
 - Polygon
 - Arbitrum
 - Other EVM-compatible networks
 
-### 📊 Advanced Analytics
+### Advanced Analytics
 - Real-time performance metrics
 - Governance analysis
 - Treasury tracking
 - Risk assessment
 
-### 🏛️ Governance Tools
+### Governance Tools
 - Proposal management
 - Voting mechanisms
 - Quorum calculation
 - Execution monitoring
 
-### 🔐 Security
+### Security
 - Smart contract audits
 - Input validation
 - XSS prevention

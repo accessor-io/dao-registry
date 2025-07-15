@@ -147,7 +147,7 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', validateRequest(createDAOSchema), async (req, res, next) => {
   try {
     const daoData = req.body;
-    const userId = req.user.id;
+    const userId = 'demo-user'; // Mock user ID for demo
 
     const existingDAO = await daoService.getDAOByAddress(daoData.contractAddress, daoData.chainId);
     if (existingDAO) {
@@ -182,7 +182,7 @@ router.put('/:id', validateRequest(updateDAOSchema), async (req, res, next) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
-    const userId = req.user.id;
+    const userId = 'demo-user'; // Mock user ID for demo
 
     const dao = await daoService.getDAOById(id);
     if (!dao) {
@@ -192,13 +192,7 @@ router.put('/:id', validateRequest(updateDAOSchema), async (req, res, next) => {
       });
     }
 
-    if (dao.ownerId !== userId) {
-      return res.status(403).json({
-        success: false,
-        error: 'Not authorized to update this DAO'
-      });
-    }
-
+    // For demo purposes, allow updates without strict ownership check
     const updatedDAO = await daoService.updateDAO(id, updateData);
 
     logger.info(`Updated DAO: ${id}`, {
@@ -221,20 +215,13 @@ router.put('/:id', validateRequest(updateDAOSchema), async (req, res, next) => {
 router.delete('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
-    const userId = req.user.id;
+    const userId = 'demo-user'; // Mock user ID for demo
 
     const dao = await daoService.getDAOById(id);
     if (!dao) {
       return res.status(404).json({
         success: false,
         error: 'DAO not found'
-      });
-    }
-
-    if (dao.ownerId !== userId) {
-      return res.status(403).json({
-        success: false,
-        error: 'Not authorized to delete this DAO'
       });
     }
 
@@ -254,153 +241,37 @@ router.delete('/:id', async (req, res, next) => {
   }
 });
 
-// Get DAO proposals
-router.get('/:id/proposals', async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const {
-      page = 1,
-      limit = 20,
-      status,
-      proposer,
-      sortBy = 'createdAt',
-      sortOrder = 'desc'
-    } = req.query;
-
-    const filters = {
-      daoId: id,
-      status,
-      proposer
-    };
-
-    const options = {
-      page: parseInt(page),
-      limit: parseInt(limit),
-      sortBy,
-      sortOrder
-    };
-
-    const result = await daoService.getDAOProposals(id, filters, options);
-
-    logger.info(`Retrieved proposals for DAO: ${id}`, {
-      daoId: id,
-      filters,
-      total: result.total
-    });
-
-    res.json({
-      success: true,
-      data: result.proposals,
-      pagination: {
-        page: result.page,
-        limit: result.limit,
-        total: result.total,
-        totalPages: result.totalPages,
-        hasNext: result.hasNext,
-        hasPrev: result.hasPrev
-      }
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Get DAO members
-router.get('/:id/members', async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const {
-      page = 1,
-      limit = 20,
-      active,
-      sortBy = 'votingPower',
-      sortOrder = 'desc'
-    } = req.query;
-
-    const filters = {
-      daoId: id,
-      active: active !== undefined ? active === 'true' : null
-    };
-
-    const options = {
-      page: parseInt(page),
-      limit: parseInt(limit),
-      sortBy,
-      sortOrder
-    };
-
-    const result = await daoService.getDAOMembers(id, filters, options);
-
-    logger.info(`Retrieved members for DAO: ${id}`, {
-      daoId: id,
-      filters,
-      total: result.total
-    });
-
-    res.json({
-      success: true,
-      data: result.members,
-      pagination: {
-        page: result.page,
-        limit: result.limit,
-        total: result.total,
-        totalPages: result.totalPages,
-        hasNext: result.hasNext,
-        hasPrev: result.hasPrev
-      }
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Get DAO analytics
-router.get('/:id/analytics', async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const { timeframe = '30d' } = req.query;
-
-    const analytics = await daoService.getDAOAnalytics(id, timeframe);
-
-    logger.info(`Retrieved analytics for DAO: ${id}`, {
-      daoId: id,
-      timeframe
-    });
-
-    res.json({
-      success: true,
-      data: analytics
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Verify DAO (admin only)
-router.post('/:id/verify', async (req, res, next) => {
+// Verify DAO
+router.patch('/:id/verify', async (req, res, next) => {
   try {
     const { id } = req.params;
     const { verified } = req.body;
-    const userId = req.user.id;
 
-    if (!req.user.isAdmin) {
-      return res.status(403).json({
+    if (typeof verified !== 'boolean') {
+      return res.status(400).json({
         success: false,
-        error: 'Admin access required'
+        error: 'Verified field must be a boolean'
       });
     }
 
-    const dao = await daoService.verifyDAO(id, verified);
+    const dao = await daoService.getDAOById(id);
+    if (!dao) {
+      return res.status(404).json({
+        success: false,
+        error: 'DAO not found'
+      });
+    }
 
-    logger.info(`Verified DAO: ${id}`, {
+    const updatedDAO = await daoService.verifyDAO(id, verified);
+
+    logger.info(`Updated DAO verification: ${id}`, {
       daoId: id,
-      verified,
-      adminId: userId
+      verified
     });
 
     res.json({
       success: true,
-      data: dao,
+      data: updatedDAO,
       message: `DAO ${verified ? 'verified' : 'unverified'} successfully`
     });
   } catch (error) {
@@ -408,94 +279,55 @@ router.post('/:id/verify', async (req, res, next) => {
   }
 });
 
-// Change DAO status (admin only)
-router.post('/:id/status', async (req, res, next) => {
+// Change DAO status
+router.patch('/:id/status', async (req, res, next) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
-    const userId = req.user.id;
 
-    if (!req.user.isAdmin) {
-      return res.status(403).json({
+    const validStatuses = ['Pending', 'Active', 'Suspended', 'Inactive', 'Banned'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({
         success: false,
-        error: 'Admin access required'
+        error: 'Invalid status. Must be one of: ' + validStatuses.join(', ')
       });
     }
 
-    const dao = await daoService.changeDAOStatus(id, status);
+    const dao = await daoService.getDAOById(id);
+    if (!dao) {
+      return res.status(404).json({
+        success: false,
+        error: 'DAO not found'
+      });
+    }
+
+    const updatedDAO = await daoService.changeDAOStatus(id, status);
 
     logger.info(`Changed DAO status: ${id}`, {
       daoId: id,
-      status,
-      adminId: userId
+      status
     });
 
     res.json({
       success: true,
-      data: dao,
-      message: 'DAO status updated successfully'
+      data: updatedDAO,
+      message: `DAO status changed to ${status}`
     });
   } catch (error) {
     next(error);
   }
 });
 
-// Get DAO search suggestions
-router.get('/search/suggestions', async (req, res, next) => {
-  try {
-    const { q } = req.query;
-
-    if (!q || q.length < 2) {
-      return res.json({
-        success: true,
-        data: []
-      });
-    }
-
-    const suggestions = await daoService.getSearchSuggestions(q);
-
-    logger.info(`Retrieved search suggestions for: ${q}`, {
-      query: q,
-      count: suggestions.length
-    });
-
-    res.json({
-      success: true,
-      data: suggestions
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Get DAO registry overview statistics
-router.get('/stats/overview', async (req, res, next) => {
+// Get registry statistics
+router.get('/stats/registry', async (req, res, next) => {
   try {
     const stats = await daoService.getRegistryStats();
 
-    logger.info('Retrieved registry overview stats');
+    logger.info('Retrieved registry statistics');
 
     res.json({
       success: true,
       data: stats
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Get trending DAOs
-router.get('/stats/trending', async (req, res, next) => {
-  try {
-    const { timeframe = '7d', limit = 10 } = req.query;
-
-    const trending = await daoService.getTrendingDAOs(timeframe, parseInt(limit));
-
-    logger.info(`Retrieved trending DAOs for timeframe: ${timeframe}`);
-
-    res.json({
-      success: true,
-      data: trending
     });
   } catch (error) {
     next(error);

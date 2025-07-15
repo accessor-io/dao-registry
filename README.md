@@ -2,7 +2,7 @@
 
 A comprehensive blockchain governance and metadata management system with URL encoding, reserved subdomains, ENS integration, and ISO metadata standards.
 
-## 🚀 Features
+## Features
 
 ### Core Components
 
@@ -14,16 +14,15 @@ A comprehensive blockchain governance and metadata management system with URL en
 
 ### Key Capabilities
 
-- ✅ **DNS & ENS Safe**: RFC 1123 and ENS compliant subdomain handling
-- ✅ **Unicode Support**: Internationalized domain name (IDN) support with punycode
-- ✅ **Reserved Word Protection**: 71 critical subdomains protected across 4 priority levels
-- ✅ **ISO Standards**: Metadata validation against ISO 19115 standards
-- ✅ **Comprehensive Validation**: URL encoding, format validation, and availability checking
-- ✅ **RESTful API**: Complete API for all system operations
-- ✅ **Smart Contract Integration**: On-chain reserved subdomain management
+- **DNS & ENS Safe**: RFC 1123 and ENS compliant subdomain handling
+- **Unicode Support**: Internationalized domain name (IDN) support with punycode
+- **Reserved Word Protection**: 71 critical subdomains protected across 4 priority levels
+- **ISO Standards**: Metadata validation against ISO 19115 standards
+- **Comprehensive Validation**: URL encoding, format validation, and availability checking
+- **RESTful API**: Complete API for all system operations
+- **Smart Contract Integration**: On-chain reserved subdomain management
 
-## 🏗️ System Architecture
-
+## System Architecture
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    DAO Registry System                         │
@@ -47,7 +46,7 @@ A comprehensive blockchain governance and metadata management system with URL en
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## 📦 Installation
+## Installation
 
 ```bash
 # Clone the repository
@@ -61,7 +60,7 @@ npm install
 npm install --save-dev
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Start the Demo
 
@@ -103,7 +102,7 @@ curl -X POST http://localhost:3000/api/subdomain/validate \
   -d '{"subdomain": "my-dao", "parentDomain": "dao.eth"}'
 ```
 
-## 🔧 API Endpoints
+## API Endpoints
 
 ### Core Endpoints
 
@@ -199,7 +198,7 @@ Response:
 }
 ```
 
-## 🔒 Reserved Subdomains
+## Reserved Subdomains
 
 The system protects 71 critical subdomains across 4 priority levels:
 
@@ -221,7 +220,7 @@ The system protects 71 critical subdomains across 4 priority levels:
 - **Marketing**: marketing, brand, media, press
 - **Information**: faq, help, support, news
 
-## 🌐 URL Encoding Patterns
+## URL Encoding Patterns
 
 ### Core Regex Patterns
 
@@ -241,15 +240,15 @@ PUNYCODE_PATTERN: /^xn--[a-z0-9]+$/
 
 ### Validation Features
 
-- ✅ **Character Filtering**: Remove invalid characters
-- ✅ **Case Normalization**: Convert to lowercase
-- ✅ **Whitespace Handling**: Replace with hyphens
-- ✅ **Hyphen Normalization**: Remove leading/trailing hyphens
-- ✅ **Length Validation**: Ensure within DNS limits (1-63 characters)
-- ✅ **Unicode Support**: Handle internationalized domain names
-- ✅ **Punycode Support**: Encode/decode IDNs
+- **Character Filtering**: Remove invalid characters
+- **Case Normalization**: Convert to lowercase
+- **Whitespace Handling**: Replace with hyphens
+- **Hyphen Normalization**: Remove leading/trailing hyphens
+- **Length Validation**: Ensure within DNS limits (1-63 characters)
+- **Unicode Support**: Handle internationalized domain names
+- **Punycode Support**: Encode/decode IDNs
 
-## 📊 ISO Metadata Standards
+## ISO Metadata Standards
 
 ### Supported Standards
 
@@ -258,13 +257,13 @@ PUNYCODE_PATTERN: /^xn--[a-z0-9]+$/
 
 ### Validation Features
 
-- ✅ **Schema Validation**: Zod-based schema validation
-- ✅ **Required Fields**: Ensure mandatory fields are present
-- ✅ **Data Types**: Validate field types and formats
-- ✅ **Custom Rules**: Extensible validation rules
-- ✅ **Error Reporting**: Detailed error messages and warnings
+- **Schema Validation**: Zod-based schema validation
+- **Required Fields**: Ensure mandatory fields are present
+- **Data Types**: Validate field types and formats
+- **Custom Rules**: Extensible validation rules
+- **Error Reporting**: Detailed error messages and warnings
 
-## 🧪 Testing
+## Testing
 
 ### Run Tests
 
@@ -281,13 +280,13 @@ npm run test:coverage
 
 ### Test Coverage
 
-- ✅ **URL Encoding Service**: Comprehensive regex pattern testing
-- ✅ **Reserved Subdomains**: Priority and category validation
-- ✅ **ENS Integration**: Domain resolution and availability
-- ✅ **ISO Metadata**: Schema validation and error handling
-- ✅ **Integration Tests**: Complete workflow testing
+- **URL Encoding Service**: Comprehensive regex pattern testing
+- **Reserved Subdomains**: Priority and category validation
+- **ENS Integration**: Domain resolution and availability
+- **ISO Metadata**: Schema validation and error handling
+- **Integration Tests**: Complete workflow testing
 
-## 🚀 Deployment
+## Deployment
 
 ### Smart Contracts
 
@@ -318,7 +317,7 @@ cp .env.example .env
 # - NETWORK_ID: Target network ID
 ```
 
-## 📚 Documentation
+## Documentation
 
 ### Core Documentation
 
@@ -340,7 +339,7 @@ cp .env.example .env
 - [Testing Guide](./docs/development/testing.md)
 - [Deployment Guide](./docs/development/deployment.md)
 
-## 🔧 Development
+## Development
 
 ### Prerequisites
 
@@ -401,7 +400,7 @@ dao-registry/
 └── package.json
 ```
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -411,25 +410,25 @@ dao-registry/
 
 ### Development Guidelines
 
-- ✅ Follow TypeScript best practices
-- ✅ Write comprehensive tests
-- ✅ Update documentation
-- ✅ Follow the existing code style
-- ✅ Add proper error handling
-- ✅ Validate all inputs
+- Follow TypeScript best practices
+- Write comprehensive tests
+- Update documentation
+- Follow the existing code style
+- Add proper error handling
+- Validate all inputs
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [Ethereum Name Service (ENS)](https://ens.domains/) for domain resolution
 - [OpenZeppelin](https://openzeppelin.com/) for smart contract security
 - [ISO](https://www.iso.org/) for metadata standards
 - [RFC 1123](https://tools.ietf.org/html/rfc1123) for DNS naming standards
 
-## 📞 Support
+## Support
 
 - **Issues**: [GitHub Issues](https://github.com/your-org/dao-registry/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/your-org/dao-registry/discussions)

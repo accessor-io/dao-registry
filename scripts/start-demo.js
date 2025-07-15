@@ -12,7 +12,7 @@
 
 const DAORegistryApp = require('../src/index').default;
 
-console.log('🚀 Starting DAO Registry Demo...\n');
+console.log('Starting DAO Registry Demo...\n');
 
 // Create the application
 const app = new DAORegistryApp();
@@ -27,7 +27,7 @@ const {
 
 // Demo function to test URL encoding
 async function testURLEncoding() {
-  console.log('📝 Testing URL Encoding Service...');
+  console.log('Testing URL Encoding Service...');
   
   const testInputs = [
     '  My Complex Subdomain!  ',
@@ -60,7 +60,7 @@ async function testURLEncoding() {
 
 // Demo function to test reserved subdomains
 async function testReservedSubdomains() {
-  console.log('\n🔒 Testing Reserved Subdomains Service...');
+  console.log('\nTesting Reserved Subdomains Service...');
   
   const testSubdomains = [
     'governance',
@@ -96,7 +96,7 @@ async function testReservedSubdomains() {
 
 // Demo function to test ENS integration
 async function testENSIntegration() {
-  console.log('\n🌐 Testing ENS Integration...');
+  console.log('\nTesting ENS Integration...');
   
   // Register some test domains
   await ensResolver.registerDomain('governance.dao.eth', '0x1234567890123456789012345678901234567890');
@@ -126,7 +126,7 @@ async function testENSIntegration() {
 
 // Demo function to test metadata services
 async function testMetadataServices() {
-  console.log('\n📊 Testing Metadata Services...');
+  console.log('\nTesting Metadata Services...');
   
   const testMetadata = {
     title: 'Demo DAO',
@@ -167,7 +167,7 @@ async function testMetadataServices() {
 
 // Demo function to test complete workflow
 async function testCompleteWorkflow() {
-  console.log('\n🔄 Testing Complete Workflow...');
+  console.log('\nTesting Complete Workflow...');
   
   const daoName = 'My Demo DAO';
   const subdomain = 'my-demo-dao';
@@ -225,19 +225,19 @@ async function testCompleteWorkflow() {
         const metadataResult = await metadataRegistry.registerMetadata('demo-workflow-123', metadata, 'ISO 19115');
         console.log(`  Metadata registered with ID: ${metadataResult.metadataId}`);
         
-        console.log('\n✅ Complete workflow successful!');
+        console.log('\nComplete workflow successful!');
         console.log(`   Domain: ${subdomain}.${parentDomain}`);
         console.log(`   Metadata ID: ${metadataResult.metadataId}`);
         console.log(`   Timestamp: ${metadataResult.timestamp}`);
       } else {
-        console.log('❌ Metadata validation failed');
+        console.log('Metadata validation failed');
         console.log(`   Errors: ${metadataValidation.errors.join(', ')}`);
       }
     } else {
-      console.log('❌ Domain not available');
+      console.log('Domain not available');
     }
   } else {
-    console.log('❌ Subdomain validation failed');
+    console.log('Subdomain validation failed');
     if (!subdomainValidation.isValid) {
       console.log(`   Subdomain errors: ${subdomainValidation.errors.join(', ')}`);
     }
@@ -257,14 +257,14 @@ async function runDemo() {
     await testCompleteWorkflow();
     
     console.log('\n🎉 Demo completed successfully!');
-    console.log('\n📋 Summary:');
-    console.log('  ✅ URL Encoding Service - Working');
-    console.log('  ✅ Reserved Subdomains Service - Working');
-    console.log('  ✅ ENS Integration - Working');
-    console.log('  ✅ Metadata Services - Working');
-    console.log('  ✅ Complete Workflow - Working');
+    console.log('\nSummary:');
+    console.log('  URL Encoding Service - Working');
+console.log('  Reserved Subdomains Service - Working');
+console.log('  ENS Integration - Working');
+console.log('  Metadata Services - Working');
+console.log('  Complete Workflow - Working');
     
-    console.log('\n🚀 Starting server on port 3000...');
+    console.log('\nStarting server on port 3000...');
     console.log('   Health check: http://localhost:3000/health');
     console.log('   System info: http://localhost:3000/api/system/info');
     console.log('   API docs: http://localhost:3000/api/docs');
@@ -272,7 +272,7 @@ async function runDemo() {
     app.start(3000);
     
   } catch (error) {
-    console.error('❌ Demo failed:', error.message);
+    console.error('Demo failed:', error.message);
     process.exit(1);
   }
 }

@@ -14,12 +14,12 @@ The DAO Registry is a decentralized platform that provides:
 
 ## Key Features
 
-### 🏛️ **DAO Registration & Management**
+### **DAO Registration & Management**
 - Register new DAOs with comprehensive metadata
 - Track governance structures and voting mechanisms
 - Monitor treasury operations and token distributions
 
-### 📊 **Advanced Analytics**
+### **Advanced Analytics**
 - Governance participation metrics
 - Proposal success rate analysis
 - Treasury flow tracking

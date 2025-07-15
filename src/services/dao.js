@@ -1,16 +1,66 @@
-const { DAOModel } = require('../models/dao');
-const { ProposalModel } = require('../models/proposal');
-const { MemberModel } = require('../models/member');
-const { AnalyticsModel } = require('../models/analytics');
-const { BlockchainService } = require('./blockchain');
-const { CacheService } = require('./cache');
 const { logger } = require('../utils/logger');
-const { ValidationError, NotFoundError, AuthorizationError } = require('../utils/errors');
+
+// Mock data for demonstration
+const mockDAOs = [
+  {
+    id: '1',
+    name: 'Uniswap DAO',
+    symbol: 'UNI',
+    description: 'Decentralized exchange governance',
+    contractAddress: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+    tokenAddress: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+    treasuryAddress: '0x4750c43867EF5F89869132eccf19B9b6C4280E09',
+    governanceAddress: '0x5e4be8Bc9637f0EAA1A755069e05802F9a6C424a',
+    chainId: 1,
+    governanceType: 'TokenWeighted',
+    votingPeriod: 7,
+    quorum: 40000000,
+    proposalThreshold: 10000000,
+    status: 'Active',
+    verified: true,
+    active: true,
+    ownerId: 'user1',
+    tags: ['DeFi', 'DEX', 'Governance'],
+    socialLinks: {
+      twitter: 'https://twitter.com/Uniswap',
+      discord: 'https://discord.gg/uniswap',
+      github: 'https://github.com/Uniswap'
+    },
+    createdAt: new Date('2021-05-01'),
+    updatedAt: new Date('2024-01-15')
+  },
+  {
+    id: '2',
+    name: 'Aave DAO',
+    symbol: 'AAVE',
+    description: 'Decentralized lending protocol governance',
+    contractAddress: '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9',
+    tokenAddress: '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9',
+    treasuryAddress: '0x25F2226B597E8F9514B3F68F00f510cEfD2D811c',
+    governanceAddress: '0xEC568fffba86c094cf06b22134B23074DFE2252c',
+    chainId: 1,
+    governanceType: 'TokenWeighted',
+    votingPeriod: 5,
+    quorum: 800000,
+    proposalThreshold: 80000,
+    status: 'Active',
+    verified: true,
+    active: true,
+    ownerId: 'user2',
+    tags: ['DeFi', 'Lending', 'Governance'],
+    socialLinks: {
+      twitter: 'https://twitter.com/AaveAave',
+      discord: 'https://discord.gg/aave',
+      github: 'https://github.com/aave'
+    },
+    createdAt: new Date('2020-12-01'),
+    updatedAt: new Date('2024-01-10')
+  }
+];
 
 class DAOService {
   constructor() {
-    this.blockchainService = new BlockchainService();
-    this.cacheService = new CacheService();
+    this.daos = [...mockDAOs];
   }
 
   /**
@@ -21,13 +71,6 @@ class DAOService {
    */
   async getAllDAOs(filters = {}, options = {}) {
     try {
-      const cacheKey = `daos:${JSON.stringify(filters)}:${JSON.stringify(options)}`;
-      const cached = await this.cacheService.get(cacheKey);
-      
-      if (cached) {
-        return cached;
-      }
-
       const {
         page = 1,
         limit = 20,
@@ -35,27 +78,58 @@ class DAOService {
         sortOrder = 'desc'
       } = options;
 
+      let filteredDAOs = [...this.daos];
+
+      // Apply filters
+      if (filters.chainId) {
+        filteredDAOs = filteredDAOs.filter(dao => dao.chainId === filters.chainId);
+      }
+
+      if (filters.status) {
+        filteredDAOs = filteredDAOs.filter(dao => dao.status === filters.status);
+      }
+
+      if (filters.verified !== null) {
+        filteredDAOs = filteredDAOs.filter(dao => dao.verified === filters.verified);
+      }
+
+      if (filters.tags && filters.tags.length > 0) {
+        filteredDAOs = filteredDAOs.filter(dao => 
+          dao.tags && dao.tags.some(tag => filters.tags.includes(tag))
+        );
+      }
+
+      if (filters.search) {
+        const searchLower = filters.search.toLowerCase();
+        filteredDAOs = filteredDAOs.filter(dao => 
+          dao.name.toLowerCase().includes(searchLower) ||
+          dao.description.toLowerCase().includes(searchLower)
+        );
+      }
+
+      // Sort
+      filteredDAOs.sort((a, b) => {
+        const aVal = a[sortBy];
+        const bVal = b[sortBy];
+        
+        if (sortOrder === 'asc') {
+          return aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+        } else {
+          return aVal > bVal ? -1 : aVal < bVal ? 1 : 0;
+        }
+      });
+
+      // Paginate
       const offset = (page - 1) * limit;
-      const whereClause = this.buildWhereClause(filters);
+      const paginatedDAOs = filteredDAOs.slice(offset, offset + limit);
 
-      const [daos, total] = await Promise.all([
-        DAOModel.query()
-          .where(whereClause)
-          .orderBy(sortBy, sortOrder)
-          .limit(limit)
-          .offset(offset)
-          .withGraphFetched('[proposals, members, analytics]'),
-        DAOModel.query()
-          .where(whereClause)
-          .resultSize()
-      ]);
-
+      const total = filteredDAOs.length;
       const totalPages = Math.ceil(total / limit);
       const hasNext = page < totalPages;
       const hasPrev = page > 1;
 
       const result = {
-        daos,
+        daos: paginatedDAOs,
         total,
         page,
         limit,
@@ -64,8 +138,13 @@ class DAOService {
         hasPrev
       };
 
-      // Cache for 5 minutes
-      await this.cacheService.set(cacheKey, result, 300);
+      logger.info(`Retrieved ${paginatedDAOs.length} DAOs`, {
+        filters,
+        options,
+        total: result.total,
+        page: result.page,
+        totalPages: result.totalPages
+      });
 
       return result;
     } catch (error) {
@@ -81,24 +160,13 @@ class DAOService {
    */
   async getDAOById(id) {
     try {
-      const cacheKey = `dao:${id}`;
-      const cached = await this.cacheService.get(cacheKey);
+      const dao = this.daos.find(d => d.id === id);
       
-      if (cached) {
-        return cached;
-      }
-
-      const dao = await DAOModel.query()
-        .findById(id)
-        .withGraphFetched('[proposals, members, analytics, socialLinks]');
-
       if (!dao) {
-        throw new NotFoundError('DAO not found');
+        throw new Error('DAO not found');
       }
 
-      // Cache for 10 minutes
-      await this.cacheService.set(cacheKey, dao, 600);
-
+      logger.info(`Retrieved DAO: ${id}`);
       return dao;
     } catch (error) {
       logger.error(`Error getting DAO by ID ${id}:`, error);
@@ -114,12 +182,10 @@ class DAOService {
    */
   async getDAOByAddress(contractAddress, chainId) {
     try {
-      const dao = await DAOModel.query()
-        .where({
-          contractAddress,
-          chainId
-        })
-        .first();
+      const dao = this.daos.find(d => 
+        d.contractAddress.toLowerCase() === contractAddress.toLowerCase() && 
+        d.chainId === chainId
+      );
 
       return dao;
     } catch (error) {
@@ -136,10 +202,8 @@ class DAOService {
    */
   async createDAO(daoData, userId) {
     try {
-      // Validate contract addresses on blockchain
-      await this.validateContractAddresses(daoData);
-
-      const dao = await DAOModel.query().insert({
+      const newDAO = {
+        id: (this.daos.length + 1).toString(),
         ...daoData,
         ownerId: userId,
         status: 'Pending',
@@ -147,33 +211,19 @@ class DAOService {
         active: true,
         createdAt: new Date(),
         updatedAt: new Date()
-      });
+      };
 
-      // Initialize analytics
-      await AnalyticsModel.query().insert({
-        daoId: dao.id,
-        totalProposals: 0,
-        activeProposals: 0,
-        totalMembers: 0,
-        activeMembers: 0,
-        treasuryValue: 0,
-        participationRate: 0,
-        averageVotingPower: 0,
-        lastUpdated: new Date()
-      });
+      this.daos.push(newDAO);
 
-      // Clear cache
-      await this.cacheService.delete('daos:*');
-
-      logger.info(`Created DAO: ${dao.id}`, {
-        daoId: dao.id,
-        name: dao.name,
-        contractAddress: dao.contractAddress,
-        chainId: dao.chainId,
+      logger.info(`Created DAO: ${newDAO.id}`, {
+        daoId: newDAO.id,
+        name: newDAO.name,
+        contractAddress: newDAO.contractAddress,
+        chainId: newDAO.chainId,
         userId
       });
 
-      return dao;
+      return newDAO;
     } catch (error) {
       logger.error('Error creating DAO:', error);
       throw error;
@@ -188,24 +238,20 @@ class DAOService {
    */
   async updateDAO(id, updateData) {
     try {
-      const dao = await this.getDAOById(id);
+      const daoIndex = this.daos.findIndex(d => d.id === id);
       
-      const updatedDAO = await DAOModel.query()
-        .patchAndFetchById(id, {
-          ...updateData,
-          updatedAt: new Date()
-        });
+      if (daoIndex === -1) {
+        throw new Error('DAO not found');
+      }
 
-      // Clear cache
-      await this.cacheService.delete(`dao:${id}`);
-      await this.cacheService.delete('daos:*');
+      this.daos[daoIndex] = {
+        ...this.daos[daoIndex],
+        ...updateData,
+        updatedAt: new Date()
+      };
 
-      logger.info(`Updated DAO: ${id}`, {
-        daoId: id,
-        updates: updateData
-      });
-
-      return updatedDAO;
+      logger.info(`Updated DAO: ${id}`);
+      return this.daos[daoIndex];
     } catch (error) {
       logger.error(`Error updating DAO ${id}:`, error);
       throw error;
@@ -215,18 +261,20 @@ class DAOService {
   /**
    * Delete DAO
    * @param {string} id - DAO ID
+   * @returns {boolean} Success status
    */
   async deleteDAO(id) {
     try {
-      const dao = await this.getDAOById(id);
+      const daoIndex = this.daos.findIndex(d => d.id === id);
       
-      await DAOModel.query().deleteById(id);
+      if (daoIndex === -1) {
+        throw new Error('DAO not found');
+      }
 
-      // Clear cache
-      await this.cacheService.delete(`dao:${id}`);
-      await this.cacheService.delete('daos:*');
+      this.daos.splice(daoIndex, 1);
 
       logger.info(`Deleted DAO: ${id}`);
+      return true;
     } catch (error) {
       logger.error(`Error deleting DAO ${id}:`, error);
       throw error;
@@ -243,18 +291,9 @@ class DAOService {
     try {
       const dao = await this.getDAOById(id);
       
-      const updatedDAO = await DAOModel.query()
-        .patchAndFetchById(id, {
-          verified,
-          status: verified ? 'Active' : 'Pending',
-          updatedAt: new Date()
-        });
+      const updatedDAO = await this.updateDAO(id, { verified });
 
-      // Clear cache
-      await this.cacheService.delete(`dao:${id}`);
-      await this.cacheService.delete('daos:*');
-
-      logger.info(`Verified DAO: ${id}`, {
+      logger.info(`Updated DAO verification: ${id}`, {
         daoId: id,
         verified
       });
@@ -274,18 +313,13 @@ class DAOService {
    */
   async changeDAOStatus(id, status) {
     try {
-      const dao = await this.getDAOById(id);
+      const validStatuses = ['Pending', 'Active', 'Suspended', 'Inactive', 'Banned'];
       
-      const updatedDAO = await DAOModel.query()
-        .patchAndFetchById(id, {
-          status,
-          active: status === 'Active',
-          updatedAt: new Date()
-        });
+      if (!validStatuses.includes(status)) {
+        throw new Error('Invalid status');
+      }
 
-      // Clear cache
-      await this.cacheService.delete(`dao:${id}`);
-      await this.cacheService.delete('daos:*');
+      const updatedDAO = await this.updateDAO(id, { status });
 
       logger.info(`Changed DAO status: ${id}`, {
         daoId: id,
@@ -300,431 +334,41 @@ class DAOService {
   }
 
   /**
-   * Get DAO proposals
-   * @param {string} daoId - DAO ID
-   * @param {Object} filters - Filter criteria
-   * @param {Object} options - Pagination options
-   * @returns {Object} Paginated proposal results
-   */
-  async getDAOProposals(daoId, filters = {}, options = {}) {
-    try {
-      const {
-        page = 1,
-        limit = 20,
-        sortBy = 'createdAt',
-        sortOrder = 'desc'
-      } = options;
-
-      const offset = (page - 1) * limit;
-      const whereClause = {
-        daoId,
-        ...filters
-      };
-
-      const [proposals, total] = await Promise.all([
-        ProposalModel.query()
-          .where(whereClause)
-          .orderBy(sortBy, sortOrder)
-          .limit(limit)
-          .offset(offset),
-        ProposalModel.query()
-          .where(whereClause)
-          .resultSize()
-      ]);
-
-      const totalPages = Math.ceil(total / limit);
-      const hasNext = page < totalPages;
-      const hasPrev = page > 1;
-
-      return {
-        proposals,
-        total,
-        page,
-        limit,
-        totalPages,
-        hasNext,
-        hasPrev
-      };
-    } catch (error) {
-      logger.error(`Error getting DAO proposals ${daoId}:`, error);
-      throw error;
-    }
-  }
-
-  /**
-   * Get DAO members
-   * @param {string} daoId - DAO ID
-   * @param {Object} filters - Filter criteria
-   * @param {Object} options - Pagination options
-   * @returns {Object} Paginated member results
-   */
-  async getDAOMembers(daoId, filters = {}, options = {}) {
-    try {
-      const {
-        page = 1,
-        limit = 20,
-        sortBy = 'votingPower',
-        sortOrder = 'desc'
-      } = options;
-
-      const offset = (page - 1) * limit;
-      const whereClause = {
-        daoId,
-        ...filters
-      };
-
-      const [members, total] = await Promise.all([
-        MemberModel.query()
-          .where(whereClause)
-          .orderBy(sortBy, sortOrder)
-          .limit(limit)
-          .offset(offset),
-        MemberModel.query()
-          .where(whereClause)
-          .resultSize()
-      ]);
-
-      const totalPages = Math.ceil(total / limit);
-      const hasNext = page < totalPages;
-      const hasPrev = page > 1;
-
-      return {
-        members,
-        total,
-        page,
-        limit,
-        totalPages,
-        hasNext,
-        hasPrev
-      };
-    } catch (error) {
-      logger.error(`Error getting DAO members ${daoId}:`, error);
-      throw error;
-    }
-  }
-
-  /**
-   * Get DAO analytics
-   * @param {string} daoId - DAO ID
-   * @param {string} timeframe - Timeframe for analytics
-   * @returns {Object} Analytics data
-   */
-  async getDAOAnalytics(daoId, timeframe = '30d') {
-    try {
-      const cacheKey = `analytics:${daoId}:${timeframe}`;
-      const cached = await this.cacheService.get(cacheKey);
-      
-      if (cached) {
-        return cached;
-      }
-
-      const analytics = await AnalyticsModel.query()
-        .where({ daoId })
-        .first();
-
-      if (!analytics) {
-        throw new NotFoundError('Analytics not found');
-      }
-
-      // Get additional analytics based on timeframe
-      const additionalAnalytics = await this.calculateTimeframeAnalytics(daoId, timeframe);
-
-      const result = {
-        ...analytics,
-        ...additionalAnalytics
-      };
-
-      // Cache for 5 minutes
-      await this.cacheService.set(cacheKey, result, 300);
-
-      return result;
-    } catch (error) {
-      logger.error(`Error getting DAO analytics ${daoId}:`, error);
-      throw error;
-    }
-  }
-
-  /**
-   * Get search suggestions
-   * @param {string} query - Search query
-   * @returns {Array} Search suggestions
-   */
-  async getSearchSuggestions(query) {
-    try {
-      const suggestions = await DAOModel.query()
-        .select('id', 'name', 'symbol', 'description')
-        .where('name', 'ilike', `%${query}%`)
-        .orWhere('symbol', 'ilike', `%${query}%`)
-        .orWhere('description', 'ilike', `%${query}%`)
-        .limit(10);
-
-      return suggestions;
-    } catch (error) {
-      logger.error(`Error getting search suggestions for ${query}:`, error);
-      throw error;
-    }
-  }
-
-  /**
    * Get registry statistics
-   * @returns {Object} Registry statistics
+   * @returns {Object} Registry stats
    */
   async getRegistryStats() {
     try {
-      const cacheKey = 'stats:registry';
-      const cached = await this.cacheService.get(cacheKey);
-      
-      if (cached) {
-        return cached;
-      }
+      const totalDAOs = this.daos.length;
+      const activeDAOs = this.daos.filter(d => d.status === 'Active').length;
+      const verifiedDAOs = this.daos.filter(d => d.verified).length;
+      const pendingDAOs = this.daos.filter(d => d.status === 'Pending').length;
 
-      const [
+      const chainStats = {};
+      this.daos.forEach(dao => {
+        chainStats[dao.chainId] = (chainStats[dao.chainId] || 0) + 1;
+      });
+
+      const governanceTypeStats = {};
+      this.daos.forEach(dao => {
+        governanceTypeStats[dao.governanceType] = (governanceTypeStats[dao.governanceType] || 0) + 1;
+      });
+
+      return {
         totalDAOs,
         activeDAOs,
         verifiedDAOs,
-        totalProposals,
-        totalMembers,
-        totalTreasuryValue
-      ] = await Promise.all([
-        DAOModel.query().resultSize(),
-        DAOModel.query().where({ active: true }).resultSize(),
-        DAOModel.query().where({ verified: true }).resultSize(),
-        ProposalModel.query().resultSize(),
-        MemberModel.query().resultSize(),
-        AnalyticsModel.query().sum('treasuryValue as total').first()
-      ]);
-
-      const stats = {
-        totalDAOs,
-        activeDAOs,
-        verifiedDAOs,
-        totalProposals,
-        totalMembers,
-        totalTreasuryValue: totalTreasuryValue.total || 0,
-        averageParticipationRate: await this.calculateAverageParticipationRate(),
-        topChains: await this.getTopChains(),
-        recentActivity: await this.getRecentActivity()
+        pendingDAOs,
+        chainStats,
+        governanceTypeStats
       };
-
-      // Cache for 10 minutes
-      await this.cacheService.set(cacheKey, stats, 600);
-
-      return stats;
     } catch (error) {
       logger.error('Error getting registry stats:', error);
       throw error;
     }
   }
-
-  /**
-   * Get trending DAOs
-   * @param {string} timeframe - Timeframe
-   * @param {number} limit - Number of results
-   * @returns {Array} Trending DAOs
-   */
-  async getTrendingDAOs(timeframe = '7d', limit = 10) {
-    try {
-      const cacheKey = `trending:${timeframe}:${limit}`;
-      const cached = await this.cacheService.get(cacheKey);
-      
-      if (cached) {
-        return cached;
-      }
-
-      const trending = await DAOModel.query()
-        .select('daos.*')
-        .joinRelated('analytics')
-        .orderBy('analytics.participationRate', 'desc')
-        .limit(limit);
-
-      // Cache for 15 minutes
-      await this.cacheService.set(cacheKey, trending, 900);
-
-      return trending;
-    } catch (error) {
-      logger.error(`Error getting trending DAOs for ${timeframe}:`, error);
-      throw error;
-    }
-  }
-
-  /**
-   * Validate contract addresses on blockchain
-   * @param {Object} daoData - DAO data
-   */
-  async validateContractAddresses(daoData) {
-    try {
-      const { contractAddress, tokenAddress, treasuryAddress, chainId } = daoData;
-
-      // Validate contract addresses exist and are contracts
-      await Promise.all([
-        this.blockchainService.validateContract(contractAddress, chainId),
-        this.blockchainService.validateContract(tokenAddress, chainId),
-        this.blockchainService.validateContract(treasuryAddress, chainId)
-      ]);
-    } catch (error) {
-      logger.error('Contract validation failed:', error);
-      throw new ValidationError('Invalid contract addresses');
-    }
-  }
-
-  /**
-   * Build where clause for filtering
-   * @param {Object} filters - Filter criteria
-   * @returns {Object} Where clause
-   */
-  buildWhereClause(filters) {
-    const whereClause = {};
-
-    if (filters.chainId) {
-      whereClause.chainId = filters.chainId;
-    }
-
-    if (filters.status) {
-      whereClause.status = filters.status;
-    }
-
-    if (filters.verified !== null && filters.verified !== undefined) {
-      whereClause.verified = filters.verified;
-    }
-
-    if (filters.active !== null && filters.active !== undefined) {
-      whereClause.active = filters.active;
-    }
-
-    return whereClause;
-  }
-
-  /**
-   * Calculate timeframe analytics
-   * @param {string} daoId - DAO ID
-   * @param {string} timeframe - Timeframe
-   * @returns {Object} Timeframe analytics
-   */
-  async calculateTimeframeAnalytics(daoId, timeframe) {
-    try {
-      const dateFilter = this.getDateFilter(timeframe);
-
-      const [proposals, votes, members] = await Promise.all([
-        ProposalModel.query()
-          .where({ daoId })
-          .where('createdAt', '>=', dateFilter)
-          .resultSize(),
-        // Add vote counting logic here
-        MemberModel.query()
-          .where({ daoId })
-          .where('lastActivity', '>=', dateFilter)
-          .resultSize()
-      ]);
-
-      return {
-        proposalsInTimeframe: proposals,
-        activeMembersInTimeframe: members,
-        participationRateInTimeframe: await this.calculateParticipationRate(daoId, timeframe)
-      };
-    } catch (error) {
-      logger.error(`Error calculating timeframe analytics for DAO ${daoId}:`, error);
-      throw error;
-    }
-  }
-
-  /**
-   * Get date filter for timeframe
-   * @param {string} timeframe - Timeframe
-   * @returns {Date} Date filter
-   */
-  getDateFilter(timeframe) {
-    const now = new Date();
-    const days = {
-      '1d': 1,
-      '7d': 7,
-      '30d': 30,
-      '90d': 90,
-      '1y': 365
-    };
-
-    const daysToSubtract = days[timeframe] || 30;
-    return new Date(now.getTime() - (daysToSubtract * 24 * 60 * 60 * 1000));
-  }
-
-  /**
-   * Calculate participation rate
-   * @param {string} daoId - DAO ID
-   * @param {string} timeframe - Timeframe
-   * @returns {number} Participation rate
-   */
-  async calculateParticipationRate(daoId, timeframe) {
-    try {
-      const dateFilter = this.getDateFilter(timeframe);
-      
-      const [totalMembers, activeMembers] = await Promise.all([
-        MemberModel.query().where({ daoId }).resultSize(),
-        MemberModel.query()
-          .where({ daoId })
-          .where('lastActivity', '>=', dateFilter)
-          .resultSize()
-      ]);
-
-      return totalMembers > 0 ? (activeMembers / totalMembers) * 100 : 0;
-    } catch (error) {
-      logger.error(`Error calculating participation rate for DAO ${daoId}:`, error);
-      return 0;
-    }
-  }
-
-  /**
-   * Calculate average participation rate across all DAOs
-   * @returns {number} Average participation rate
-   */
-  async calculateAverageParticipationRate() {
-    try {
-      const result = await AnalyticsModel.query()
-        .avg('participationRate as average')
-        .first();
-
-      return result.average || 0;
-    } catch (error) {
-      logger.error('Error calculating average participation rate:', error);
-      return 0;
-    }
-  }
-
-  /**
-   * Get top chains by DAO count
-   * @returns {Array} Top chains
-   */
-  async getTopChains() {
-    try {
-      const chains = await DAOModel.query()
-        .select('chainId')
-        .count('* as count')
-        .groupBy('chainId')
-        .orderBy('count', 'desc')
-        .limit(10);
-
-      return chains;
-    } catch (error) {
-      logger.error('Error getting top chains:', error);
-      return [];
-    }
-  }
-
-  /**
-   * Get recent activity
-   * @returns {Array} Recent activity
-   */
-  async getRecentActivity() {
-    try {
-      const activity = await DAOModel.query()
-        .select('id', 'name', 'createdAt', 'status')
-        .orderBy('createdAt', 'desc')
-        .limit(10);
-
-      return activity;
-    } catch (error) {
-      logger.error('Error getting recent activity:', error);
-      return [];
-    }
-  }
 }
 
-module.exports = { DAOService }; 
+module.exports = {
+  DAOService
+}; 

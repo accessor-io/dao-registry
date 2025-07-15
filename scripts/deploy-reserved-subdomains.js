@@ -163,7 +163,7 @@ async function main() {
     console.log("  ✓ Correctly prevented non-administrator from reserving subdomains");
   }
 
-  console.log("\n✅ All tests passed! ReservedSubdomains contract is working correctly.");
+  console.log("\nAll tests passed! ReservedSubdomains contract is working correctly.");
   console.log("\nDeployment Summary:");
   console.log(`  Contract Address: ${reservedSubdomains.address}`);
   console.log(`  Network: ${network.name}`);
@@ -201,6 +201,6 @@ main()
     process.exit(0);
   })
   .catch((error) => {
-    console.error("\n❌ ReservedSubdomains deployment failed:", error);
+    console.error("\nReservedSubdomains deployment failed:", error);
     process.exit(1);
   }); 

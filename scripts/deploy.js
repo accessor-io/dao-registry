@@ -219,7 +219,7 @@ async function testDeployment(daoRegistry, mockToken, mockTreasury, mockGovernan
     console.log("\n🎉 All deployment tests passed!");
 
   } catch (error) {
-    console.error("❌ Deployment test failed:", error);
+    console.error("Deployment test failed:", error);
     throw error;
   }
 }
@@ -307,11 +307,11 @@ async function estimateGasCosts(daoRegistry, mockToken, mockTreasury, mockGovern
 if (require.main === module) {
   main()
     .then(() => {
-      console.log("\n✅ Deployment script completed successfully");
+      console.log("\nDeployment script completed successfully");
       process.exit(0);
     })
     .catch((error) => {
-      console.error("\n❌ Deployment script failed:", error);
+      console.error("\nDeployment script failed:", error);
       process.exit(1);
     });
 }
