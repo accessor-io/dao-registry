@@ -48,6 +48,48 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
     }
 
     /**
+     * @dev Update trigger types for self-updating data
+     */
+    enum UpdateTrigger {
+        MANUAL,         // Manual updates only
+        TIME_BASED,     // Time-based automatic updates
+        EVENT_BASED,    // Event-driven updates
+        BLOCK_BASED,    // Block-based updates
+        CONDITIONAL,    // Conditional updates based on data changes
+        EXTERNAL_CALL   // External contract call triggers
+    }
+
+    /**
+     * @dev Update frequency for time-based triggers
+     */
+    enum UpdateFrequency {
+        NEVER,          // No automatic updates
+        HOURLY,         // Every hour
+        DAILY,          // Every day
+        WEEKLY,         // Every week
+        MONTHLY,        // Every month
+        CUSTOM          // Custom interval in seconds
+    }
+
+    /**
+     * @dev Auto-update configuration
+     */
+    struct AutoUpdateConfig {
+        bool enabled;
+        UpdateTrigger trigger;
+        UpdateFrequency frequency;
+        uint256 lastUpdateTime;
+        uint256 nextUpdateTime;
+        uint256 customInterval; // For CUSTOM frequency
+        string[] updateFields;  // Fields to auto-update
+        string[] triggerConditions; // Conditions for conditional updates
+        address externalContract; // For EXTERNAL_CALL triggers
+        bytes4 externalFunction; // Function selector for external calls
+        bool requireDataChange; // Only update if data actually changed
+        uint256 maxUpdateAge; // Maximum age before forcing update
+    }
+
+    /**
      * @dev Schema field definition
      */
     struct SchemaField {
@@ -77,6 +119,7 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
         uint256 updatedAt;
         string apiEndpoint;
         string documentationUrl;
+        AutoUpdateConfig autoUpdateConfig;
     }
 
     /**
@@ -186,6 +229,26 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
     }
 
     /**
+     * @dev Create default auto-update configuration
+     */
+    function _createDefaultAutoUpdateConfig() private pure returns (AutoUpdateConfig memory) {
+        return AutoUpdateConfig({
+            enabled: false,
+            trigger: UpdateTrigger.MANUAL,
+            frequency: UpdateFrequency.NEVER,
+            lastUpdateTime: 0,
+            nextUpdateTime: 0,
+            customInterval: 0,
+            updateFields: new string[](0),
+            triggerConditions: new string[](0),
+            externalContract: address(0),
+            externalFunction: bytes4(0),
+            requireDataChange: false,
+            maxUpdateAge: 0
+        });
+    }
+
+    /**
      * @dev Constructor
      */
     constructor() {
@@ -213,7 +276,8 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
             _createAllowedRoles(),
             _createRestrictions(),
             "/api/v1/governance",
-            "https://docs.dao-registry.com/schemas/governance"
+            "https://docs.dao-registry.com/schemas/governance",
+            _createDefaultAutoUpdateConfig()
         );
 
         // Treasury schema
@@ -228,7 +292,8 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
             _createAllowedRoles(),
             _createRestrictions(),
             "/api/v1/treasury",
-            "https://docs.dao-registry.com/schemas/treasury"
+            "https://docs.dao-registry.com/schemas/treasury",
+            _createDefaultAutoUpdateConfig()
         );
 
         // Token schema
@@ -243,7 +308,8 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
             _createAllowedRoles(),
             _createRestrictions(),
             "/api/v1/token",
-            "https://docs.dao-registry.com/schemas/token"
+            "https://docs.dao-registry.com/schemas/token",
+            _createDefaultAutoUpdateConfig()
         );
 
         // API schema
@@ -258,7 +324,8 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
             _createAllowedRoles(),
             _createRestrictions(),
             "/api/v1/api",
-            "https://docs.dao-registry.com/schemas/api"
+            "https://docs.dao-registry.com/schemas/api",
+            _createDefaultAutoUpdateConfig()
         );
     }
 
@@ -582,7 +649,8 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
         string[] memory allowedRoles,
         string[] memory restrictions,
         string memory apiEndpoint,
-        string memory documentationUrl
+        string memory documentationUrl,
+        AutoUpdateConfig memory autoUpdateConfig
     ) private {
         require(bytes(subdomain).length > 0, "Subdomain cannot be empty");
         require(!hasSchema[subdomain], "Schema already defined");
@@ -601,7 +669,8 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
             createdAt: block.timestamp,
             updatedAt: block.timestamp,
             apiEndpoint: apiEndpoint,
-            documentationUrl: documentationUrl
+            documentationUrl: documentationUrl,
+            autoUpdateConfig: autoUpdateConfig
         });
 
         subdomainSchemas[subdomain] = schema;
@@ -643,7 +712,8 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
             allowedRoles,
             restrictions,
             apiEndpoint,
-            documentationUrl
+            documentationUrl,
+            _createDefaultAutoUpdateConfig()
         );
     }
 
@@ -851,7 +921,8 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
             allowedRoles,
             restrictions,
             apiEndpoint,
-            documentationUrl
+            documentationUrl,
+            _createDefaultAutoUpdateConfig()
         );
     }
 
@@ -893,7 +964,8 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
             allowedRoles,
             restrictions,
             apiEndpoint,
-            documentationUrl
+            documentationUrl,
+            _createDefaultAutoUpdateConfig()
         );
         
         emit SchemaUpdated(subdomain, oldVersion, newVersion, msg.sender);
@@ -1011,6 +1083,172 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
             fieldNames[i] = schema.fields[i].fieldName;
             validationRules[i] = schema.fields[i].validationRule;
         }
+    }
+
+    /**
+     * @dev Emergency pause (only owner)
+     */
+    function emergencyPause() external onlyOwner {
+        // Implementation for emergency pause
+        // This would pause all operations
+    }
+
+    /**
+     * @dev Configure auto-update for a schema
+     */
+    function configureAutoUpdate(
+        string memory subdomain,
+        bool enabled,
+        UpdateTrigger trigger,
+        UpdateFrequency frequency,
+        uint256 customInterval,
+        string[] memory updateFields,
+        string[] memory triggerConditions,
+        address externalContract,
+        bytes4 externalFunction,
+        bool requireDataChange,
+        uint256 maxUpdateAge
+    ) external onlyAdministrator schemaExists(subdomain) {
+        ReservedSubdomainSchema storage schema = subdomainSchemas[subdomain];
+        
+        schema.autoUpdateConfig.enabled = enabled;
+        schema.autoUpdateConfig.trigger = trigger;
+        schema.autoUpdateConfig.frequency = frequency;
+        schema.autoUpdateConfig.customInterval = customInterval;
+        schema.autoUpdateConfig.updateFields = updateFields;
+        schema.autoUpdateConfig.triggerConditions = triggerConditions;
+        schema.autoUpdateConfig.externalContract = externalContract;
+        schema.autoUpdateConfig.externalFunction = externalFunction;
+        schema.autoUpdateConfig.requireDataChange = requireDataChange;
+        schema.autoUpdateConfig.maxUpdateAge = maxUpdateAge;
+        
+        // Set initial update times
+        if (enabled) {
+            schema.autoUpdateConfig.lastUpdateTime = block.timestamp;
+            schema.autoUpdateConfig.nextUpdateTime = _calculateNextUpdateTime(
+                block.timestamp,
+                frequency,
+                customInterval
+            );
+        }
+        
+        schema.updatedAt = block.timestamp;
+    }
+
+    /**
+     * @dev Calculate next update time based on frequency
+     */
+    function _calculateNextUpdateTime(
+        uint256 currentTime,
+        UpdateFrequency frequency,
+        uint256 customInterval
+    ) private pure returns (uint256) {
+        if (frequency == UpdateFrequency.NEVER) {
+            return 0;
+        } else if (frequency == UpdateFrequency.HOURLY) {
+            return currentTime + 1 hours;
+        } else if (frequency == UpdateFrequency.DAILY) {
+            return currentTime + 1 days;
+        } else if (frequency == UpdateFrequency.WEEKLY) {
+            return currentTime + 7 days;
+        } else if (frequency == UpdateFrequency.MONTHLY) {
+            return currentTime + 30 days;
+        } else if (frequency == UpdateFrequency.CUSTOM) {
+            return currentTime + customInterval;
+        }
+        return 0;
+    }
+
+    /**
+     * @dev Check if schema needs auto-update
+     */
+    function needsAutoUpdate(string memory subdomain) external view returns (bool) {
+        ReservedSubdomainSchema storage schema = subdomainSchemas[subdomain];
+        
+        if (!schema.autoUpdateConfig.enabled) {
+            return false;
+        }
+        
+        if (schema.autoUpdateConfig.trigger == UpdateTrigger.TIME_BASED) {
+            return block.timestamp >= schema.autoUpdateConfig.nextUpdateTime;
+        }
+        
+        if (schema.autoUpdateConfig.trigger == UpdateTrigger.BLOCK_BASED) {
+            return block.number % 100 == 0; // Update every 100 blocks
+        }
+        
+        return false;
+    }
+
+    /**
+     * @dev Trigger auto-update for a schema
+     */
+    function triggerAutoUpdate(string memory subdomain) external onlyDataProvider schemaExists(subdomain) {
+        ReservedSubdomainSchema storage schema = subdomainSchemas[subdomain];
+        
+        require(schema.autoUpdateConfig.enabled, "Auto-update not enabled");
+        require(needsAutoUpdate(subdomain), "Schema does not need update");
+        
+        // Update the schema data based on trigger type
+        if (schema.autoUpdateConfig.trigger == UpdateTrigger.TIME_BASED) {
+            _performTimeBasedUpdate(subdomain);
+        } else if (schema.autoUpdateConfig.trigger == UpdateTrigger.EVENT_BASED) {
+            _performEventBasedUpdate(subdomain);
+        } else if (schema.autoUpdateConfig.trigger == UpdateTrigger.EXTERNAL_CALL) {
+            _performExternalCallUpdate(subdomain);
+        }
+        
+        // Update next update time
+        schema.autoUpdateConfig.lastUpdateTime = block.timestamp;
+        schema.autoUpdateConfig.nextUpdateTime = _calculateNextUpdateTime(
+            block.timestamp,
+            schema.autoUpdateConfig.frequency,
+            schema.autoUpdateConfig.customInterval
+        );
+        
+        schema.updatedAt = block.timestamp;
+    }
+
+    /**
+     * @dev Perform time-based update
+     */
+    function _performTimeBasedUpdate(string memory subdomain) private {
+        // Implementation for time-based updates
+        // This would typically fetch data from external sources
+        // and update the schema with new values
+    }
+
+    /**
+     * @dev Perform event-based update
+     */
+    function _performEventBasedUpdate(string memory subdomain) private {
+        // Implementation for event-based updates
+        // This would respond to specific events and update data accordingly
+    }
+
+    /**
+     * @dev Perform external call update
+     */
+    function _performExternalCallUpdate(string memory subdomain) private {
+        ReservedSubdomainSchema storage schema = subdomainSchemas[subdomain];
+        
+        if (schema.autoUpdateConfig.externalContract != address(0)) {
+            // Call external contract to get updated data
+            // This is a simplified implementation
+            // In practice, you'd make actual external calls
+        }
+    }
+
+    /**
+     * @dev Get auto-update configuration for a schema
+     */
+    function getAutoUpdateConfig(string memory subdomain) 
+        external 
+        view 
+        schemaExists(subdomain) 
+        returns (AutoUpdateConfig memory) 
+    {
+        return subdomainSchemas[subdomain].autoUpdateConfig;
     }
 
     /**
