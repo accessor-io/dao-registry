@@ -1,11 +1,30 @@
 # DAO Registry
 
+## Schema Management & Cross-Chain Data Platform
+
+**DAO Registry** is a next-generation system for standardized, secure, and interoperable DAO metadata management. It features:
+
+- **Advanced Schema Management:** Create, update, and remove versioned schemas with field-level validation, priority, and category classification.
+- **Multi-Tier Access Control:** Hierarchical permissions for owners, administrators, moderators, and data providers.
+- **Cross-Chain Interoperability:** Native support for CCIP-compatible data, enabling seamless DAO metadata sharing across blockchains.
+- **Event-Driven Architecture:** Emits comprehensive events for schema lifecycle, supporting real-time monitoring and audit trails.
+- **Statistical Tracking:** Maintains counters for total schemas, priority levels, and categories for analytics and planning.
+- **API & Documentation Integration:** Each schema includes API endpoints and documentation URLs for easy integration.
+- **Gas-Efficient & Modular:** Optimized storage and modular design for scalability and future-proofing.
+
+**Visual Overview:**
+- [Schema Management Process Flow Diagram (HTML)](./docs/images/schema-management-flow.html)
+- [Mermaid Source & Detailed Description](./docs/architecture/schema-management-flow.md)
+
+---
+
 A comprehensive blockchain governance and metadata management system with URL encoding, reserved subdomains, ENS integration, and ISO metadata standards.
 
 ## Features
 
 ### Core Components
 
+- **Schema Management & Cross-Chain Interoperability**: Standardized, versioned schemas, CCIP-compatible data, multi-tier access control, and event-driven audit trails
 - **URL Encoding Service**: Comprehensive regex patterns for DNS, ENS, and URL validation
 - **Reserved Subdomains**: 71 protected subdomains across 8 categories with priority levels
 - **ENS Integration**: Ethereum Name Service domain resolution and management
@@ -327,6 +346,7 @@ cp .env.example .env
 
 ### Core Documentation
 
+- [Schema Management Process Flow](./docs/architecture/schema-management-flow.md)
 - [System Architecture](./docs/architecture/system-architecture.md)
 - [URL Encoding Patterns](./docs/specification/url-encoding-patterns.md)
 - [Reserved Subdomains](./docs/specification/reserved-subdomains.md)
