@@ -60,47 +60,53 @@ npm install
 npm install --save-dev
 ```
 
-## Quick Start
+## Mock Data & RFC Compliance
 
-### 1. Start the Demo
+- The service uses comprehensive mock data in [`src/services/mock-data.js`](src/services/mock-data.js), covering all fields required by [RFC-001](./docs/rfc/rfc-001-dao-registry-specification.md), [RFC-004](./docs/rfc/rfc-004-iso-metadata-standards.md), and related specifications.
+- The `/api/v1/daos` endpoint returns a list of DAOs, each with all RFC/ISO-compliant fields populated for robust integration and analytics.
+- Reserved subdomains and URL encoding logic are fully aligned with [reserved-subdomains.md](./docs/specification/reserved-subdomains.md) and [url-encoding-patterns.md](./docs/specification/url-encoding-patterns.md).
 
-```bash
-# Run the complete system demo
-npm run demo
-```
+## Git Commit Workflow
 
-This will:
-- Test URL encoding service with various inputs
-- Validate reserved subdomains
-- Test ENS integration
-- Validate ISO metadata
-- Run complete workflow demonstration
-- Start the server on port 3000
+- **Best Practice:** Commit after every successful change.
+- Example:
+  ```bash
+  git add <file>
+  git commit -m "Describe your change"
+  ```
+- This ensures traceability and clean project history.
 
-### 2. Start the Server
-
-```bash
-# Start the development server
-npm run dev
-
-# Or start in production mode
-npm start
-```
-
-### 3. Test the API
+## Quick Start (Updated)
 
 ```bash
-# Health check
-curl http://localhost:3000/health
-
-# System information
-curl http://localhost:3000/api/system/info
-
-# Validate a subdomain
-curl -X POST http://localhost:3000/api/subdomain/validate \
-  -H "Content-Type: application/json" \
-  -d '{"subdomain": "my-dao", "parentDomain": "dao.eth"}'
+# Start the server on port 3001 (default for local dev)
+PORT=3001 node src/index.js
 ```
+
+## API Example (Updated)
+
+```bash
+# List all DAOs (RFC-compliant)
+curl http://localhost:3001/api/v1/daos
+
+# Get a specific DAO
+curl http://localhost:3001/api/v1/daos/1
+
+# Reserved subdomains
+curl http://localhost:3001/api/v1/reserved-subdomains
+```
+
+## Error Handling
+
+- Non-existent DAOs (e.g., `/api/v1/daos/999`) return a 500 error with `DAO not found`.
+- Invalid endpoints return a 404 error.
+- Reserved subdomain validation returns detailed error messages for invalid or reserved names.
+
+## Data Model & RFC Reference
+
+- See [RFC-001: DAO Registry Specification](./docs/rfc/rfc-001-dao-registry-specification.md) for the full DAO object model.
+- See [RFC-004: ISO Metadata Standards](./docs/rfc/rfc-004-iso-metadata-standards.md) for metadata fields.
+- See [Reserved Subdomains Implementation](./docs/specification/reserved-subdomains-implementation.md) and [URL Encoding Patterns](./docs/specification/url-encoding-patterns.md) for subdomain logic.
 
 ## API Endpoints
 
