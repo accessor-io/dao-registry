@@ -585,8 +585,8 @@
       ]
     },
     "/Users/acc/DAO_registry/contracts/ReservedSubdomains.sol": {
-      "lastModificationDate": 1752374376653,
-      "contentHash": "3eee6b98b7609d792555c9adcf9e33d7",
+      "lastModificationDate": 1752604771280,
+      "contentHash": "b0070a3cf2326e039b9a94ce9708bd13",
       "sourceName": "contracts/ReservedSubdomains.sol",
       "solcConfig": {
         "version": "0.8.19",

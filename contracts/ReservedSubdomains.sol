@@ -7,62 +7,120 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 
 /**
  * @title ReservedSubdomains
- * @dev Manages reserved subdomains for the DAO Registry system
+ * @dev Manages reserved subdomains for standardized data schemas
  * 
  * This contract provides:
- * - Reserved subdomain management with priority levels
- * - Access control for different user roles
- * - ENS integration for domain validation
- * - Dynamic reserved word updates
+ * - Reserved subdomain schemas for standardized data structures
+ * - CCIP-compatible data formats for cross-chain interoperability
+ * - API-queryable endpoints for on-chain data retrieval
+ * - Schema validation and metadata management
+ * 
+ * Reserved subdomains are NOT blocked from registration but provide
+ * standardized schemas that can be queried via API and CCIP on-chain reads
  */
 contract ReservedSubdomains is Ownable, ReentrancyGuard {
     using Strings for string;
 
     /**
-     * @dev Reserved subdomain priority levels
+     * @dev Schema priority levels for data standardization
      */
-    enum Priority {
-        CRITICAL,   // Never available
-        HIGH,       // Requires special permission
-        MEDIUM,     // Available with registration
-        LOW         // Available with approval
+    enum SchemaPriority {
+        CRITICAL,   // Core system schemas (governance, treasury, etc.)
+        HIGH,       // Important operational schemas
+        MEDIUM,     // Standard feature schemas
+        LOW         // Optional enhancement schemas
     }
 
     /**
-     * @dev Reserved subdomain information
+     * @dev Data type definitions for CCIP compatibility
      */
-    struct ReservedSubdomainInfo {
+    enum DataType {
+        STRING,
+        UINT256,
+        ADDRESS,
+        BOOL,
+        BYTES32,
+        ARRAY_STRING,
+        ARRAY_UINT256,
+        ARRAY_ADDRESS,
+        STRUCT,
+        MAPPING
+    }
+
+    /**
+     * @dev Schema field definition
+     */
+    struct SchemaField {
+        string fieldName;
+        DataType dataType;
+        bool required;
+        string description;
+        string validationRule;
+        string defaultValue;
+    }
+
+    /**
+     * @dev Reserved subdomain schema information
+     */
+    struct ReservedSubdomainSchema {
         string subdomain;
-        Priority priority;
+        SchemaPriority priority;
         string category;
         string description;
+        string version;
+        string ccipInterface;
+        SchemaField[] fields;
         string[] allowedRoles;
         string[] restrictions;
         bool active;
         uint256 createdAt;
         uint256 updatedAt;
+        string apiEndpoint;
+        string documentationUrl;
+    }
+
+    /**
+     * @dev CCIP-compatible data structure
+     */
+    struct CCIPData {
+        string subdomain;
+        string schemaVersion;
+        bytes32 dataHash;
+        uint256 timestamp;
+        address dataProvider;
+        bool isValid;
+        string[] fieldNames;
+        bytes[] fieldValues;
     }
 
     /**
      * @dev Events
      */
-    event SubdomainReserved(
+    event SchemaDefined(
         string indexed subdomain,
-        Priority priority,
+        SchemaPriority priority,
         string category,
-        address indexed reservedBy
+        string version,
+        address indexed definedBy
     );
 
-    event SubdomainReleased(
+    event SchemaUpdated(
         string indexed subdomain,
-        address indexed releasedBy
-    );
-
-    event SubdomainUpdated(
-        string indexed subdomain,
-        Priority oldPriority,
-        Priority newPriority,
+        string oldVersion,
+        string newVersion,
         address indexed updatedBy
+    );
+
+    event SchemaDeprecated(
+        string indexed subdomain,
+        string version,
+        address indexed deprecatedBy
+    );
+
+    event CCIPDataStored(
+        string indexed subdomain,
+        bytes32 indexed dataHash,
+        address indexed dataProvider
     );
 
     event RoleAdded(
@@ -80,19 +138,24 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
     /**
      * @dev State variables
      */
-    mapping(string => ReservedSubdomainInfo) public reservedSubdomains;
-    mapping(string => bool) public isReserved;
-    mapping(string => Priority) public subdomainPriority;
-    mapping(string => string[]) public subdomainCategories;
+    mapping(string => ReservedSubdomainSchema) public subdomainSchemas;
+    mapping(string => bool) public hasSchema;
+    mapping(string => SchemaPriority) public schemaPriority;
+    mapping(string => string[]) public schemaCategories;
+    
+    // CCIP data storage
+    mapping(string => mapping(bytes32 => CCIPData)) public ccipData;
+    mapping(string => bytes32[]) public subdomainDataHashes;
     
     // Access control
     mapping(address => bool) public administrators;
     mapping(address => bool) public moderators;
+    mapping(address => bool) public dataProviders;
     
     // Statistics
-    uint256 public totalReservedSubdomains;
-    mapping(Priority => uint256) public subdomainsByPriority;
-    mapping(string => uint256) public subdomainsByCategory;
+    uint256 public totalSchemas;
+    mapping(SchemaPriority => uint256) public schemasByPriority;
+    mapping(string => uint256) public schemasByCategory;
 
     /**
      * @dev Modifiers
@@ -107,13 +170,18 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
         _;
     }
 
-    modifier subdomainExists(string memory subdomain) {
-        require(isReserved[subdomain], "Subdomain not reserved");
+    modifier onlyDataProvider() {
+        require(dataProviders[msg.sender] || moderators[msg.sender] || administrators[msg.sender] || owner() == msg.sender, "Not authorized");
         _;
     }
 
-    modifier subdomainNotExists(string memory subdomain) {
-        require(!isReserved[subdomain], "Subdomain already reserved");
+    modifier schemaExists(string memory subdomain) {
+        require(hasSchema[subdomain], "Schema not defined");
+        _;
+    }
+
+    modifier schemaNotExists(string memory subdomain) {
+        require(!hasSchema[subdomain], "Schema already defined");
         _;
     }
 
@@ -121,377 +189,547 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
      * @dev Constructor
      */
     constructor() {
-        _initializeCriticalReserved();
-        _initializeHighPriorityReserved();
-        _initializeMediumPriorityReserved();
+        _initializeCriticalSchemas();
+        _initializeHighPrioritySchemas();
+        _initializeMediumPrioritySchemas();
         
         // Set initial administrators
         administrators[msg.sender] = true;
     }
 
     /**
-     * @dev Initialize critical reserved subdomains (Priority 1)
+     * @dev Initialize critical schemas (Core DAO Components)
      */
-    function _initializeCriticalReserved() private {
-        string[] memory critical = new string[](11);
-        critical[0] = "governance";
-        critical[1] = "treasury";
-        critical[2] = "token";
-        critical[3] = "docs";
-        critical[4] = "forum";
-        critical[5] = "analytics";
-        critical[6] = "admin";
-        critical[7] = "system";
-        critical[8] = "root";
-        critical[9] = "www";
-        critical[10] = "api";
+    function _initializeCriticalSchemas() private {
+        // Governance schema
+        _defineSchema(
+            "governance",
+            SchemaPriority.CRITICAL,
+            "Core DAO Components",
+            "Governance system schema for DAO decision-making",
+            "1.0.0",
+            "IGovernance",
+            _createGovernanceFields(),
+            _createAllowedRoles(),
+            _createRestrictions(),
+            "/api/v1/governance",
+            "https://docs.dao-registry.com/schemas/governance"
+        );
 
-        string[] memory allowedRoles = new string[](2);
-        allowedRoles[0] = "DAO owners";
-        allowedRoles[1] = "System administrators";
+        // Treasury schema
+        _defineSchema(
+            "treasury",
+            SchemaPriority.CRITICAL,
+            "Core DAO Components",
+            "Treasury management schema for DAO funds",
+            "1.0.0",
+            "ITreasury",
+            _createTreasuryFields(),
+            _createAllowedRoles(),
+            _createRestrictions(),
+            "/api/v1/treasury",
+            "https://docs.dao-registry.com/schemas/treasury"
+        );
 
-        string[] memory restrictions = new string[](1);
-        restrictions[0] = "Never available for public registration";
+        // Token schema
+        _defineSchema(
+            "token",
+            SchemaPriority.CRITICAL,
+            "Core DAO Components",
+            "Token management schema for DAO tokens",
+            "1.0.0",
+            "IToken",
+            _createTokenFields(),
+            _createAllowedRoles(),
+            _createRestrictions(),
+            "/api/v1/token",
+            "https://docs.dao-registry.com/schemas/token"
+        );
 
-        for (uint256 i = 0; i < critical.length; i++) {
-            _reserveSubdomain(
-                critical[i],
-                Priority.CRITICAL,
-                "Core DAO Components",
-                "Critical system subdomain",
-                allowedRoles,
-                restrictions
-            );
-        }
+        // API schema
+        _defineSchema(
+            "api",
+            SchemaPriority.CRITICAL,
+            "Core DAO Components",
+            "API endpoints schema for DAO services",
+            "1.0.0",
+            "IAPI",
+            _createAPIFields(),
+            _createAllowedRoles(),
+            _createRestrictions(),
+            "/api/v1/api",
+            "https://docs.dao-registry.com/schemas/api"
+        );
     }
 
     /**
-     * @dev Initialize high priority reserved subdomains (Priority 2)
+     * @dev Create governance schema fields
      */
-    function _initializeHighPriorityReserved() private {
-        string[] memory highPriority = new string[](35);
-        highPriority[0] = "voting";
-        highPriority[1] = "proposals";
-        highPriority[2] = "executive";
-        highPriority[3] = "council";
-        highPriority[4] = "vault";
-        highPriority[5] = "rewards";
-        highPriority[6] = "staking";
-        highPriority[7] = "liquidity";
-        highPriority[8] = "erc20";
-        highPriority[9] = "nft";
-        highPriority[10] = "vesting";
-        highPriority[11] = "airdrop";
-        highPriority[12] = "wiki";
-        highPriority[13] = "guide";
-        highPriority[14] = "spec";
-        highPriority[15] = "chat";
-        highPriority[16] = "discord";
-        highPriority[17] = "telegram";
-        highPriority[18] = "reddit";
-        highPriority[19] = "stats";
-        highPriority[20] = "metrics";
-        highPriority[21] = "dashboard";
-        highPriority[22] = "reports";
-        highPriority[23] = "dev";
-        highPriority[24] = "github";
-        highPriority[25] = "code";
-        highPriority[26] = "test";
-        highPriority[27] = "staging";
-        highPriority[28] = "gov";
-        highPriority[29] = "constitution";
-        highPriority[30] = "bylaws";
-        highPriority[31] = "policies";
-        highPriority[32] = "marketing";
-        highPriority[33] = "brand";
-        highPriority[34] = "media";
-
-        string[] memory allowedRoles = new string[](1);
-        allowedRoles[0] = "DAO owners";
-
-        string[] memory restrictions = new string[](1);
-        restrictions[0] = "Requires special permission";
-
-        for (uint256 i = 0; i < highPriority.length; i++) {
-            _reserveSubdomain(
-                highPriority[i],
-                Priority.HIGH,
-                "High Priority",
-                "High priority subdomain",
-                allowedRoles,
-                restrictions
-            );
-        }
+    function _createGovernanceFields() private pure returns (SchemaField[] memory) {
+        SchemaField[] memory fields = new SchemaField[](8);
+        
+        fields[0] = SchemaField({
+            fieldName: "proposalCount",
+            dataType: DataType.UINT256,
+            required: true,
+            description: "Total number of proposals",
+            validationRule: ">= 0",
+            defaultValue: "0"
+        });
+        
+        fields[1] = SchemaField({
+            fieldName: "activeProposals",
+            dataType: DataType.UINT256,
+            required: true,
+            description: "Number of active proposals",
+            validationRule: ">= 0",
+            defaultValue: "0"
+        });
+        
+        fields[2] = SchemaField({
+            fieldName: "votingPeriod",
+            dataType: DataType.UINT256,
+            required: true,
+            description: "Voting period in seconds",
+            validationRule: "> 0",
+            defaultValue: "604800"
+        });
+        
+        fields[3] = SchemaField({
+            fieldName: "quorum",
+            dataType: DataType.UINT256,
+            required: true,
+            description: "Minimum votes required for quorum",
+            validationRule: "> 0",
+            defaultValue: "1000"
+        });
+        
+        fields[4] = SchemaField({
+            fieldName: "proposalThreshold",
+            dataType: DataType.UINT256,
+            required: true,
+            description: "Minimum tokens required to create proposal",
+            validationRule: ">= 0",
+            defaultValue: "100"
+        });
+        
+        fields[5] = SchemaField({
+            fieldName: "governanceToken",
+            dataType: DataType.ADDRESS,
+            required: true,
+            description: "Governance token contract address",
+            validationRule: "non-zero address",
+            defaultValue: "0x0000000000000000000000000000000000000000"
+        });
+        
+        fields[6] = SchemaField({
+            fieldName: "executor",
+            dataType: DataType.ADDRESS,
+            required: true,
+            description: "Proposal executor contract address",
+            validationRule: "non-zero address",
+            defaultValue: "0x0000000000000000000000000000000000000000"
+        });
+        
+        fields[7] = SchemaField({
+            fieldName: "timelock",
+            dataType: DataType.ADDRESS,
+            required: false,
+            description: "Timelock contract address",
+            validationRule: "optional address",
+            defaultValue: "0x0000000000000000000000000000000000000000"
+        });
+        
+        return fields;
     }
 
     /**
-     * @dev Initialize medium priority reserved subdomains (Priority 3)
+     * @dev Create treasury schema fields
      */
-    function _initializeMediumPriorityReserved() private {
-        string[] memory mediumPriority = new string[](25);
-        mediumPriority[0] = "faq";
-        mediumPriority[1] = "help";
-        mediumPriority[2] = "support";
-        mediumPriority[3] = "news";
-        mediumPriority[4] = "announcements";
-        mediumPriority[5] = "monitor";
-        mediumPriority[6] = "status";
-        mediumPriority[7] = "health";
-        mediumPriority[8] = "alerts";
-        mediumPriority[9] = "tech";
-        mediumPriority[10] = "protocol";
-        mediumPriority[11] = "contracts";
-        mediumPriority[12] = "audit";
-        mediumPriority[13] = "legal";
-        mediumPriority[14] = "compliance";
-        mediumPriority[15] = "regulatory";
-        mediumPriority[16] = "kyc";
-        mediumPriority[17] = "events";
-        mediumPriority[18] = "social";
-        mediumPriority[19] = "twitter";
-        mediumPriority[20] = "linkedin";
-        mediumPriority[21] = "manage";
-        mediumPriority[22] = "settings";
-        mediumPriority[23] = "config";
-        mediumPriority[24] = "service";
-
-        string[] memory allowedRoles = new string[](2);
-        allowedRoles[0] = "DAO owners";
-        allowedRoles[1] = "Verified users";
-
-        string[] memory restrictions = new string[](1);
-        restrictions[0] = "Available with registration";
-
-        for (uint256 i = 0; i < mediumPriority.length; i++) {
-            _reserveSubdomain(
-                mediumPriority[i],
-                Priority.MEDIUM,
-                "Medium Priority",
-                "Medium priority subdomain",
-                allowedRoles,
-                restrictions
-            );
-        }
+    function _createTreasuryFields() private pure returns (SchemaField[] memory) {
+        SchemaField[] memory fields = new SchemaField[](6);
+        
+        fields[0] = SchemaField({
+            fieldName: "totalBalance",
+            dataType: DataType.UINT256,
+            required: true,
+            description: "Total treasury balance in wei",
+            validationRule: ">= 0",
+            defaultValue: "0"
+        });
+        
+        fields[1] = SchemaField({
+            fieldName: "ethBalance",
+            dataType: DataType.UINT256,
+            required: true,
+            description: "ETH balance in wei",
+            validationRule: ">= 0",
+            defaultValue: "0"
+        });
+        
+        fields[2] = SchemaField({
+            fieldName: "tokenBalances",
+            dataType: DataType.ARRAY_UINT256,
+            required: true,
+            description: "Array of token balances",
+            validationRule: "array of uint256",
+            defaultValue: "[]"
+        });
+        
+        fields[3] = SchemaField({
+            fieldName: "tokenAddresses",
+            dataType: DataType.ARRAY_ADDRESS,
+            required: true,
+            description: "Array of token contract addresses",
+            validationRule: "array of addresses",
+            defaultValue: "[]"
+        });
+        
+        fields[4] = SchemaField({
+            fieldName: "treasuryManager",
+            dataType: DataType.ADDRESS,
+            required: true,
+            description: "Treasury manager contract address",
+            validationRule: "non-zero address",
+            defaultValue: "0x0000000000000000000000000000000000000000"
+        });
+        
+        fields[5] = SchemaField({
+            fieldName: "multisig",
+            dataType: DataType.ADDRESS,
+            required: false,
+            description: "Multisig wallet address",
+            validationRule: "optional address",
+            defaultValue: "0x0000000000000000000000000000000000000000"
+        });
+        
+        return fields;
     }
 
     /**
-     * @dev Reserve a subdomain
+     * @dev Create token schema fields
      */
-    function _reserveSubdomain(
+    function _createTokenFields() private pure returns (SchemaField[] memory) {
+        SchemaField[] memory fields = new SchemaField[](7);
+        
+        fields[0] = SchemaField({
+            fieldName: "name",
+            dataType: DataType.STRING,
+            required: true,
+            description: "Token name",
+            validationRule: "non-empty string",
+            defaultValue: ""
+        });
+        
+        fields[1] = SchemaField({
+            fieldName: "symbol",
+            dataType: DataType.STRING,
+            required: true,
+            description: "Token symbol",
+            validationRule: "non-empty string",
+            defaultValue: ""
+        });
+        
+        fields[2] = SchemaField({
+            fieldName: "decimals",
+            dataType: DataType.UINT256,
+            required: true,
+            description: "Token decimals",
+            validationRule: ">= 0 && <= 18",
+            defaultValue: "18"
+        });
+        
+        fields[3] = SchemaField({
+            fieldName: "totalSupply",
+            dataType: DataType.UINT256,
+            required: true,
+            description: "Total token supply",
+            validationRule: ">= 0",
+            defaultValue: "0"
+        });
+        
+        fields[4] = SchemaField({
+            fieldName: "contractAddress",
+            dataType: DataType.ADDRESS,
+            required: true,
+            description: "Token contract address",
+            validationRule: "non-zero address",
+            defaultValue: "0x0000000000000000000000000000000000000000"
+        });
+        
+        fields[5] = SchemaField({
+            fieldName: "isGovernanceToken",
+            dataType: DataType.BOOL,
+            required: true,
+            description: "Whether this is the governance token",
+            validationRule: "boolean",
+            defaultValue: "false"
+        });
+        
+        fields[6] = SchemaField({
+            fieldName: "holders",
+            dataType: DataType.UINT256,
+            required: true,
+            description: "Number of token holders",
+            validationRule: ">= 0",
+            defaultValue: "0"
+        });
+        
+        return fields;
+    }
+
+    /**
+     * @dev Create API schema fields
+     */
+    function _createAPIFields() private pure returns (SchemaField[] memory) {
+        SchemaField[] memory fields = new SchemaField[](5);
+        
+        fields[0] = SchemaField({
+            fieldName: "baseUrl",
+            dataType: DataType.STRING,
+            required: true,
+            description: "Base API URL",
+            validationRule: "valid URL format",
+            defaultValue: ""
+        });
+        
+        fields[1] = SchemaField({
+            fieldName: "version",
+            dataType: DataType.STRING,
+            required: true,
+            description: "API version",
+            validationRule: "semantic version",
+            defaultValue: "v1"
+        });
+        
+        fields[2] = SchemaField({
+            fieldName: "endpoints",
+            dataType: DataType.ARRAY_STRING,
+            required: true,
+            description: "Available API endpoints",
+            validationRule: "array of strings",
+            defaultValue: "[]"
+        });
+        
+        fields[3] = SchemaField({
+            fieldName: "rateLimit",
+            dataType: DataType.UINT256,
+            required: true,
+            description: "Rate limit per minute",
+            validationRule: "> 0",
+            defaultValue: "1000"
+        });
+        
+        fields[4] = SchemaField({
+            fieldName: "authentication",
+            dataType: DataType.STRING,
+            required: false,
+            description: "Authentication method",
+            validationRule: "optional string",
+            defaultValue: "none"
+        });
+        
+        return fields;
+    }
+
+    /**
+     * @dev Create allowed roles
+     */
+    function _createAllowedRoles() private pure returns (string[] memory) {
+        string[] memory roles = new string[](3);
+        roles[0] = "DAO owners";
+        roles[1] = "System administrators";
+        roles[2] = "Data providers";
+        return roles;
+    }
+
+    /**
+     * @dev Create restrictions
+     */
+    function _createRestrictions() private pure returns (string[] memory) {
+        string[] memory restrictions = new string[](1);
+        restrictions[0] = "Standardized schema for CCIP compatibility";
+        return restrictions;
+    }
+
+    /**
+     * @dev Initialize high priority schemas
+     */
+    function _initializeHighPrioritySchemas() private {
+        // Add high priority schemas here
+        // This would include schemas for voting, proposals, executive, etc.
+    }
+
+    /**
+     * @dev Initialize medium priority schemas
+     */
+    function _initializeMediumPrioritySchemas() private {
+        // Add medium priority schemas here
+        // This would include schemas for docs, forum, analytics, etc.
+    }
+
+    /**
+     * @dev Define a new schema
+     */
+    function _defineSchema(
         string memory subdomain,
-        Priority priority,
+        SchemaPriority priority,
         string memory category,
         string memory description,
+        string memory version,
+        string memory ccipInterface,
+        SchemaField[] memory fields,
         string[] memory allowedRoles,
-        string[] memory restrictions
+        string[] memory restrictions,
+        string memory apiEndpoint,
+        string memory documentationUrl
     ) private {
         require(bytes(subdomain).length > 0, "Subdomain cannot be empty");
-        require(!isReserved[subdomain], "Subdomain already reserved");
+        require(!hasSchema[subdomain], "Schema already defined");
 
-        ReservedSubdomainInfo memory info = ReservedSubdomainInfo({
+        ReservedSubdomainSchema memory schema = ReservedSubdomainSchema({
             subdomain: subdomain,
             priority: priority,
             category: category,
             description: description,
+            version: version,
+            ccipInterface: ccipInterface,
+            fields: fields,
             allowedRoles: allowedRoles,
             restrictions: restrictions,
             active: true,
             createdAt: block.timestamp,
-            updatedAt: block.timestamp
+            updatedAt: block.timestamp,
+            apiEndpoint: apiEndpoint,
+            documentationUrl: documentationUrl
         });
 
-        reservedSubdomains[subdomain] = info;
-        isReserved[subdomain] = true;
-        subdomainPriority[subdomain] = priority;
+        subdomainSchemas[subdomain] = schema;
+        hasSchema[subdomain] = true;
+        schemaPriority[subdomain] = priority;
         
         // Update statistics
-        totalReservedSubdomains++;
-        subdomainsByPriority[priority]++;
-        subdomainsByCategory[category]++;
+        totalSchemas++;
+        schemasByPriority[priority]++;
+        schemasByCategory[category]++;
 
-        emit SubdomainReserved(subdomain, priority, category, msg.sender);
+        emit SchemaDefined(subdomain, priority, category, version, msg.sender);
     }
 
     /**
-     * @dev Reserve a new subdomain (admin only)
+     * @dev Define a new schema (admin only)
      */
-    function reserveSubdomain(
+    function defineSchema(
         string memory subdomain,
-        Priority priority,
+        SchemaPriority priority,
         string memory category,
         string memory description,
+        string memory version,
+        string memory ccipInterface,
+        SchemaField[] memory fields,
         string[] memory allowedRoles,
-        string[] memory restrictions
-    ) external onlyAdministrator subdomainNotExists(subdomain) {
-        _reserveSubdomain(subdomain, priority, category, description, allowedRoles, restrictions);
+        string[] memory restrictions,
+        string memory apiEndpoint,
+        string memory documentationUrl
+    ) external onlyAdministrator schemaNotExists(subdomain) {
+        _defineSchema(
+            subdomain,
+            priority,
+            category,
+            description,
+            version,
+            ccipInterface,
+            fields,
+            allowedRoles,
+            restrictions,
+            apiEndpoint,
+            documentationUrl
+        );
     }
 
     /**
-     * @dev Release a reserved subdomain
+     * @dev Store CCIP-compatible data
      */
-    function releaseSubdomain(string memory subdomain) 
-        external 
-        onlyAdministrator 
-        subdomainExists(subdomain) 
-    {
-        ReservedSubdomainInfo storage info = reservedSubdomains[subdomain];
-        Priority priority = info.priority;
-        string memory category = info.category;
-
-        // Update statistics
-        totalReservedSubdomains--;
-        subdomainsByPriority[priority]--;
-        subdomainsByCategory[category]--;
-
-        // Clear data
-        delete reservedSubdomains[subdomain];
-        delete isReserved[subdomain];
-        delete subdomainPriority[subdomain];
-
-        emit SubdomainReleased(subdomain, msg.sender);
-    }
-
-    /**
-     * @dev Update subdomain priority
-     */
-    function updateSubdomainPriority(string memory subdomain, Priority newPriority) 
-        external 
-        onlyModerator 
-        subdomainExists(subdomain) 
-    {
-        ReservedSubdomainInfo storage info = reservedSubdomains[subdomain];
-        Priority oldPriority = info.priority;
-
-        // Update statistics
-        subdomainsByPriority[oldPriority]--;
-        subdomainsByPriority[newPriority]++;
-
-        // Update info
-        info.priority = newPriority;
-        info.updatedAt = block.timestamp;
-        subdomainPriority[subdomain] = newPriority;
-
-        emit SubdomainUpdated(subdomain, oldPriority, newPriority, msg.sender);
-    }
-
-    /**
-     * @dev Update subdomain category
-     */
-    function updateSubdomainCategory(string memory subdomain, string memory newCategory) 
-        external 
-        onlyModerator 
-        subdomainExists(subdomain) 
-    {
-        ReservedSubdomainInfo storage info = reservedSubdomains[subdomain];
-        string memory oldCategory = info.category;
-
-        // Update statistics
-        subdomainsByCategory[oldCategory]--;
-        subdomainsByCategory[newCategory]++;
-
-        // Update info
-        info.category = newCategory;
-        info.updatedAt = block.timestamp;
-
-        emit SubdomainUpdated(subdomain, info.priority, info.priority, msg.sender);
-    }
-
-    /**
-     * @dev Add role to subdomain
-     */
-    function addRoleToSubdomain(string memory subdomain, string memory role) 
-        external 
-        onlyModerator 
-        subdomainExists(subdomain) 
-    {
-        ReservedSubdomainInfo storage info = reservedSubdomains[subdomain];
+    function storeCCIPData(
+        string memory subdomain,
+        string memory schemaVersion,
+        string[] memory fieldNames,
+        bytes[] memory fieldValues
+    ) external onlyDataProvider schemaExists(subdomain) {
+        require(fieldNames.length == fieldValues.length, "Field names and values mismatch");
         
-        // Check if role already exists
-        for (uint256 i = 0; i < info.allowedRoles.length; i++) {
-            require(keccak256(bytes(info.allowedRoles[i])) != keccak256(bytes(role)), "Role already exists");
-        }
+        // Create data hash - encode arrays properly
+        bytes32 dataHash = keccak256(abi.encodePacked(
+            subdomain,
+            schemaVersion,
+            abi.encode(fieldNames),
+            abi.encode(fieldValues),
+            block.timestamp
+        ));
 
-        info.allowedRoles.push(role);
-        info.updatedAt = block.timestamp;
+        CCIPData memory data = CCIPData({
+            subdomain: subdomain,
+            schemaVersion: schemaVersion,
+            dataHash: dataHash,
+            timestamp: block.timestamp,
+            dataProvider: msg.sender,
+            isValid: true,
+            fieldNames: fieldNames,
+            fieldValues: fieldValues
+        });
 
-        emit RoleAdded(subdomain, role, msg.sender);
+        ccipData[subdomain][dataHash] = data;
+        subdomainDataHashes[subdomain].push(dataHash);
+
+        emit CCIPDataStored(subdomain, dataHash, msg.sender);
     }
 
     /**
-     * @dev Remove role from subdomain
+     * @dev Get schema information
      */
-    function removeRoleFromSubdomain(string memory subdomain, string memory role) 
-        external 
-        onlyModerator 
-        subdomainExists(subdomain) 
-    {
-        ReservedSubdomainInfo storage info = reservedSubdomains[subdomain];
-        
-        bool found = false;
-        for (uint256 i = 0; i < info.allowedRoles.length; i++) {
-            if (keccak256(bytes(info.allowedRoles[i])) == keccak256(bytes(role))) {
-                // Remove role by shifting array
-                for (uint256 j = i; j < info.allowedRoles.length - 1; j++) {
-                    info.allowedRoles[j] = info.allowedRoles[j + 1];
-                }
-                info.allowedRoles.pop();
-                found = true;
-                break;
-            }
-        }
-
-        require(found, "Role not found");
-        info.updatedAt = block.timestamp;
-
-        emit RoleRemoved(subdomain, role, msg.sender);
-    }
-
-    /**
-     * @dev Check if subdomain is reserved
-     */
-    function checkIfReserved(string memory subdomain) external view returns (bool) {
-        return isReserved[subdomain];
-    }
-
-    /**
-     * @dev Get subdomain priority
-     */
-    function getSubdomainPriority(string memory subdomain) external view returns (Priority) {
-        return subdomainPriority[subdomain];
-    }
-
-    /**
-     * @dev Get reserved subdomain info
-     */
-    function getReservedSubdomainInfo(string memory subdomain) 
+    function getSchema(string memory subdomain) 
         external 
         view 
-        returns (ReservedSubdomainInfo memory) 
+        returns (ReservedSubdomainSchema memory) 
     {
-        require(isReserved[subdomain], "Subdomain not reserved");
-        return reservedSubdomains[subdomain];
+        require(hasSchema[subdomain], "Schema not defined");
+        return subdomainSchemas[subdomain];
     }
 
     /**
-     * @dev Get all reserved subdomains by priority
+     * @dev Get CCIP data for a subdomain
      */
-    function getReservedSubdomainsByPriority(Priority priority) 
+    function getCCIPData(string memory subdomain, bytes32 dataHash) 
         external 
         view 
-        returns (string[] memory) 
+        returns (CCIPData memory) 
     {
-        string[] memory subdomains = new string[](subdomainsByPriority[priority]);
-        uint256 count = 0;
+        return ccipData[subdomain][dataHash];
+    }
 
-        // This is a simplified implementation
-        // In a real scenario, you might want to maintain a separate mapping
-        // for efficient retrieval by priority
-        for (uint256 i = 0; i < totalReservedSubdomains; i++) {
-            // This would need to be implemented with proper indexing
-            // For now, returning empty array
-        }
+    /**
+     * @dev Get all data hashes for a subdomain
+     */
+    function getSubdomainDataHashes(string memory subdomain) 
+        external 
+        view 
+        returns (bytes32[] memory) 
+    {
+        return subdomainDataHashes[subdomain];
+    }
 
-        return subdomains;
+    /**
+     * @dev Check if subdomain has a schema
+     */
+    function hasSubdomainSchema(string memory subdomain) external view returns (bool) {
+        return hasSchema[subdomain];
+    }
+
+    /**
+     * @dev Get schema priority
+     */
+    function getSchemaPriority(string memory subdomain) external view returns (SchemaPriority) {
+        return schemaPriority[subdomain];
     }
 
     /**
@@ -509,12 +747,33 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
         ) 
     {
         return (
-            totalReservedSubdomains,
-            subdomainsByPriority[Priority.CRITICAL],
-            subdomainsByPriority[Priority.HIGH],
-            subdomainsByPriority[Priority.MEDIUM],
-            subdomainsByPriority[Priority.LOW]
+            totalSchemas,
+            schemasByPriority[SchemaPriority.CRITICAL],
+            schemasByPriority[SchemaPriority.HIGH],
+            schemasByPriority[SchemaPriority.MEDIUM],
+            schemasByPriority[SchemaPriority.LOW]
         );
+    }
+
+    /**
+     * @dev Add data provider
+     */
+    function addDataProvider(address provider) external onlyAdministrator {
+        dataProviders[provider] = true;
+    }
+
+    /**
+     * @dev Remove data provider
+     */
+    function removeDataProvider(address provider) external onlyAdministrator {
+        dataProviders[provider] = false;
+    }
+
+    /**
+     * @dev Check if address is data provider
+     */
+    function isDataProvider(address addr) external view returns (bool) {
+        return dataProviders[addr] || moderators[addr] || administrators[addr] || owner() == addr;
     }
 
     /**
