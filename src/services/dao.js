@@ -1,62 +1,10 @@
 const { logger } = require('../utils/logger');
 
-// Mock data for demonstration
-const mockDAOs = [
-  {
-    id: '1',
-    name: 'Uniswap DAO',
-    symbol: 'UNI',
-    description: 'Decentralized exchange governance',
-    contractAddress: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
-    tokenAddress: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
-    treasuryAddress: '0x4750c43867EF5F89869132eccf19B9b6C4280E09',
-    governanceAddress: '0x5e4be8Bc9637f0EAA1A755069e05802F9a6C424a',
-    chainId: 1,
-    governanceType: 'TokenWeighted',
-    votingPeriod: 7,
-    quorum: 40000000,
-    proposalThreshold: 10000000,
-    status: 'Active',
-    verified: true,
-    active: true,
-    ownerId: 'user1',
-    tags: ['DeFi', 'DEX', 'Governance'],
-    socialLinks: {
-      twitter: 'https://twitter.com/Uniswap',
-      discord: 'https://discord.gg/uniswap',
-      github: 'https://github.com/Uniswap'
-    },
-    createdAt: new Date('2021-05-01'),
-    updatedAt: new Date('2024-01-15')
-  },
-  {
-    id: '2',
-    name: 'Aave DAO',
-    symbol: 'AAVE',
-    description: 'Decentralized lending protocol governance',
-    contractAddress: '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9',
-    tokenAddress: '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9',
-    treasuryAddress: '0x25F2226B597E8F9514B3F68F00f510cEfD2D811c',
-    governanceAddress: '0xEC568fffba86c094cf06b22134B23074DFE2252c',
-    chainId: 1,
-    governanceType: 'TokenWeighted',
-    votingPeriod: 5,
-    quorum: 800000,
-    proposalThreshold: 80000,
-    status: 'Active',
-    verified: true,
-    active: true,
-    ownerId: 'user2',
-    tags: ['DeFi', 'Lending', 'Governance'],
-    socialLinks: {
-      twitter: 'https://twitter.com/AaveAave',
-      discord: 'https://discord.gg/aave',
-      github: 'https://github.com/aave'
-    },
-    createdAt: new Date('2020-12-01'),
-    updatedAt: new Date('2024-01-10')
-  }
-];
+// Import comprehensive mock data
+const { comprehensiveMockDAOs } = require('./mock-data');
+
+// Use comprehensive mock data
+const mockDAOs = comprehensiveMockDAOs;
 
 class DAOService {
   constructor() {
