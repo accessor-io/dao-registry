@@ -1,0 +1,9 @@
+# Node modules
+node_modules/
+
+# Environment files
+.env
+
+# Build artifacts and cache (optional, but recommended)
+artifacts/
+cache/ 
