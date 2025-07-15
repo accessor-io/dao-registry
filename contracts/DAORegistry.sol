@@ -263,16 +263,19 @@ contract DAORegistry is Ownable, ReentrancyGuard, Pausable {
         uint256 proposalThreshold,
         string[] memory tags,
         SocialLinks memory socialLinks
-    ) external payable nonReentrant whenNotPaused {
+    )
+        external
+        payable
+        nonReentrant
+        whenNotPaused
+        onlyValidStringLength(name, maxNameLength)
+        onlyValidStringLength(symbol, maxSymbolLength)
+        onlyValidStringLength(description, maxDescriptionLength)
+    {
         require(msg.value >= registrationFee, "Insufficient registration fee");
         require(contractAddress != address(0), "Invalid contract address");
         require(daoByAddress[contractAddress] == 0, "DAO already registered");
         require(chainId > 0, "Invalid chain ID");
-
-        // Validate input lengths
-        onlyValidStringLength(name, maxNameLength);
-        onlyValidStringLength(symbol, maxSymbolLength);
-        onlyValidStringLength(description, maxDescriptionLength);
         require(tags.length <= maxTagsPerDAO, "Too many tags");
 
         _daoIds.increment();
@@ -327,13 +330,17 @@ contract DAORegistry is Ownable, ReentrancyGuard, Pausable {
         string memory website,
         string[] memory tags,
         SocialLinks memory socialLinks
-    ) external payable onlyDAOOwner(daoId) nonReentrant whenNotPaused {
+    )
+        external
+        payable
+        onlyDAOOwner(daoId)
+        nonReentrant
+        whenNotPaused
+        onlyValidStringLength(name, maxNameLength)
+        onlyValidStringLength(symbol, maxSymbolLength)
+        onlyValidStringLength(description, maxDescriptionLength)
+    {
         require(msg.value >= updateFee, "Insufficient update fee");
-
-        // Validate input lengths
-        onlyValidStringLength(name, maxNameLength);
-        onlyValidStringLength(symbol, maxSymbolLength);
-        onlyValidStringLength(description, maxDescriptionLength);
         require(tags.length <= maxTagsPerDAO, "Too many tags");
 
         DAOInfo storage dao = daos[daoId];

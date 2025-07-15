@@ -8,57 +8,57 @@ async function main() {
   // Get the deployer account
   const [deployer] = await ethers.getSigners();
   console.log("Deploying contracts with account:", deployer.address);
-  console.log("Account balance:", (await deployer.getBalance()).toString());
+  console.log("Account balance:", (await deployer.provider.getBalance(deployer.address)).toString());
 
   // Deploy DAO Registry
   console.log("\nDeploying DAO Registry...");
   const DAORegistry = await ethers.getContractFactory("DAORegistry");
   const daoRegistry = await DAORegistry.deploy();
-  await daoRegistry.deployed();
+  await daoRegistry.waitForDeployment();
 
-  console.log("DAO Registry deployed to:", daoRegistry.address);
+  console.log("DAO Registry deployed to:", await daoRegistry.getAddress());
 
   // Deploy Mock Governance Token for testing
   console.log("\nDeploying Mock Governance Token...");
   const MockToken = await ethers.getContractFactory("MockERC20");
-  const mockToken = await MockToken.deploy("Mock DAO Token", "MDAO");
-  await mockToken.deployed();
+  const mockToken = await MockToken.deploy("Mock DAO Token", "MDAO", 18);
+  await mockToken.waitForDeployment();
 
-  console.log("Mock Governance Token deployed to:", mockToken.address);
+  console.log("Mock Governance Token deployed to:", await mockToken.getAddress());
 
   // Deploy Mock Treasury for testing
   console.log("\nDeploying Mock Treasury...");
   const MockTreasury = await ethers.getContractFactory("MockTreasury");
   const mockTreasury = await MockTreasury.deploy();
-  await mockTreasury.deployed();
+  await mockTreasury.waitForDeployment();
 
-  console.log("Mock Treasury deployed to:", mockTreasury.address);
+  console.log("Mock Treasury deployed to:", await mockTreasury.getAddress());
 
   // Deploy Mock Governance for testing
   console.log("\nDeploying Mock Governance...");
   const MockGovernance = await ethers.getContractFactory("MockGovernance");
   const mockGovernance = await MockGovernance.deploy(
-    mockToken.address,
-    daoRegistry.address
+    await mockToken.getAddress(),
+    await daoRegistry.getAddress()
   );
-  await mockGovernance.deployed();
+  await mockGovernance.waitForDeployment();
 
-  console.log("Mock Governance deployed to:", mockGovernance.address);
+  console.log("Mock Governance deployed to:", await mockGovernance.getAddress());
 
   // Verify contracts on Etherscan (if not on localhost)
   const network = await ethers.provider.getNetwork();
-  if (network.chainId !== 1337 && network.chainId !== 31337) {
+  if (network.chainId !== 1337n && network.chainId !== 31337n) {
     console.log("\nWaiting for block confirmations...");
-    await daoRegistry.deployTransaction.wait(6);
-    await mockToken.deployTransaction.wait(6);
-    await mockTreasury.deployTransaction.wait(6);
-    await mockGovernance.deployTransaction.wait(6);
+    await daoRegistry.deploymentTransaction().wait(6);
+    await mockToken.deploymentTransaction().wait(6);
+    await mockTreasury.deploymentTransaction().wait(6);
+    await mockGovernance.deploymentTransaction().wait(6);
 
     console.log("\nVerifying contracts on Etherscan...");
     
     try {
       await hre.run("verify:verify", {
-        address: daoRegistry.address,
+        address: await daoRegistry.getAddress(),
         constructorArguments: [],
       });
       console.log("DAO Registry verified on Etherscan");
@@ -68,8 +68,8 @@ async function main() {
 
     try {
       await hre.run("verify:verify", {
-        address: mockToken.address,
-        constructorArguments: ["Mock DAO Token", "MDAO"],
+        address: await mockToken.getAddress(),
+        constructorArguments: ["Mock DAO Token", "MDAO", 18],
       });
       console.log("Mock Token verified on Etherscan");
     } catch (error) {
@@ -78,7 +78,7 @@ async function main() {
 
     try {
       await hre.run("verify:verify", {
-        address: mockTreasury.address,
+        address: await mockTreasury.getAddress(),
         constructorArguments: [],
       });
       console.log("Mock Treasury verified on Etherscan");
@@ -88,8 +88,8 @@ async function main() {
 
     try {
       await hre.run("verify:verify", {
-        address: mockGovernance.address,
-        constructorArguments: [mockToken.address, daoRegistry.address],
+        address: await mockGovernance.getAddress(),
+        constructorArguments: [await mockToken.getAddress(), await daoRegistry.getAddress()],
       });
       console.log("Mock Governance verified on Etherscan");
     } catch (error) {
@@ -100,13 +100,13 @@ async function main() {
   // Save deployment addresses
   const deploymentInfo = {
     network: network.name,
-    chainId: network.chainId,
+    chainId: network.chainId.toString(),
     deployer: deployer.address,
     contracts: {
-      daoRegistry: daoRegistry.address,
-      mockToken: mockToken.address,
-      mockTreasury: mockTreasury.address,
-      mockGovernance: mockGovernance.address,
+      daoRegistry: await daoRegistry.getAddress(),
+      mockToken: await mockToken.getAddress(),
+      mockTreasury: await mockTreasury.getAddress(),
+      mockGovernance: await mockGovernance.getAddress(),
     },
     deploymentTime: new Date().toISOString(),
   };
@@ -124,10 +124,10 @@ async function main() {
   console.log("\nDeployment completed successfully!");
   console.log("Deployment info saved to:", deploymentFile);
   console.log("\nContract Addresses:");
-  console.log("DAO Registry:", daoRegistry.address);
-  console.log("Mock Token:", mockToken.address);
-  console.log("Mock Treasury:", mockTreasury.address);
-  console.log("Mock Governance:", mockGovernance.address);
+  console.log("DAO Registry:", await daoRegistry.getAddress());
+  console.log("Mock Token:", await mockToken.getAddress());
+  console.log("Mock Treasury:", await mockTreasury.getAddress());
+  console.log("Mock Governance:", await mockGovernance.getAddress());
 
   // Test the deployment
   console.log("\nRunning deployment tests...");
@@ -156,15 +156,15 @@ async function testDeployment(daoRegistry, mockToken, mockTreasury, mockGovernan
       name: "Test DAO",
       symbol: "TEST",
       description: "A test DAO for deployment verification",
-      contractAddress: mockGovernance.address,
-      tokenAddress: mockToken.address,
-      treasuryAddress: mockTreasury.address,
-      governanceAddress: mockGovernance.address,
+      contractAddress: await mockGovernance.getAddress(),
+      tokenAddress: await mockToken.getAddress(),
+      treasuryAddress: await mockTreasury.getAddress(),
+      governanceAddress: await mockGovernance.getAddress(),
       chainId: await deployer.provider.getNetwork().then(n => n.chainId),
       governanceType: 0, // TokenWeighted
       votingPeriod: 86400, // 1 day
       quorum: 1000, // 10%
-      proposalThreshold: ethers.utils.parseEther("1000"),
+      proposalThreshold: ethers.parseEther("1000"),
       tags: ["test", "deployment"],
       socialLinks: {
         twitter: "",
@@ -234,7 +234,7 @@ async function getNetworkInfo() {
     name: network.name,
     chainId: network.chainId,
     blockNumber,
-    gasPrice: ethers.utils.formatUnits(gasPrice, "gwei"),
+    gasPrice: ethers.formatUnits(gasPrice, "gwei"),
   };
 }
 
@@ -247,22 +247,22 @@ async function estimateGasCosts(daoRegistry, mockToken, mockTreasury, mockGovern
 
   // Estimate registration fee
   const registrationFee = await daoRegistry.registrationFee();
-  console.log("Registration fee:", ethers.utils.formatEther(registrationFee), "ETH");
+  console.log("Registration fee:", ethers.formatEther(registrationFee), "ETH");
 
   // Estimate gas for DAO registration
   const daoData = {
     name: "Test DAO",
     symbol: "TEST",
     description: "A test DAO for gas estimation",
-    contractAddress: mockGovernance.address,
-    tokenAddress: mockToken.address,
-    treasuryAddress: mockTreasury.address,
-    governanceAddress: mockGovernance.address,
+    contractAddress: await mockGovernance.getAddress(),
+    tokenAddress: await mockToken.getAddress(),
+    treasuryAddress: await mockTreasury.getAddress(),
+    governanceAddress: await mockGovernance.getAddress(),
     chainId: await deployer.provider.getNetwork().then(n => n.chainId),
     governanceType: 0,
     votingPeriod: 86400,
     quorum: 1000,
-    proposalThreshold: ethers.utils.parseEther("1000"),
+    proposalThreshold: ethers.parseEther("1000"),
     tags: ["test"],
     socialLinks: {
       twitter: "",
@@ -292,14 +292,14 @@ async function estimateGasCosts(daoRegistry, mockToken, mockTreasury, mockGovern
     { value: registrationFee }
   );
 
-  const gasCost = estimatedGas.mul(gasPrice);
+  const gasCost = estimatedGas * gasPrice;
   console.log("Estimated gas for DAO registration:", estimatedGas.toString());
-  console.log("Estimated gas cost:", ethers.utils.formatEther(gasCost), "ETH");
+  console.log("Estimated gas cost:", ethers.formatEther(gasCost), "ETH");
 
   return {
-    registrationFee: ethers.utils.formatEther(registrationFee),
+    registrationFee: ethers.formatEther(registrationFee),
     estimatedGas: estimatedGas.toString(),
-    gasCost: ethers.utils.formatEther(gasCost),
+    gasCost: ethers.formatEther(gasCost),
   };
 }
 

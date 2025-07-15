@@ -11,15 +11,20 @@ module.exports = {
         runs: 200,
       },
       evmVersion: "paris",
+      viaIR: true,
     },
   },
   networks: {
     hardhat: {
       chainId: 1337,
+      gas: 30000000,
+      blockGasLimit: 30000000,
     },
     localhost: {
       url: "http://127.0.0.1:8545",
       chainId: 1337,
+      gas: 30000000,
+      blockGasLimit: 30000000,
     },
     mainnet: {
       url: process.env.MAINNET_RPC_URL || "https://eth-mainnet.g.alchemy.com/v2/your-api-key",

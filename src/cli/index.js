@@ -68,7 +68,6 @@ class DAORegistryCLI {
     // Metadata commands
     this.program
       .command('metadata')
-      .alias('meta')
       .description('Manage metadata services (reserved subdomains, encoding, ENS)')
       .option('-l, --list', 'List all reserved subdomains')
       .option('-c, --check <subdomain>', 'Check subdomain availability')
@@ -83,7 +82,6 @@ class DAORegistryCLI {
     // DAO commands
     this.program
       .command('dao')
-      .alias('dao')
       .description('Manage DAO registry operations')
       .option('-l, --list', 'List all DAOs')
       .option('-g, --get <id>', 'Get DAO details')

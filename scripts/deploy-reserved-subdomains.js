@@ -8,9 +8,12 @@ async function main() {
 
   // Deploy the contract
   const reservedSubdomains = await ReservedSubdomains.deploy();
-  await reservedSubdomains.deployed();
+  await reservedSubdomains.waitForDeployment();
 
-  console.log("ReservedSubdomains deployed to:", reservedSubdomains.address);
+  console.log("ReservedSubdomains deployed to:", await reservedSubdomains.getAddress());
+
+  // Get network info early
+  const network = await ethers.provider.getNetwork();
 
   // Verify deployment by checking critical reserved subdomains
   console.log("\nVerifying deployment...");
@@ -165,7 +168,7 @@ async function main() {
 
   console.log("\nAll tests passed! ReservedSubdomains contract is working correctly.");
   console.log("\nDeployment Summary:");
-  console.log(`  Contract Address: ${reservedSubdomains.address}`);
+  console.log(`  Contract Address: ${await reservedSubdomains.getAddress()}`);
   console.log(`  Network: ${network.name}`);
   console.log(`  Deployer: ${deployer.address}`);
   console.log(`  Total Reserved Subdomains: ${stats.total}`);
@@ -173,7 +176,7 @@ async function main() {
   // Save deployment info
   const deploymentInfo = {
     contract: "ReservedSubdomains",
-    address: reservedSubdomains.address,
+    address: await reservedSubdomains.getAddress(),
     network: network.name,
     deployer: deployer.address,
     timestamp: new Date().toISOString(),

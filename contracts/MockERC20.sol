@@ -85,19 +85,19 @@ contract MockERC20 is ERC20, Ownable {
 
     /**
      * @dev Get token info
-     * @return name Token name
-     * @return symbol Token symbol
-     * @return totalSupply Total supply
-     * @return decimals Token decimals
+     * @return tokenName Token name
+     * @return tokenSymbol Token symbol
+     * @return supply Total supply
+     * @return tokenDecimals Token decimals
      */
     function getTokenInfo()
         external
         view
         returns (
-            string memory name,
-            string memory symbol,
-            uint256 totalSupply,
-            uint8 decimals
+            string memory tokenName,
+            string memory tokenSymbol,
+            uint256 supply,
+            uint8 tokenDecimals
         )
     {
         return (name(), symbol(), totalSupply(), decimals());

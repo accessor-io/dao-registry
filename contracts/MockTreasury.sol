@@ -40,7 +40,7 @@ contract MockTreasury is Ownable, ReentrancyGuard {
     /**
      * @dev Deposit ETH to treasury
      */
-    function depositETH() external payable nonReentrant {
+    function depositETH() public payable nonReentrant {
         require(msg.value > 0, "Must deposit some ETH");
         
         ethBalance[msg.sender] += msg.value;
@@ -177,7 +177,7 @@ contract MockTreasury is Ownable, ReentrancyGuard {
     /**
      * @dev Get treasury balance for a specific address
      * @param account Address to check
-     * @return ethBalance ETH balance
+     * @return ethBal ETH balance
      * @return tokenCount Number of different tokens
      * @return nftCount Number of NFTs
      */
@@ -185,12 +185,12 @@ contract MockTreasury is Ownable, ReentrancyGuard {
         external
         view
         returns (
-            uint256 ethBalance,
+            uint256 ethBal,
             uint256 tokenCount,
             uint256 nftCount
         )
     {
-        ethBalance = ethBalance[account];
+        ethBal = ethBalance[account];
         
         // Note: This is a simplified implementation
         // In a real implementation, you would track token types and NFT counts

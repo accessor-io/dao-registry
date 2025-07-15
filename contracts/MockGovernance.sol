@@ -255,7 +255,19 @@ contract MockGovernance is Ownable, ReentrancyGuard {
     /**
      * @dev Get proposal information
      * @param proposalId Proposal ID
-     * @return Proposal information
+     * @return id Proposal ID
+     * @return proposer Proposer address
+     * @return title Proposal title
+     * @return description Proposal description
+     * @return startTime Proposal start time
+     * @return endTime Proposal end time
+     * @return forVotes Votes in favor
+     * @return againstVotes Votes against
+     * @return abstainVotes Abstain votes
+     * @return executed Whether proposal was executed
+     * @return canceled Whether proposal was canceled
+     * @return executedAt Execution timestamp
+     * @return status Proposal status
      */
     function getProposal(uint256 proposalId)
         external
@@ -300,7 +312,9 @@ contract MockGovernance is Ownable, ReentrancyGuard {
      * @dev Get vote information
      * @param proposalId Proposal ID
      * @param voter Voter address
-     * @return Vote information
+     * @return support Support type (0=Against, 1=For, 2=Abstain)
+     * @return weight Voting weight
+     * @return reason Reason for vote
      */
     function getVote(uint256 proposalId, address voter)
         external
