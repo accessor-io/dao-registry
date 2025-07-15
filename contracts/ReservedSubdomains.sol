@@ -820,6 +820,200 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
     }
 
     /**
+     * @dev Add a new schema
+     */
+    function addSchema(
+        string memory subdomain,
+        SchemaPriority priority,
+        string memory category,
+        string memory description,
+        string memory version,
+        string memory ccipInterface,
+        SchemaField[] memory fields,
+        string[] memory allowedRoles,
+        string[] memory restrictions,
+        string memory apiEndpoint,
+        string memory documentationUrl
+    ) external onlyAdministrator schemaNotExists(subdomain) {
+        require(bytes(subdomain).length > 0, "Subdomain cannot be empty");
+        require(bytes(description).length > 0, "Description cannot be empty");
+        require(bytes(version).length > 0, "Version cannot be empty");
+        require(fields.length > 0, "Schema must have at least one field");
+        
+        _defineSchema(
+            subdomain,
+            priority,
+            category,
+            description,
+            version,
+            ccipInterface,
+            fields,
+            allowedRoles,
+            restrictions,
+            apiEndpoint,
+            documentationUrl
+        );
+    }
+
+    /**
+     * @dev Update an existing schema
+     */
+    function updateSchema(
+        string memory subdomain,
+        SchemaPriority priority,
+        string memory category,
+        string memory description,
+        string memory newVersion,
+        string memory ccipInterface,
+        SchemaField[] memory fields,
+        string[] memory allowedRoles,
+        string[] memory restrictions,
+        string memory apiEndpoint,
+        string memory documentationUrl
+    ) external onlyAdministrator schemaExists(subdomain) {
+        require(bytes(newVersion).length > 0, "Version cannot be empty");
+        require(bytes(description).length > 0, "Description cannot be empty");
+        require(fields.length > 0, "Schema must have at least one field");
+        
+        // Store old version for event
+        string memory oldVersion = subdomainSchemas[subdomain].version;
+        
+        // Remove old schema
+        _removeSchema(subdomain);
+        
+        // Add new schema
+        _defineSchema(
+            subdomain,
+            priority,
+            category,
+            description,
+            newVersion,
+            ccipInterface,
+            fields,
+            allowedRoles,
+            restrictions,
+            apiEndpoint,
+            documentationUrl
+        );
+        
+        emit SchemaUpdated(subdomain, oldVersion, newVersion, msg.sender);
+    }
+
+    /**
+     * @dev Remove a schema
+     */
+    function removeSchema(string memory subdomain) external onlyAdministrator schemaExists(subdomain) {
+        _removeSchema(subdomain);
+        
+        emit SchemaDeprecated(subdomain, subdomainSchemas[subdomain].version, msg.sender);
+    }
+
+    /**
+     * @dev Internal function to remove a schema
+     */
+    function _removeSchema(string memory subdomain) private {
+        ReservedSubdomainSchema storage schema = subdomainSchemas[subdomain];
+        
+        // Update statistics
+        totalSchemas--;
+        schemasByPriority[schema.priority]--;
+        schemasByCategory[schema.category]--;
+        
+        // Remove from mappings
+        hasSchema[subdomain] = false;
+        delete schemaPriority[subdomain];
+        
+        // Remove from categories array
+        string[] storage categories = schemaCategories[schema.category];
+        for (uint i = 0; i < categories.length; i++) {
+            if (keccak256(bytes(categories[i])) == keccak256(bytes(subdomain))) {
+                categories[i] = categories[categories.length - 1];
+                categories.pop();
+                break;
+            }
+        }
+        
+        // Clear schema data
+        delete subdomainSchemas[subdomain];
+    }
+
+    /**
+     * @dev Get all schemas by category
+     */
+    function getSchemasByCategory(string memory category) external view returns (string[] memory) {
+        return schemaCategories[category];
+    }
+
+    /**
+     * @dev Get all schemas by priority
+     */
+    function getSchemasByPriority(SchemaPriority priority) external view returns (string[] memory) {
+        // This is a simplified implementation - in practice, you might want to maintain
+        // a separate mapping for priority-based lookups
+        // For now, we'll return an empty array as this would require iteration
+        return new string[](0);
+    }
+
+    /**
+     * @dev Get schema field by name
+     */
+    function getSchemaField(string memory subdomain, string memory fieldName) 
+        external 
+        view 
+        schemaExists(subdomain) 
+        returns (SchemaField memory) 
+    {
+        ReservedSubdomainSchema storage schema = subdomainSchemas[subdomain];
+        
+        for (uint i = 0; i < schema.fields.length; i++) {
+            if (keccak256(bytes(schema.fields[i].fieldName)) == keccak256(bytes(fieldName))) {
+                return schema.fields[i];
+            }
+        }
+        
+        revert("Field not found");
+    }
+
+    /**
+     * @dev Check if schema has a specific field
+     */
+    function hasSchemaField(string memory subdomain, string memory fieldName) 
+        external 
+        view 
+        schemaExists(subdomain) 
+        returns (bool) 
+    {
+        ReservedSubdomainSchema storage schema = subdomainSchemas[subdomain];
+        
+        for (uint i = 0; i < schema.fields.length; i++) {
+            if (keccak256(bytes(schema.fields[i].fieldName)) == keccak256(bytes(fieldName))) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    /**
+     * @dev Get schema validation rules
+     */
+    function getSchemaValidationRules(string memory subdomain) 
+        external 
+        view 
+        schemaExists(subdomain) 
+        returns (string[] memory fieldNames, string[] memory validationRules) 
+    {
+        ReservedSubdomainSchema storage schema = subdomainSchemas[subdomain];
+        fieldNames = new string[](schema.fields.length);
+        validationRules = new string[](schema.fields.length);
+        
+        for (uint i = 0; i < schema.fields.length; i++) {
+            fieldNames[i] = schema.fields[i].fieldName;
+            validationRules[i] = schema.fields[i].validationRule;
+        }
+    }
+
+    /**
      * @dev Emergency pause (only owner)
      */
     function emergencyPause() external onlyOwner {
