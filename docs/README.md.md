@@ -246,7 +246,7 @@ This project is licensed under the **MIT License**. See the [LICENSE](../LICENSE
 
 ## Roadmap
 
-### Phase 1: Core Infrastructure ✅
+### Phase 1: Core Infrastructure
 - [x] Smart contract development
 - [x] Basic API implementation
 - [x] Database schema design
