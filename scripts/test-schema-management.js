@@ -1,7 +1,7 @@
 const { ethers } = require("hardhat");
 
 async function main() {
-    console.log("🔧 Testing Schema Management Functions");
+    console.log("Testing Schema Management Functions");
     console.log("=====================================");
 
     // Get signers
@@ -16,13 +16,13 @@ async function main() {
     console.log("🔑 Admin:", admin.address);
 
     // Add admin for testing
-    console.log("\n1️⃣ Adding Administrator...");
+    console.log("\n1. Adding Administrator...");
     const addAdminTx = await contract.addAdministrator(admin.address);
     await addAdminTx.wait();
-    console.log("✅ Admin added:", admin.address);
+    console.log("Admin added:", admin.address);
 
     // Test 1: Add a new schema
-    console.log("\n2️⃣ Adding New Schema: 'analytics'");
+    console.log("\n2. Adding New Schema: 'analytics'");
     
     const analyticsFields = [
         {
@@ -76,12 +76,12 @@ async function main() {
         "https://docs.dao-registry.com/schemas/analytics"
     );
     await addSchemaTx.wait();
-    console.log("✅ Analytics schema added successfully");
+    console.log("Analytics schema added successfully");
 
     // Test 2: Verify schema was added
-    console.log("\n3️⃣ Verifying Schema Addition...");
+    console.log("\n3. Verifying Schema Addition...");
     const analyticsSchema = await contract.getSchema("analytics");
-    console.log("📊 Schema Details:");
+    console.log("Schema Details:");
     console.log("   Subdomain:", analyticsSchema.subdomain);
     console.log("   Priority:", analyticsSchema.priority);
     console.log("   Category:", analyticsSchema.category);
@@ -91,9 +91,9 @@ async function main() {
     console.log("   Fields Count:", analyticsSchema.fields.length);
 
     // Test 3: Get schema field details
-    console.log("\n4️⃣ Getting Schema Field Details...");
+    console.log("\n4. Getting Schema Field Details...");
     const totalUsersField = await contract.getSchemaField("analytics", "totalUsers");
-    console.log("📋 Field 'totalUsers':");
+    console.log("Field 'totalUsers':");
     console.log("   Name:", totalUsersField.fieldName);
     console.log("   Type:", totalUsersField.dataType);
     console.log("   Required:", totalUsersField.required);
@@ -102,22 +102,22 @@ async function main() {
     console.log("   Default Value:", totalUsersField.defaultValue);
 
     // Test 4: Check if schema has specific field
-    console.log("\n5️⃣ Checking Field Existence...");
+    console.log("\n5. Checking Field Existence...");
     const hasRevenueField = await contract.hasSchemaField("analytics", "revenue");
     const hasNonExistentField = await contract.hasSchemaField("analytics", "nonexistent");
-    console.log("✅ Has 'revenue' field:", hasRevenueField);
-    console.log("❌ Has 'nonexistent' field:", hasNonExistentField);
+    console.log("Has 'revenue' field:", hasRevenueField);
+    console.log("Has 'nonexistent' field:", hasNonExistentField);
 
     // Test 5: Get validation rules
-    console.log("\n6️⃣ Getting Validation Rules...");
+    console.log("\n6. Getting Validation Rules...");
     const [fieldNames, validationRules] = await contract.getSchemaValidationRules("analytics");
-    console.log("📋 Validation Rules:");
+    console.log("Validation Rules:");
     for (let i = 0; i < fieldNames.length; i++) {
         console.log(`   ${fieldNames[i]}: ${validationRules[i]}`);
     }
 
     // Test 6: Update schema
-    console.log("\n7️⃣ Updating Schema...");
+    console.log("\n7. Updating Schema...");
     
     const updatedAnalyticsFields = [
         {
@@ -176,19 +176,19 @@ async function main() {
         "https://docs.dao-registry.com/schemas/analytics"
     );
     await updateSchemaTx.wait();
-    console.log("✅ Analytics schema updated to version 1.1.0");
+    console.log("Analytics schema updated to version 1.1.0");
 
     // Test 7: Verify schema update
-    console.log("\n8️⃣ Verifying Schema Update...");
+    console.log("\n8. Verifying Schema Update...");
     const updatedSchema = await contract.getSchema("analytics");
-    console.log("📊 Updated Schema Details:");
+    console.log("Updated Schema Details:");
     console.log("   Version:", updatedSchema.version);
     console.log("   Description:", updatedSchema.description);
     console.log("   Fields Count:", updatedSchema.fields.length);
     console.log("   CCIP Interface:", updatedSchema.ccipInterface);
 
     // Test 8: Add another schema for testing removal
-    console.log("\n9️⃣ Adding Temporary Schema: 'test'");
+    console.log("\n9. Adding Temporary Schema: 'test'");
     
     const testFields = [
         {
@@ -215,12 +215,12 @@ async function main() {
         "https://docs.dao-registry.com/schemas/test"
     );
     await addTestSchemaTx.wait();
-    console.log("✅ Test schema added successfully");
+    console.log("Test schema added successfully");
 
     // Test 9: Get statistics before removal
-    console.log("\n🔢 Getting Statistics Before Removal...");
+    console.log("\nGetting Statistics Before Removal...");
     const statsBefore = await contract.getStatistics();
-    console.log("📊 Statistics:");
+    console.log("Statistics:");
     console.log("   Total Schemas:", statsBefore.total.toString());
     console.log("   Critical:", statsBefore.critical.toString());
     console.log("   High:", statsBefore.high.toString());
@@ -228,20 +228,20 @@ async function main() {
     console.log("   Low:", statsBefore.low.toString());
 
     // Test 10: Remove test schema
-    console.log("\n🗑️ Removing Test Schema...");
+    console.log("\nRemoving Test Schema...");
     const removeSchemaTx = await contract.removeSchema("test");
     await removeSchemaTx.wait();
-    console.log("✅ Test schema removed successfully");
+    console.log("Test schema removed successfully");
 
     // Test 11: Verify schema removal
-    console.log("\n🔍 Verifying Schema Removal...");
+    console.log("\nVerifying Schema Removal...");
     const hasTestSchema = await contract.hasSubdomainSchema("test");
-    console.log("❌ Test schema exists:", hasTestSchema);
+    console.log("Test schema exists:", hasTestSchema);
 
     // Test 12: Get statistics after removal
-    console.log("\n🔢 Getting Statistics After Removal...");
+    console.log("\nGetting Statistics After Removal...");
     const statsAfter = await contract.getStatistics();
-    console.log("📊 Updated Statistics:");
+    console.log("Updated Statistics:");
     console.log("   Total Schemas:", statsAfter.total.toString());
     console.log("   Critical:", statsAfter.critical.toString());
     console.log("   High:", statsAfter.high.toString());
@@ -249,11 +249,11 @@ async function main() {
     console.log("   Low:", statsAfter.low.toString());
 
     // Test 13: Test error handling
-    console.log("\n⚠️ Testing Error Handling...");
+    console.log("\nTesting Error Handling...");
     
     try {
         await contract.getSchema("nonexistent");
-        console.log("❌ Should have failed - schema doesn't exist");
+        console.log("Should have failed - schema doesn't exist");
     } catch (error) {
         console.log("✅ Correctly failed for non-existent schema");
     }
@@ -272,13 +272,13 @@ async function main() {
             "/api/v1/duplicate",
             "https://docs.dao-registry.com/schemas/duplicate"
         );
-        console.log("❌ Should have failed - schema already exists");
+        console.log("Should have failed - schema already exists");
     } catch (error) {
         console.log("✅ Correctly failed for duplicate schema");
     }
 
     // Test 14: Test access control
-    console.log("\n🔐 Testing Access Control...");
+    console.log("\nTesting Access Control...");
     
     try {
         await contract.connect(user).addSchema(
@@ -294,25 +294,25 @@ async function main() {
             "/api/v1/unauthorized",
             "https://docs.dao-registry.com/schemas/unauthorized"
         );
-        console.log("❌ Should have failed - user not authorized");
+        console.log("Should have failed - user not authorized");
     } catch (error) {
         console.log("✅ Correctly failed for unauthorized user");
     }
 
-    console.log("\n🎉 Schema Management Tests Completed Successfully!");
+    console.log("\nSchema Management Tests Completed Successfully!");
     console.log("==================================================");
-    console.log("✅ Added new schema");
-    console.log("✅ Retrieved schema details");
-    console.log("✅ Updated existing schema");
-    console.log("✅ Removed schema");
-    console.log("✅ Verified access control");
-    console.log("✅ Tested error handling");
-    console.log("✅ Validated statistics tracking");
+    console.log("Added new schema");
+    console.log("Retrieved schema details");
+    console.log("Updated existing schema");
+    console.log("Removed schema");
+    console.log("Verified access control");
+    console.log("Tested error handling");
+    console.log("Validated statistics tracking");
 }
 
 main()
     .then(() => process.exit(0))
     .catch((error) => {
-        console.error("❌ Error:", error);
+        console.error("Error:", error);
         process.exit(1);
     }); 

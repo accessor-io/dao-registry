@@ -217,10 +217,10 @@ if (!fs.existsSync(outputDir)) {
 // Write the HTML file
 fs.writeFileSync(htmlFile, htmlTemplate);
 
-console.log('✅ Schema management flow diagram generated!');
-console.log(`📁 HTML file created: ${htmlFile}`);
-console.log('🌐 Open the HTML file in a browser to view the diagram');
-console.log('💡 You can also use browser automation tools to convert to PNG/SVG');
+console.log('Schema management flow diagram generated!');
+console.log(`HTML file created: ${htmlFile}`);
+console.log('Open the HTML file in a browser to view the diagram');
+console.log('You can also use browser automation tools to convert to PNG/SVG');
 
 // Also create a simplified version for better rendering
 const simplifiedDiagram = `
@@ -305,6 +305,6 @@ const simplifiedHtmlFile = path.join(outputDir, 'schema-management-flow-simplifi
 const simplifiedHtmlTemplate = htmlTemplate.replace(mermaidDiagram, simplifiedDiagram);
 fs.writeFileSync(simplifiedHtmlFile, simplifiedHtmlTemplate);
 
-console.log(`📁 Simplified HTML file created: ${simplifiedHtmlFile}`);
-console.log('🎯 The simplified version may render better in browsers');
-console.log('📊 Both files are ready for viewing and conversion to images'); 
+console.log(`Simplified HTML file created: ${simplifiedHtmlFile}`);
+console.log('The simplified version may render better in browsers');
+console.log('Both files are ready for viewing and conversion to images'); 

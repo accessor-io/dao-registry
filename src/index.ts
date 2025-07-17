@@ -382,10 +382,10 @@ export class DAORegistryApp {
    */
   public start(port: number = 3000): void {
     this.app.listen(port, () => {
-      console.log(`🚀 DAO Registry running on port ${port}`);
-      console.log(`📊 Health check: http://localhost:${port}/health`);
-      console.log(`🔧 System info: http://localhost:${port}/api/system/info`);
-      console.log(`📝 API documentation: http://localhost:${port}/api/docs`);
+          console.log(`DAO Registry running on port ${port}`);
+    console.log(`Health check: http://localhost:${port}/health`);
+    console.log(`System info: http://localhost:${port}/api/system/info`);
+    console.log(`API documentation: http://localhost:${port}/api/docs`);
     });
   }
 

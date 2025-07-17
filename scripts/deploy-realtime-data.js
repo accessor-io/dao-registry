@@ -1,44 +1,44 @@
 const { ethers } = require("hardhat");
 
 async function main() {
-    console.log("🚀 Deploying RealTimeDataRegistry Contract");
+    console.log("Deploying RealTimeDataRegistry Contract");
     console.log("==========================================");
 
     // Get signers
     const [owner, dataProvider1, dataProvider2] = await ethers.getSigners();
     
-    console.log("👤 Owner:", owner.address);
-    console.log("📊 Data Provider 1:", dataProvider1.address);
-    console.log("📊 Data Provider 2:", dataProvider2.address);
+    console.log("Owner:", owner.address);
+    console.log("Data Provider 1:", dataProvider1.address);
+    console.log("Data Provider 2:", dataProvider2.address);
 
     // Deploy RealTimeDataRegistry
-    console.log("\n1️⃣ Deploying RealTimeDataRegistry...");
+    console.log("\n1. Deploying RealTimeDataRegistry...");
     const RealTimeDataRegistry = await ethers.getContractFactory("RealTimeDataRegistry");
     const realTimeRegistry = await RealTimeDataRegistry.deploy();
     await realTimeRegistry.waitForDeployment();
     
     const contractAddress = await realTimeRegistry.getAddress();
-    console.log("✅ RealTimeDataRegistry deployed to:", contractAddress);
+    console.log("RealTimeDataRegistry deployed to:", contractAddress);
 
     // Add data providers
-    console.log("\n2️⃣ Adding Data Providers...");
+    console.log("\n2. Adding Data Providers...");
     
-    const addProvider1Tx = await realTimeRegistry.addDataProvider(
+    const addProvider1Tx = await realTimeDataRegistry.addDataProvider(
         dataProvider1.address,
         ["ETH_PRICE", "BTC_PRICE", "DAO_VOTES", "TREASURY_BALANCE"]
     );
     await addProvider1Tx.wait();
-    console.log("✅ Data Provider 1 added");
+    console.log("Data Provider 1 added");
 
-    const addProvider2Tx = await realTimeRegistry.addDataProvider(
+    const addProvider2Tx = await realTimeDataRegistry.addDataProvider(
         dataProvider2.address,
         ["MARKET_CAP", "TRADING_VOLUME", "SOCIAL_SENTIMENT"]
     );
     await addProvider2Tx.wait();
-    console.log("✅ Data Provider 2 added");
+    console.log("Data Provider 2 added");
 
     // Register real-time data points
-    console.log("\n3️⃣ Registering Real-Time Data Points...");
+    console.log("\n3. Registering Real-Time Data Points...");
 
     // ETH Price Feed
     const ethPriceFields = ["price", "timestamp", "source"];
@@ -48,7 +48,7 @@ async function main() {
         ethers.encodeBytes32String("chainlink")
     ];
     
-    const registerEthPriceTx = await realTimeRegistry.connect(dataProvider1).registerDataPoint(
+    const registerEthPriceTx = await realTimeDataRegistry.connect(dataProvider1).registerDataPoint(
         "ETH_PRICE",
         0, // PRICE_FEED
         0, // CONTINUOUS
@@ -57,7 +57,7 @@ async function main() {
         '{"source": "chainlink", "decimals": 8, "description": "Ethereum price feed"}'
     );
     await registerEthPriceTx.wait();
-    console.log("✅ ETH_PRICE data point registered");
+    console.log("ETH_PRICE data point registered");
 
     // BTC Price Feed
     const btcPriceFields = ["price", "timestamp", "source"];
@@ -67,7 +67,7 @@ async function main() {
         ethers.encodeBytes32String("chainlink")
     ];
     
-    const registerBtcPriceTx = await realTimeRegistry.connect(dataProvider1).registerDataPoint(
+    const registerBtcPriceTx = await realTimeDataRegistry.connect(dataProvider1).registerDataPoint(
         "BTC_PRICE",
         0, // PRICE_FEED
         0, // CONTINUOUS
@@ -76,7 +76,7 @@ async function main() {
         '{"source": "chainlink", "decimals": 8, "description": "Bitcoin price feed"}'
     );
     await registerBtcPriceTx.wait();
-    console.log("✅ BTC_PRICE data point registered");
+    console.log("BTC_PRICE data point registered");
 
     // DAO Votes
     const daoVotesFields = ["proposalId", "forVotes", "againstVotes", "abstainVotes", "totalVotes"];
@@ -88,7 +88,7 @@ async function main() {
         ethers.encodeBytes32String("1750")
     ];
     
-    const registerDaoVotesTx = await realTimeRegistry.connect(dataProvider1).registerDataPoint(
+    const registerDaoVotesTx = await realTimeDataRegistry.connect(dataProvider1).registerDataPoint(
         "DAO_VOTES",
         2, // GOVERNANCE_VOTE
         0, // CONTINUOUS
@@ -97,7 +97,7 @@ async function main() {
         '{"proposal": "Increase treasury allocation", "status": "active", "endTime": "2024-01-15"}'
     );
     await registerDaoVotesTx.wait();
-    console.log("✅ DAO_VOTES data point registered");
+    console.log("DAO_VOTES data point registered");
 
     // Treasury Balance
     const treasuryFields = ["ethBalance", "tokenBalance", "totalValue", "lastUpdate"];
@@ -108,7 +108,7 @@ async function main() {
         ethers.encodeBytes32String(block.timestamp.toString())
     ];
     
-    const registerTreasuryTx = await realTimeRegistry.connect(dataProvider1).registerDataPoint(
+    const registerTreasuryTx = await realTimeDataRegistry.connect(dataProvider1).registerDataPoint(
         "TREASURY_BALANCE",
         3, // TREASURY_BALANCE
         2, // PER_MINUTE
@@ -117,7 +117,7 @@ async function main() {
         '{"currency": "USD", "valuation": "real-time", "source": "defi-pulse"}'
     );
     await registerTreasuryTx.wait();
-    console.log("✅ TREASURY_BALANCE data point registered");
+    console.log("TREASURY_BALANCE data point registered");
 
     // Market Cap
     const marketCapFields = ["marketCap", "volume24h", "priceChange24h", "circulatingSupply"];
@@ -128,7 +128,7 @@ async function main() {
         ethers.encodeBytes32String("12000000000") // 12B tokens
     ];
     
-    const registerMarketCapTx = await realTimeRegistry.connect(dataProvider2).registerDataPoint(
+    const registerMarketCapTx = await realTimeDataRegistry.connect(dataProvider2).registerDataPoint(
         "MARKET_CAP",
         1, // MARKET_DATA
         2, // PER_MINUTE
@@ -137,7 +137,7 @@ async function main() {
         '{"source": "coinmarketcap", "updateFrequency": "1min", "currency": "USD"}'
     );
     await registerMarketCapTx.wait();
-    console.log("✅ MARKET_CAP data point registered");
+    console.log("MARKET_CAP data point registered");
 
     // Social Sentiment
     const socialFields = ["sentiment", "mentions", "engagement", "trending"];
@@ -148,7 +148,7 @@ async function main() {
         ethers.encodeBytes32String("true")
     ];
     
-    const registerSocialTx = await realTimeRegistry.connect(dataProvider2).registerDataPoint(
+    const registerSocialTx = await realTimeDataRegistry.connect(dataProvider2).registerDataPoint(
         "SOCIAL_SENTIMENT",
         6, // SOCIAL_METRICS
         3, // PER_HOUR
@@ -157,10 +157,10 @@ async function main() {
         '{"platforms": ["twitter", "reddit", "telegram"], "sentiment_analysis": "vader"}'
     );
     await registerSocialTx.wait();
-    console.log("✅ SOCIAL_SENTIMENT data point registered");
+    console.log("SOCIAL_SENTIMENT data point registered");
 
     // Update data points to simulate real-time changes
-    console.log("\n4️⃣ Simulating Real-Time Updates...");
+    console.log("\n4. Simulating Real-Time Updates...");
 
     // Update ETH price
     const newEthPriceValues = [
@@ -169,14 +169,14 @@ async function main() {
         ethers.encodeBytes32String("chainlink")
     ];
     
-    const updateEthPriceTx = await realTimeRegistry.connect(dataProvider1).updateDataPoint(
+    const updateEthPriceTx = await realTimeDataRegistry.connect(dataProvider1).updateDataPoint(
         "ETH_PRICE",
         ethPriceFields,
         newEthPriceValues,
         '{"source": "chainlink", "decimals": 8, "description": "Ethereum price feed", "updated": true}'
     );
     await updateEthPriceTx.wait();
-    console.log("✅ ETH_PRICE updated");
+    console.log("ETH_PRICE updated");
 
     // Update DAO votes
     const newDaoVotesValues = [
@@ -187,17 +187,17 @@ async function main() {
         ethers.encodeBytes32String("1880")
     ];
     
-    const updateDaoVotesTx = await realTimeRegistry.connect(dataProvider1).updateDataPoint(
+    const updateDaoVotesTx = await realTimeDataRegistry.connect(dataProvider1).updateDataPoint(
         "DAO_VOTES",
         daoVotesFields,
         newDaoVotesValues,
         '{"proposal": "Increase treasury allocation", "status": "active", "endTime": "2024-01-15", "updated": true}'
     );
     await updateDaoVotesTx.wait();
-    console.log("✅ DAO_VOTES updated");
+    console.log("DAO_VOTES updated");
 
     // Batch update multiple data points
-    console.log("\n5️⃣ Performing Batch Update...");
+    console.log("\n5. Performing Batch Update...");
     
     const batchDataKeys = ["BTC_PRICE", "MARKET_CAP"];
     const batchFieldNames = [
@@ -222,19 +222,19 @@ async function main() {
         '{"source": "coinmarketcap", "updateFrequency": "1min", "currency": "USD", "batch": true}'
     ];
     
-    const batchUpdateTx = await realTimeRegistry.connect(dataProvider1).batchUpdateDataPoints(
+    const batchUpdateTx = await realTimeDataRegistry.connect(dataProvider1).batchUpdateDataPoints(
         batchDataKeys,
         batchFieldNames,
         batchFieldValues,
         batchMetadata
     );
     await batchUpdateTx.wait();
-    console.log("✅ Batch update completed");
+    console.log("Batch update completed");
 
     // Get statistics
-    console.log("\n6️⃣ Getting Statistics...");
-    const stats = await realTimeRegistry.getStatistics();
-    console.log("📊 Statistics:");
+    console.log("\n6. Getting Statistics...");
+    const stats = await realTimeDataRegistry.getStatistics();
+    console.log("Statistics:");
     console.log("   Total Data Points:", stats.total.toString());
     console.log("   Price Feeds:", stats.priceFeeds.toString());
     console.log("   Market Data:", stats.marketData.toString());
@@ -246,9 +246,9 @@ async function main() {
     console.log("   DeFi Metrics:", stats.defiMetrics.toString());
 
     // Get data point details
-    console.log("\n7️⃣ Getting Data Point Details...");
-    const ethPriceData = await realTimeRegistry.getDataPoint("ETH_PRICE");
-    console.log("📈 ETH_PRICE Details:");
+    console.log("\n7. Getting Data Point Details...");
+    const ethPriceData = await realTimeDataRegistry.getDataPoint("ETH_PRICE");
+    console.log("ETH_PRICE Details:");
     console.log("   Data Key:", ethPriceData.dataKey);
     console.log("   Data Type:", ethPriceData.dataType);
     console.log("   Frequency:", ethPriceData.frequency);
@@ -259,9 +259,9 @@ async function main() {
     console.log("   Metadata:", ethPriceData.metadata);
 
     // Get update history
-    console.log("\n8️⃣ Getting Update History...");
-    const ethPriceHistory = await realTimeRegistry.getUpdateHistory("ETH_PRICE", 5);
-    console.log("📜 ETH_PRICE Update History:");
+    console.log("\n8. Getting Update History...");
+    const ethPriceHistory = await realTimeDataRegistry.getUpdateHistory("ETH_PRICE", 5);
+    console.log("ETH_PRICE Update History:");
     for (let i = 0; i < ethPriceHistory.length; i++) {
         const event = ethPriceHistory[i];
         console.log(`   Event ${i + 1}:`);
@@ -273,31 +273,31 @@ async function main() {
     }
 
     // Get data points by type
-    console.log("\n9️⃣ Getting Data Points by Type...");
-    const priceFeeds = await realTimeRegistry.getDataPointsByType(0); // PRICE_FEED
-    console.log("💰 Price Feeds:", priceFeeds);
+    console.log("\n9. Getting Data Points by Type...");
+    const priceFeeds = await realTimeDataRegistry.getDataPointsByType(0); // PRICE_FEED
+    console.log("Price Feeds:", priceFeeds);
 
-    const governanceVotes = await realTimeRegistry.getDataPointsByType(2); // GOVERNANCE_VOTE
-    console.log("🗳️ Governance Votes:", governanceVotes);
+    const governanceVotes = await realTimeDataRegistry.getDataPointsByType(2); // GOVERNANCE_VOTE
+    console.log("Governance Votes:", governanceVotes);
 
     // Get data providers
-    console.log("\n🔍 Getting Data Providers...");
-    const ethPriceProviders = await realTimeRegistry.getDataProviders("ETH_PRICE");
-    console.log("📊 ETH_PRICE Providers:", ethPriceProviders);
+    console.log("\nGetting Data Providers...");
+    const ethPriceProviders = await realTimeDataRegistry.getDataProviders("ETH_PRICE");
+    console.log("ETH_PRICE Providers:", ethPriceProviders);
 
-    const provider1Keys = await realTimeRegistry.getProviderDataKeys(dataProvider1.address);
-    console.log("🔑 Provider 1 Data Keys:", provider1Keys);
+    const provider1Keys = await realTimeDataRegistry.getProviderDataKeys(dataProvider1.address);
+    console.log("Provider 1 Data Keys:", provider1Keys);
 
-    console.log("\n🎉 RealTimeDataRegistry Deployment and Testing Completed!");
+    console.log("\nRealTimeDataRegistry Deployment and Testing Completed!");
     console.log("==========================================================");
-    console.log("✅ Contract deployed successfully");
-    console.log("✅ Data providers added");
-    console.log("✅ Real-time data points registered");
-    console.log("✅ Updates simulated");
-    console.log("✅ Batch updates performed");
-    console.log("✅ Statistics retrieved");
-    console.log("✅ Event history accessed");
-    console.log("✅ Cross-references verified");
+    console.log("Contract deployed successfully");
+    console.log("Data providers added");
+    console.log("Real-time data points registered");
+    console.log("Updates simulated");
+    console.log("Batch updates performed");
+    console.log("Statistics retrieved");
+    console.log("Event history accessed");
+    console.log("Cross-references verified");
 
     return {
         contractAddress,
@@ -309,7 +309,7 @@ async function main() {
 
 main()
     .then((result) => {
-        console.log("\n📋 Deployment Summary:");
+        console.log("\nDeployment Summary:");
         console.log("Contract Address:", result.contractAddress);
         console.log("Owner:", result.owner);
         console.log("Data Provider 1:", result.dataProvider1);
@@ -317,6 +317,6 @@ main()
         process.exit(0);
     })
     .catch((error) => {
-        console.error("❌ Error:", error);
+        console.error("Error:", error);
         process.exit(1);
     }); 
