@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 async function convertHtmlToImage() {
-    console.log('🔄 Starting HTML to PNG conversion...');
+    console.log('Starting HTML to PNG conversion...');
     
     const browser = await puppeteer.launch({
         headless: true,
@@ -30,7 +30,7 @@ async function convertHtmlToImage() {
             const htmlPath = path.join(outputDir, htmlFile);
             
             if (fs.existsSync(htmlPath)) {
-                console.log(`📄 Converting ${htmlFile}...`);
+                console.log(`Converting ${htmlFile}...`);
                 
                 // Load the HTML file
                 await page.goto(`file://${htmlPath}`, {
@@ -56,7 +56,7 @@ async function convertHtmlToImage() {
                     type: 'png'
                 });
                 
-                console.log(`✅ PNG created: ${pngPath}`);
+                console.log(`PNG created: ${pngPath}`);
                 
                 // Also try to get SVG if possible
                 try {
@@ -70,21 +70,21 @@ async function convertHtmlToImage() {
                     
                     if (svgContent) {
                         fs.writeFileSync(svgPath, svgContent);
-                        console.log(`✅ SVG created: ${svgPath}`);
+                        console.log(`SVG created: ${svgPath}`);
                     }
                 } catch (svgError) {
-                    console.log('⚠️ SVG conversion failed, PNG only created');
+                    console.log('SVG conversion failed, PNG only created');
                 }
             } else {
-                console.log(`❌ HTML file not found: ${htmlPath}`);
+                console.log(`HTML file not found: ${htmlPath}`);
             }
         }
         
     } catch (error) {
-        console.error('❌ Error during conversion:', error.message);
+        console.error('Error during conversion:', error.message);
     } finally {
         await browser.close();
-        console.log('🔒 Browser closed');
+        console.log('Browser closed');
     }
 }
 
@@ -92,30 +92,30 @@ async function convertHtmlToImage() {
 try {
     require('puppeteer');
     convertHtmlToImage().then(() => {
-        console.log('🎉 Diagram conversion completed!');
-        console.log('📁 Check the docs/images/ directory for the generated images');
+        console.log('Diagram conversion completed!');
+        console.log('Check the docs/images/ directory for the generated images');
     }).catch(error => {
-        console.error('❌ Conversion failed:', error.message);
+        console.error('Conversion failed:', error.message);
     });
 } catch (error) {
-    console.log('⚠️ Puppeteer not installed. Installing now...');
+    console.log('Puppeteer not installed. Installing now...');
     
     // Install Puppeteer if not available
     const { execSync } = require('child_process');
     try {
         execSync('npm install puppeteer', { stdio: 'inherit' });
-        console.log('✅ Puppeteer installed successfully');
+        console.log('Puppeteer installed successfully');
         
         // Retry conversion
         convertHtmlToImage().then(() => {
-            console.log('🎉 Diagram conversion completed!');
-            console.log('📁 Check the docs/images/ directory for the generated images');
+            console.log('Diagram conversion completed!');
+            console.log('Check the docs/images/ directory for the generated images');
         }).catch(error => {
-            console.error('❌ Conversion failed:', error.message);
+            console.error('Conversion failed:', error.message);
         });
     } catch (installError) {
-        console.error('❌ Failed to install Puppeteer:', installError.message);
-        console.log('💡 You can manually install with: npm install puppeteer');
-        console.log('🌐 Or open the HTML files directly in a browser to view the diagrams');
+        console.error('Failed to install Puppeteer:', installError.message);
+        console.log('You can manually install with: npm install puppeteer');
+        console.log('Or open the HTML files directly in a browser to view the diagrams');
     }
 } 

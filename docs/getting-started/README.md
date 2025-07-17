@@ -25,19 +25,19 @@ The DAO Registry is a decentralized platform that provides:
 - Treasury flow tracking
 - Member engagement analytics
 
-### 🔗 **Multi-Chain Support**
+### **Multi-Chain Support**
 - Ethereum mainnet and testnets
 - Layer 2 solutions (Polygon, Arbitrum, Optimism)
 - Cross-chain DAO tracking
 - Unified analytics dashboard
 
-### 🌐 **ENS Integration**
+### **ENS Integration**
 - Human-readable DAO addresses
 - Automatic metadata linking
 - Domain management integration
 - Text record support
 
-### 📋 **ISO Compliance**
+### **ISO Compliance**
 - ISO 23081-2:2021 metadata standards
 - Comprehensive audit trails
 - Data retention policies
