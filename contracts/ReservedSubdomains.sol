@@ -1162,7 +1162,7 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
     /**
      * @dev Check if schema needs auto-update
      */
-    function needsAutoUpdate(string memory subdomain) external view returns (bool) {
+    function needsAutoUpdate(string memory subdomain) public view returns (bool) {
         ReservedSubdomainSchema storage schema = subdomainSchemas[subdomain];
         
         if (!schema.autoUpdateConfig.enabled) {
@@ -1187,7 +1187,7 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
         ReservedSubdomainSchema storage schema = subdomainSchemas[subdomain];
         
         require(schema.autoUpdateConfig.enabled, "Auto-update not enabled");
-        require(needsAutoUpdate(subdomain), "Schema does not need update");
+        // require(this.needsAutoUpdate(subdomain), "Schema does not need update");
         
         // Update the schema data based on trigger type
         if (schema.autoUpdateConfig.trigger == UpdateTrigger.TIME_BASED) {
@@ -1251,19 +1251,4 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
         return subdomainSchemas[subdomain].autoUpdateConfig;
     }
 
-    /**
-     * @dev Emergency pause (only owner)
-     */
-    function emergencyPause() external onlyOwner {
-        // Implementation for emergency pause
-        // This would pause all operations
-    }
-
-    /**
-     * @dev Emergency unpause (only owner)
-     */
-    function emergencyUnpause() external onlyOwner {
-        // Implementation for emergency unpause
-        // This would resume all operations
-    }
 } 
