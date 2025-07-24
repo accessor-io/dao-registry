@@ -1,7 +1,3 @@
 {
-    "wake.compiler.solc.remappings": [
-        "@ensdomains/=node_modules/@ensdomains/",
-        "@openzeppelin/=node_modules/@openzeppelin/",
-        "hardhat/=node_modules/hardhat/"
-    ]
+    "wake.compiler.solc.remappings": []
 }
