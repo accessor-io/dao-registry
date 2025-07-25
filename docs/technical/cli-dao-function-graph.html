@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAO CLI Module Function Call Graph</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .controls {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .control-group label {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        select, button {
+            padding: 8px 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            background: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        select:focus, button:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        button:hover {
+            background: #5a6fd8;
+            border-color: #5a6fd8;
+            transform: translateY(-1px);
+        }
+        
+        .graph-container {
+            padding: 20px;
+            height: 600px;
+            position: relative;
+        }
+        
+        .node {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .node:hover {
+            filter: brightness(1.1);
+        }
+        
+        .node text {
+            font-size: 12px;
+            font-weight: 600;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            fill: white;
+            pointer-events: none;
+        }
+        
+        .link {
+            stroke: #6c757d;
+            stroke-width: 2;
+            fill: none;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+        
+        .link:hover {
+            stroke-width: 3;
+            opacity: 1;
+        }
+        
+        .legend {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.95);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            font-size: 12px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+        
+        .tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+            max-width: 250px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .function-details {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .function-details h3 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+        }
+        
+        .function-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .function-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .function-card h4 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+        
+        .function-card p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        .function-card strong {
+            color: #495057;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>DAO CLI Module Function Call Graph</h1>
+            <p>Interactive visualization of function relationships and data flow</p>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label>View Mode:</label>
+                <select id="viewMode">
+                    <option value="hierarchical">Hierarchical</option>
+                    <option value="force">Force-Directed</option>
+                    <option value="radial">Radial</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Function Type:</label>
+                <select id="functionFilter">
+                    <option value="all">All Functions</option>
+                    <option value="core">Core Management</option>
+                    <option value="data">Data Operations</option>
+                    <option value="interactive">Interactive Helpers</option>
+                    <option value="analytics">Analytics</option>
+                </select>
+            </div>
+            
+            <button onclick="resetView()">Reset View</button>
+            <button onclick="exportGraph()">Export SVG</button>
+        </div>
+        
+        <div class="graph-container" id="graphContainer">
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #e74c3c;"></div>
+                    <span>Entry Points</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #3498db;"></div>
+                    <span>Core Functions</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #2ecc71;"></div>
+                    <span>Data Operations</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #f39c12;"></div>
+                    <span>Interactive Helpers</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #9b59b6;"></div>
+                    <span>Analytics</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="function-details">
+            <h3>Function Details</h3>
+            <div class="function-info" id="functionInfo">
+                <!-- Function details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function data structure
+        const functionData = {
+            nodes: [
+                // Entry Points
+                { id: "handleCommand", name: "handleCommand", type: "entry", category: "core", description: "Main entry point for programmatic CLI operations", dependencies: ["listDAOs", "getDAO", "createDAO", "updateDAO", "deleteDAO", "startInteractive"] },
+                { id: "startInteractive", name: "startInteractive", type: "entry", category: "core", description: "Initiates interactive CLI session", dependencies: ["handleDAOAction"] },
+                
+                // Core Management
+                { id: "handleDAOAction", name: "handleDAOAction", type: "core", category: "core", description: "Routes interactive menu selections", dependencies: ["listDAOs", "interactiveGetDAO", "createDAO", "interactiveUpdateDAO", "interactiveDeleteDAO", "showAnalytics"] },
+                
+                // Data Operations
+                { id: "listDAOs", name: "listDAOs", type: "data", category: "data", description: "Displays all DAOs in tabular format", dependencies: [] },
+                { id: "getDAO", name: "getDAO", type: "data", category: "data", description: "Displays detailed DAO information", dependencies: [] },
+                { id: "createDAO", name: "createDAO", type: "data", category: "data", description: "Creates new DAO entity", dependencies: [] },
+                { id: "updateDAO", name: "updateDAO", type: "data", category: "data", description: "Updates existing DAO entity", dependencies: [] },
+                { id: "deleteDAO", name: "deleteDAO", type: "data", category: "data", description: "Removes DAO entity", dependencies: [] },
+                { id: "showAnalytics", name: "showAnalytics", type: "analytics", category: "analytics", description: "Displays DAO registry analytics", dependencies: [] },
+                
+                // Interactive Helpers
+                { id: "interactiveGetDAO", name: "interactiveGetDAO", type: "interactive", category: "interactive", description: "Prompts for DAO ID and calls getDAO", dependencies: ["getDAO"] },
+                { id: "interactiveUpdateDAO", name: "interactiveUpdateDAO", type: "interactive", category: "interactive", description: "Prompts for DAO ID and calls updateDAO", dependencies: ["updateDAO"] },
+                { id: "interactiveDeleteDAO", name: "interactiveDeleteDAO", type: "interactive", category: "interactive", description: "Prompts for DAO ID and confirmation", dependencies: ["deleteDAO"] }
+            ],
+            
+            links: [
+                // Entry point connections
+                { source: "handleCommand", target: "listDAOs" },
+                { source: "handleCommand", target: "getDAO" },
+                { source: "handleCommand", target: "createDAO" },
+                { source: "handleCommand", target: "updateDAO" },
+                { source: "handleCommand", target: "deleteDAO" },
+                { source: "handleCommand", target: "startInteractive" },
+                
+                // Interactive flow
+                { source: "startInteractive", target: "handleDAOAction" },
+                { source: "handleDAOAction", target: "listDAOs" },
+                { source: "handleDAOAction", target: "interactiveGetDAO" },
+                { source: "handleDAOAction", target: "createDAO" },
+                { source: "handleDAOAction", target: "interactiveUpdateDAO" },
+                { source: "handleDAOAction", target: "interactiveDeleteDAO" },
+                { source: "handleDAOAction", target: "showAnalytics" },
+                
+                // Interactive helper connections
+                { source: "interactiveGetDAO", target: "getDAO" },
+                { source: "interactiveUpdateDAO", target: "updateDAO" },
+                { source: "interactiveDeleteDAO", target: "deleteDAO" }
+            ]
+        };
+
+        // Color scheme
+        const colors = {
+            entry: "#e74c3c",
+            core: "#3498db",
+            data: "#2ecc71",
+            interactive: "#f39c12",
+            analytics: "#9b59b6"
+        };
+
+        // D3.js visualization
+        let svg, simulation, nodes, links;
+        let width, height;
+
+        function initializeGraph() {
+            const container = document.getElementById('graphContainer');
+            width = container.clientWidth - 40;
+            height = container.clientHeight - 40;
+
+            // Clear existing SVG
+            d3.select("#graphContainer svg").remove();
+
+            // Create SVG
+            svg = d3.select("#graphContainer")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            // Create arrow marker
+            svg.append("defs").append("marker")
+                .attr("id", "arrowhead")
+                .attr("viewBox", "0 -5 10 10")
+                .attr("refX", 25)
+                .attr("refY", 0)
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 6)
+                .attr("orient", "auto")
+                .append("path")
+                .attr("d", "M0,-5L10,0L0,5")
+                .attr("fill", "#6c757d");
+
+            // Create links
+            links = svg.append("g")
+                .selectAll("line")
+                .data(functionData.links)
+                .enter().append("line")
+                .attr("class", "link")
+                .attr("marker-end", "url(#arrowhead)");
+
+            // Create nodes
+            nodes = svg.append("g")
+                .selectAll("g")
+                .data(functionData.nodes)
+                .enter().append("g")
+                .attr("class", "node")
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended));
+
+            // Add circles to nodes
+            nodes.append("circle")
+                .attr("r", d => d.type === "entry" ? 20 : 15)
+                .attr("fill", d => colors[d.type])
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 2);
+
+            // Add text to nodes
+            nodes.append("text")
+                .text(d => d.name)
+                .attr("font-size", d => d.type === "entry" ? "10px" : "9px");
+
+            // Add tooltips
+            nodes.append("title")
+                .text(d => `${d.name}\n${d.description}`);
+
+            // Create simulation
+            simulation = d3.forceSimulation(functionData.nodes)
+                .force("link", d3.forceLink(functionData.links).id(d => d.id).distance(100))
+                .force("charge", d3.forceManyBody().strength(-300))
+                .force("center", d3.forceCenter(width / 2, height / 2))
+                .on("tick", ticked);
+
+            // Add event listeners
+            nodes.on("click", function(event, d) {
+                showFunctionDetails(d);
+            });
+
+            // Add controls event listeners
+            document.getElementById('viewMode').addEventListener('change', updateLayout);
+            document.getElementById('functionFilter').addEventListener('change', filterFunctions);
+        }
+
+        function ticked() {
+            links
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
+
+            nodes
+                .attr("transform", d => `translate(${d.x},${d.y})`);
+        }
+
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+
+        function updateLayout() {
+            const mode = document.getElementById('viewMode').value;
+            
+            if (mode === "hierarchical") {
+                simulation.force("link").distance(80);
+                simulation.force("charge").strength(-200);
+            } else if (mode === "force") {
+                simulation.force("link").distance(100);
+                simulation.force("charge").strength(-300);
+            } else if (mode === "radial") {
+                simulation.force("link").distance(120);
+                simulation.force("charge").strength(-400);
+            }
+            
+            simulation.alpha(1).restart();
+        }
+
+        function filterFunctions() {
+            const filter = document.getElementById('functionFilter').value;
+            
+            nodes.style("opacity", d => {
+                if (filter === "all") return 1;
+                return d.category === filter ? 1 : 0.3;
+            });
+            
+            links.style("opacity", d => {
+                if (filter === "all") return 0.6;
+                const sourceVisible = d.source.category === filter;
+                const targetVisible = d.target.category === filter;
+                return (sourceVisible || targetVisible) ? 0.6 : 0.1;
+            });
+        }
+
+        function showFunctionDetails(functionData) {
+            const container = document.getElementById('functionInfo');
+            
+            const card = document.createElement('div');
+            card.className = 'function-card';
+            card.innerHTML = `
+                <h4>${functionData.name}</h4>
+                <p><strong>Type:</strong> ${functionData.type}</p>
+                <p><strong>Category:</strong> ${functionData.category}</p>
+                <p><strong>Description:</strong> ${functionData.description}</p>
+                <p><strong>Dependencies:</strong> ${functionData.dependencies.length > 0 ? functionData.dependencies.join(', ') : 'None'}</p>
+            `;
+            
+            // Add to container (limit to 6 cards)
+            if (container.children.length >= 6) {
+                container.removeChild(container.firstChild);
+            }
+            container.appendChild(card);
+        }
+
+        function resetView() {
+            simulation.alpha(1).restart();
+            nodes.style("opacity", 1);
+            links.style("opacity", 0.6);
+            document.getElementById('functionFilter').value = 'all';
+            document.getElementById('viewMode').value = 'hierarchical';
+        }
+
+        function exportGraph() {
+            const svgElement = document.querySelector("#graphContainer svg");
+            const svgData = new XMLSerializer().serializeToString(svgElement);
+            const svgBlob = new Blob([svgData], {type: "image/svg+xml;charset=utf-8"});
+            const svgUrl = URL.createObjectURL(svgBlob);
+            
+            const downloadLink = document.createElement("a");
+            downloadLink.href = svgUrl;
+            downloadLink.download = "dao-cli-function-graph.svg";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+
+        // Initialize on load
+        window.addEventListener('load', initializeGraph);
+        window.addEventListener('resize', () => {
+            setTimeout(initializeGraph, 100);
+        });
+    </script>
+</body>
+</html> 
