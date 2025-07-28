@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 import SearchPage from './components/SearchPage';
 import DAODetail from './components/DAODetail';
 import RegistryStats from './components/RegistryStats';
-import { Search, BarChart3, Home, Database } from 'lucide-react';
+import Documentation from './components/Documentation';
+import { Search, BarChart3, Home, Database, BookOpen } from 'lucide-react';
 import './App.css';
 
 // Navigation component with active state
@@ -13,6 +14,7 @@ const Navigation = () => {
   const navItems = [
     { path: '/', label: 'Search DAOs', icon: Search },
     { path: '/stats', label: 'Registry Stats', icon: BarChart3 },
+    { path: '/docs', label: 'Documentation', icon: BookOpen },
   ];
 
   return (
@@ -68,6 +70,7 @@ function App() {
             <Route path="/" element={<SearchPage />} />
             <Route path="/dao/:id" element={<DAODetail />} />
             <Route path="/stats" element={<RegistryStats />} />
+            <Route path="/docs" element={<Documentation />} />
           </Routes>
         </main>
         

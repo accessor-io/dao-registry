@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart3, Users, TrendingUp, Shield, Database, Activity, Globe, Award } from 'lucide-react';
+import { BarChart3, Users, TrendingUp, Shield, Database, Activity, Globe, Award, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const RegistryStats = () => {
@@ -80,9 +81,30 @@ const RegistryStats = () => {
           </h1>
           <BarChart3 className="w-8 h-8 text-purple-600 ml-3" />
         </div>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
           Comprehensive analytics and insights about the DAO registry ecosystem
         </p>
+        
+        {/* Help Section */}
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 max-w-2xl mx-auto">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                <Sparkles className="w-4 h-4 text-green-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-green-900">Understanding Statistics?</h3>
+                <p className="text-sm text-green-700">Learn how to interpret metrics and analyze trends</p>
+              </div>
+            </div>
+            <Link 
+              to="/docs" 
+              className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
+            >
+              View Documentation
+            </Link>
+          </div>
+        </div>
       </div>
 
       {/* Time Range Selector */}

@@ -101,8 +101,28 @@ const SearchPage = () => {
           </h1>
           <Sparkles className="w-8 h-8 text-purple-600 ml-3" />
         </div>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Discover and explore decentralized autonomous organizations with advanced search and filtering capabilities
+        <p className="text-lg text-gray-600 mb-6">Discover and analyze Decentralized Autonomous Organizations across multiple blockchain networks</p>
+        
+        {/* Help Section */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <Sparkles className="w-4 h-4 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-blue-900">Need Help?</h3>
+                <p className="text-sm text-blue-700">Learn how to search, filter, and understand DAO information</p>
+              </div>
+            </div>
+            <Link 
+              to="/docs" 
+              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              View Documentation
+            </Link>
+          </div>
+        </div>
         </p>
       </div>
 
