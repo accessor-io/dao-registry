@@ -53,9 +53,9 @@ const updateDAOSchema = Joi.object({
 const querySchema = Joi.object({
   page: Joi.number().integer().min(1).default(1),
   limit: Joi.number().integer().min(1).max(100).default(20),
-  chainId: Joi.number().integer().positive().optional(),
-  status: Joi.string().valid('Pending', 'Active', 'Suspended', 'Inactive', 'Banned').optional(),
-  verified: Joi.boolean().optional(),
+  chainId: Joi.any().optional(),
+  status: Joi.any().optional(),
+  verified: Joi.any().optional(),
   tags: Joi.array().items(Joi.string()).optional(),
   search: Joi.string().optional(),
   sortBy: Joi.string().valid('name', 'createdAt', 'updatedAt', 'totalMembers', 'totalProposals').default('createdAt'),
@@ -78,11 +78,11 @@ router.get('/', validateRequest(querySchema, 'query'), async (req, res, next) =>
     } = req.query;
 
     const filters = {
-      chainId: chainId ? parseInt(chainId) : null,
-      status,
-      verified: verified !== undefined ? verified === 'true' : null,
+      chainId: chainId && chainId !== '' ? parseInt(chainId) : null,
+      status: status && status !== '' ? status : null,
+      verified: verified !== undefined && verified !== '' ? verified === 'true' : null,
       tags: tags ? (Array.isArray(tags) ? tags : [tags]) : null,
-      search
+      search: search && search !== '' ? search : null
     };
 
     const options = {
@@ -113,6 +113,22 @@ router.get('/', validateRequest(querySchema, 'query'), async (req, res, next) =>
         hasNext: result.hasNext,
         hasPrev: result.hasPrev
       }
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Get registry statistics
+router.get('/stats', async (req, res, next) => {
+  try {
+    const stats = await daoService.getRegistryStats();
+
+    logger.info('Retrieved registry statistics');
+
+    res.json({
+      success: true,
+      data: stats
     });
   } catch (error) {
     next(error);
@@ -312,22 +328,6 @@ router.patch('/:id/status', async (req, res, next) => {
       success: true,
       data: updatedDAO,
       message: `DAO status changed to ${status}`
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Get registry statistics
-router.get('/stats/registry', async (req, res, next) => {
-  try {
-    const stats = await daoService.getRegistryStats();
-
-    logger.info('Retrieved registry statistics');
-
-    res.json({
-      success: true,
-      data: stats
     });
   } catch (error) {
     next(error);
