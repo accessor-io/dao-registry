@@ -1,7 +1,7 @@
-// Comprehensive Mock Data for DAO Registry
+//   Mock Data for DAO Registry
 // Uses all JSON key slots for testing
 
-const comprehensiveMockDAOs = [
+const  MockDAOs = [
   {
     id: '1',
     name: 'Uniswap DAO',
@@ -355,7 +355,7 @@ const comprehensiveMockDAOs = [
   }
 ];
 
-const comprehensiveReservedSubdomains = new Map([
+const  ReservedSubdomains = new Map([
   // Priority 1: Critical system subdomains (10 entries)
   ['www', { priority: 1, category: 'system', description: 'World Wide Web', allowedFor: ['system'], restrictions: ['blocked'] }],
   ['api', { priority: 1, category: 'system', description: 'Application Programming Interface', allowedFor: ['system'], restrictions: ['blocked'] }],
@@ -406,6 +406,6 @@ const comprehensiveReservedSubdomains = new Map([
 ]);
 
 module.exports = {
-  comprehensiveMockDAOs,
-  comprehensiveReservedSubdomains
+   MockDAOs,
+   ReservedSubdomains
 }; 

@@ -38,8 +38,8 @@ class DAOService {
         } = options;
 
         // Import mock data only when needed
-        const { comprehensiveMockDAOs } = require('./mock-data');
-        let filteredDAOs = [...comprehensiveMockDAOs];
+        const {  MockDAOs } = require('./mock-data');
+        let filteredDAOs = [... MockDAOs];
 
         // Apply filters
         if (filters.chainId) {
@@ -135,8 +135,8 @@ class DAOService {
         return dao;
       } else {
         // Fallback to mock data
-        const { comprehensiveMockDAOs } = require('./mock-data');
-        const dao = comprehensiveMockDAOs.find(d => d.id === id);
+        const {  MockDAOs } = require('./mock-data');
+        const dao =  MockDAOs.find(d => d.id === id);
         
         if (!dao) {
           throw new Error('DAO not found');
@@ -171,8 +171,8 @@ class DAOService {
         return dao;
       } else {
         // Fallback to mock data
-        const { comprehensiveMockDAOs } = require('./mock-data');
-        const dao = comprehensiveMockDAOs.find(d => 
+        const {  MockDAOs } = require('./mock-data');
+        const dao =  MockDAOs.find(d => 
           d.contractAddress.toLowerCase() === contractAddress.toLowerCase() && 
           d.chainId === chainId
         );
@@ -342,19 +342,19 @@ class DAOService {
         return stats;
       } else {
         // Fallback to mock data
-        const { comprehensiveMockDAOs } = require('./mock-data');
-        const totalDAOs = comprehensiveMockDAOs.length;
-        const activeDAOs = comprehensiveMockDAOs.filter(d => d.status === 'Active').length;
-        const verifiedDAOs = comprehensiveMockDAOs.filter(d => d.verified).length;
-        const pendingDAOs = comprehensiveMockDAOs.filter(d => d.status === 'Pending').length;
+        const {  MockDAOs } = require('./mock-data');
+        const totalDAOs =  MockDAOs.length;
+        const activeDAOs =  MockDAOs.filter(d => d.status === 'Active').length;
+        const verifiedDAOs =  MockDAOs.filter(d => d.verified).length;
+        const pendingDAOs =  MockDAOs.filter(d => d.status === 'Pending').length;
 
         const chainStats = {};
-        comprehensiveMockDAOs.forEach(dao => {
+         MockDAOs.forEach(dao => {
           chainStats[dao.chainId] = (chainStats[dao.chainId] || 0) + 1;
         });
 
         const governanceTypeStats = {};
-        comprehensiveMockDAOs.forEach(dao => {
+         MockDAOs.forEach(dao => {
           governanceTypeStats[dao.governanceType] = (governanceTypeStats[dao.governanceType] || 0) + 1;
         });
 

@@ -1,7 +1,7 @@
 /**
  * URL Encoding Service for Subdomain Management
  * 
- * Provides comprehensive URL encoding/decoding functionality with regex patterns
+ * Provides   URL encoding/decoding functionality with regex patterns
  * for subdomain validation, sanitization, and proper handling of special characters.
  */
 

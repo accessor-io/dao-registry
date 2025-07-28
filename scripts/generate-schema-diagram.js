@@ -76,7 +76,7 @@ graph TB
     CrossChainQuery --> UnifiedDataLayer[Unified Data Layer]
     
     %% Event System
-    UnifiedDataLayer --> EventSystem[Comprehensive Event Logging]
+    UnifiedDataLayer --> EventSystem[  Event Logging]
     EventSystem --> SchemaEvents[Schema Creation/Update/Removal Events]
     EventSystem --> UsageEvents[Usage Pattern Tracking]
     EventSystem --> AuditTrail[Audit Trail Maintenance]
@@ -89,7 +89,7 @@ graph TB
     Statistics --> UsageTrends[Usage Trend Analysis]
     
     %% Error Handling
-    UsageTrends --> ErrorHandling[Comprehensive Error Handling]
+    UsageTrends --> ErrorHandling[  Error Handling]
     ErrorHandling --> InputValidation[Input Validation]
     ErrorHandling --> BusinessLogic[Business Logic Validation]
     ErrorHandling --> DescriptiveErrors[Descriptive Error Messages]
