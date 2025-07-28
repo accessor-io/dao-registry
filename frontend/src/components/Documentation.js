@@ -413,7 +413,7 @@ const Documentation = () => {
               <h3 className="font-semibold text-sm text-green-900">Key Endpoints</h3>
               <ul className="text-xs text-green-800 mt-1 space-y-1">
                 <li>• GET /daos - List all DAOs</li>
-                <li>• GET /daos/{id} - Get specific DAO</li>
+                <li>• GET /daos/&#123;id&#125; - Get specific DAO</li>
                 <li>• GET /stats - Registry statistics</li>
                 <li>• GET /health - API health check</li>
               </ul>
@@ -550,7 +550,7 @@ const Documentation = () => {
               <h3 className="font-semibold text-sm text-blue-900">Common Endpoints</h3>
               <ul className="text-xs text-blue-800 mt-1 space-y-1">
                 <li>• GET /daos - List all DAOs</li>
-                <li>• GET /daos/{id} - Get specific DAO</li>
+                <li>• GET /daos/&#123;id&#125; - Get specific DAO</li>
                 <li>• GET /stats - Registry statistics</li>
                 <li>• GET /health - API health check</li>
               </ul>

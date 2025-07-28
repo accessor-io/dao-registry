@@ -123,7 +123,6 @@ const SearchPage = () => {
             </Link>
           </div>
         </div>
-        </p>
       </div>
 
       {/* Enhanced Search Bar */}
