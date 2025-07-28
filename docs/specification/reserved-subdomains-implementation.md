@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Reserved Subdomains system provides comprehensive management of reserved subdomains for the DAO Registry, ensuring consistent naming conventions, preventing conflicts, and maintaining system integrity across ENS domains.
+The Reserved Subdomains system provides   management of reserved subdomains for the DAO Registry, ensuring consistent naming conventions, preventing conflicts, and maintaining system integrity across ENS domains.
 
 ## System Architecture
 

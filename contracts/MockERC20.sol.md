@@ -87,7 +87,7 @@ function getTokenInfo()
     )
 ```
 
-**Description**: Returns comprehensive token information
+**Description**: Returns   token information
 
 **Returns**:
 - `name`: Token name
@@ -237,7 +237,7 @@ token.mint(recipientAddress, 1000000 * 10**18);
 
 ### Check Token Info
 ```solidity
-// Get comprehensive token information
+// Get   token information
 (
     string memory name,
     string memory symbol,
@@ -302,7 +302,7 @@ uint256 percentage = token.getBalancePercentage(userAddress);
 ### Mock Functionality
 - Easy token creation for testing
 - Flexible decimal configuration
-- Comprehensive token information
+-   token information
 
 ### Development Tools
 - Balance percentage calculations
@@ -366,7 +366,7 @@ uint256 percentage = token.getBalancePercentage(userAddress);
 ## Security Best Practices
 
 ### Code Review
-- Comprehensive security review
+-   security review
 - External audit recommendations
 - Bug bounty program
 
@@ -376,7 +376,7 @@ uint256 percentage = token.getBalancePercentage(userAddress);
 - Emergency pause functionality
 
 ### Testing
-- Comprehensive test coverage
+-   test coverage
 - Fuzzing and property-based testing
 - Formal verification where applicable
 
@@ -406,7 +406,7 @@ npx hardhat verify --network sepolia CONTRACT_ADDRESS "Token Name" "SYMBOL" 18
 ## Documentation Standards
 
 ### Code Comments
-- Comprehensive function documentation
+-   function documentation
 - Parameter descriptions
 - Return value explanations
 

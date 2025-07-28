@@ -198,7 +198,7 @@ Network 3 ──┘
 ### 3. Smart Contract Security
 
 - **OpenZeppelin security patterns**
-- **Comprehensive testing**
+- **  testing**
 - **Formal verification**
 - **Upgradeable architecture**
 

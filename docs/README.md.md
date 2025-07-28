@@ -2,13 +2,13 @@
 
 ## Overview
 
-Welcome to the comprehensive documentation for the DAO Registry system - a decentralized platform for tracking, analyzing, and governing Decentralized Autonomous Organizations (DAOs) across multiple blockchain networks.
+Welcome to the   documentation for the DAO Registry system - a decentralized platform for tracking, analyzing, and governing Decentralized Autonomous Organizations (DAOs) across multiple blockchain networks.
 
 ## System Purpose
 
 The DAO Registry is designed to provide:
 
-- **Comprehensive DAO Tracking**: Register and monitor DAOs across multiple blockchain networks
+- **  DAO Tracking**: Register and monitor DAOs across multiple blockchain networks
 - **Advanced Analytics**: Real-time insights into DAO performance, governance, and treasury management
 - **Governance Tools**: Integrated voting mechanisms and proposal management
 - **ENS Integration**: Seamless integration with Ethereum Name Service for metadata management
@@ -91,7 +91,7 @@ The system is built with a modular, layered architecture:
 - **Execution Monitoring**: Automated proposal execution
 
 ### Security Features
-- **Smart Contract Audits**: Comprehensive security reviews
+- **Smart Contract Audits**:   security reviews
 - **Input Validation**: Robust data validation
 - **XSS Prevention**: Cross-site scripting protection
 - **Secure API Design**: RESTful security best practices

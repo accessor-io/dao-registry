@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines the comprehensive URL encoding patterns and regex expressions used in the DAO Registry system for subdomain validation, sanitization, and proper handling of special characters.
+This document outlines the   URL encoding patterns and regex expressions used in the DAO Registry system for subdomain validation, sanitization, and proper handling of special characters.
 
 ## Core URL Encoding Patterns
 
@@ -152,7 +152,7 @@ const sanitized = URLEncodingService.sanitizeSubdomain("  My-Subdomain!  ");
 ### Validation Functions
 
 #### `validateSubdomainFormat(subdomain: string)`
-Validates subdomain format with comprehensive checks.
+Validates subdomain format with   checks.
 
 ```typescript
 // Example
@@ -316,7 +316,7 @@ const available = SubdomainEncodingService.findAvailableSubdomain("admin", ["adm
 
 ## Integration with Reserved Subdomains Service
 
-The URL encoding service is integrated with the Reserved Subdomains Service to provide comprehensive validation:
+The URL encoding service is integrated with the Reserved Subdomains Service to provide   validation:
 
 ### Enhanced Validation
 
@@ -326,7 +326,7 @@ const oldValidation = reservedService.validateSubdomain("My Subdomain");
 
 // After URL encoding integration
 const newValidation = reservedService.validateSubdomain("My Subdomain");
-// Now includes: sanitized version, encoding stats, comprehensive error checking
+// Now includes: sanitized version, encoding stats,   error checking
 ```
 
 ### URL-Safe Operations
@@ -488,4 +488,4 @@ interface EncodingMetrics {
 
 ## Conclusion
 
-The URL encoding patterns and regex expressions provide a robust foundation for subdomain validation and sanitization in the DAO Registry system. The comprehensive patterns ensure DNS compliance, ENS compatibility, and proper handling of internationalized domain names while maintaining security and performance standards. 
+The URL encoding patterns and regex expressions provide a robust foundation for subdomain validation and sanitization in the DAO Registry system. The   patterns ensure DNS compliance, ENS compatibility, and proper handling of internationalized domain names while maintaining security and performance standards. 

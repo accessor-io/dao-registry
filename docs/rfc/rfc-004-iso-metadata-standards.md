@@ -9,7 +9,7 @@
 
 ## Abstract
 
-This RFC integrates ISO 23081-2:2021 "Information and documentation - Metadata for managing records - Part 2: Conceptual and implementation issues" into the DAO Registry system. The standard provides a comprehensive framework for metadata management that ensures records authenticity, reliability, integrity, and usability throughout their lifecycle.
+This RFC integrates ISO 23081-2:2021 "Information and documentation - Metadata for managing records - Part 2: Conceptual and implementation issues" into the DAO Registry system. The standard provides a   framework for metadata management that ensures records authenticity, reliability, integrity, and usability throughout their lifecycle.
 
 ## Table of Contents
 
