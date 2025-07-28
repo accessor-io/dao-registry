@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { TrendingUp, Users, Shield, Activity, BarChart3, Globe, Target } from 'lucide-react';
+import { BarChart3, Users, TrendingUp, Shield, Database, Activity, Globe, Award } from 'lucide-react';
 import axios from 'axios';
 
 const RegistryStats = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [timeRange, setTimeRange] = useState('7d');
 
   useEffect(() => {
     fetchStats();
-  }, []);
+  }, [timeRange]);
 
   const fetchStats = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/api/v1/daos/stats');
+      const response = await axios.get(`/api/v1/stats?timeRange=${timeRange}`);
       setStats(response.data);
     } catch (err) {
       setError('Failed to fetch registry statistics');
@@ -22,6 +23,15 @@ const RegistryStats = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const formatNumber = (num) => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1) + 'M';
+    } else if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'K';
+    }
+    return num.toString();
   };
 
   const getChainName = (chainId) => {
@@ -38,242 +48,272 @@ const RegistryStats = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-96">
+      <div className="flex justify-center items-center py-12">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-secondary-600">Loading statistics...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading registry statistics...</p>
         </div>
       </div>
     );
   }
 
-  if (error || !stats) {
+  if (error) {
     return (
-      <div className="text-center py-12">
-        <div className="text-red-600 mb-4">
-          <BarChart3 className="w-16 h-16 mx-auto" />
+      <div className="max-w-4xl mx-auto text-center py-12">
+        <div className="bg-red-50 border border-red-200 rounded-xl p-8">
+          <BarChart3 className="w-16 h-16 text-red-400 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Error Loading Statistics</h3>
+          <p className="text-gray-600">{error}</p>
         </div>
-        <h3 className="text-lg font-medium text-secondary-900 mb-2">Error Loading Statistics</h3>
-        <p className="text-secondary-600">{error || 'Statistics not available'}</p>
-        <button 
-          onClick={fetchStats}
-          className="btn-primary mt-4"
-        >
-          Try Again
-        </button>
       </div>
     );
   }
 
   return (
-    <div>
-      {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-secondary-900 mb-4">Registry Statistics</h1>
-        <p className="text-xl text-secondary-600 max-w-3xl mx-auto">
-            analytics and insights about DAOs across the registry
+    <div className="space-y-8">
+      {/* Enhanced Header */}
+      <div className="text-center">
+        <div className="flex items-center justify-center mb-4">
+          <BarChart3 className="w-8 h-8 text-blue-600 mr-3" />
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Registry Statistics
+          </h1>
+          <BarChart3 className="w-8 h-8 text-purple-600 ml-3" />
+        </div>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          Comprehensive analytics and insights about the DAO registry ecosystem
         </p>
       </div>
 
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        <div className="card text-center">
-          <div className="flex items-center justify-center w-12 h-12 bg-primary-100 rounded-lg mx-auto mb-4">
-            <Users className="w-6 h-6 text-primary-600" />
+      {/* Time Range Selector */}
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-gray-900">Time Range</h2>
+            <div className="flex space-x-2">
+              {[
+                { value: '24h', label: '24 Hours' },
+                { value: '7d', label: '7 Days' },
+                { value: '30d', label: '30 Days' },
+                { value: '90d', label: '90 Days' }
+              ].map((range) => (
+                <button
+                  key={range.value}
+                  onClick={() => setTimeRange(range.value)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    timeRange === range.value
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {range.label}
+                </button>
+              ))}
+            </div>
           </div>
-          <h3 className="text-2xl font-bold text-secondary-900 mb-2">
-            {stats.totalDAOs || 0}
-          </h3>
-          <p className="text-secondary-600">Total DAOs</p>
-        </div>
-
-        <div className="card text-center">
-          <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg mx-auto mb-4">
-            <Shield className="w-6 h-6 text-green-600" />
-          </div>
-          <h3 className="text-2xl font-bold text-secondary-900 mb-2">
-            {stats.verifiedDAOs || 0}
-          </h3>
-          <p className="text-secondary-600">Verified DAOs</p>
-        </div>
-
-        <div className="card text-center">
-          <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mx-auto mb-4">
-            <Activity className="w-6 h-6 text-blue-600" />
-          </div>
-          <h3 className="text-2xl font-bold text-secondary-900 mb-2">
-            {stats.activeDAOs || 0}
-          </h3>
-          <p className="text-secondary-600">Active DAOs</p>
-        </div>
-
-        <div className="card text-center">
-          <div className="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-lg mx-auto mb-4">
-            <Globe className="w-6 h-6 text-purple-600" />
-          </div>
-          <h3 className="text-2xl font-bold text-secondary-900 mb-2">
-            {stats.supportedNetworks || 0}
-          </h3>
-          <p className="text-secondary-600">Supported Networks</p>
         </div>
       </div>
 
-      {/* Detailed Statistics */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Network Distribution */}
-        <div className="card">
-          <h2 className="text-xl font-semibold text-secondary-900 mb-6 flex items-center">
-            <Globe className="w-5 h-5 mr-2" />
-            DAOs by Network
-          </h2>
-          {stats.networkDistribution ? (
+      {/* Enhanced Overview Stats */}
+      <div className="max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-6 text-center">
+            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Database className="w-6 h-6 text-blue-600" />
+            </div>
+            <h3 className="text-3xl font-bold text-gray-900 mb-1">
+              {formatNumber(stats?.totalDAOs || 0)}
+            </h3>
+            <p className="text-gray-600">Total DAOs</p>
+            <div className="mt-2 text-sm text-green-600">
+              +{stats?.newDAOsThisPeriod || 0} this period
+            </div>
+          </div>
+
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-6 text-center">
+            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Users className="w-6 h-6 text-green-600" />
+            </div>
+            <h3 className="text-3xl font-bold text-gray-900 mb-1">
+              {formatNumber(stats?.totalMembers || 0)}
+            </h3>
+            <p className="text-gray-600">Total Members</p>
+            <div className="mt-2 text-sm text-green-600">
+              +{stats?.newMembersThisPeriod || 0} this period
+            </div>
+          </div>
+
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-6 text-center">
+            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Activity className="w-6 h-6 text-purple-600" />
+            </div>
+            <h3 className="text-3xl font-bold text-gray-900 mb-1">
+              {formatNumber(stats?.totalProposals || 0)}
+            </h3>
+            <p className="text-gray-600">Total Proposals</p>
+            <div className="mt-2 text-sm text-green-600">
+              +{stats?.newProposalsThisPeriod || 0} this period
+            </div>
+          </div>
+
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-6 text-center">
+            <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Award className="w-6 h-6 text-yellow-600" />
+            </div>
+            <h3 className="text-3xl font-bold text-gray-900 mb-1">
+              {formatNumber(stats?.verifiedDAOs || 0)}
+            </h3>
+            <p className="text-gray-600">Verified DAOs</p>
+            <div className="mt-2 text-sm text-blue-600">
+              {((stats?.verifiedDAOs / stats?.totalDAOs) * 100 || 0).toFixed(1)}% of total
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Enhanced Detailed Stats */}
+      <div className="max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Chain Distribution */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+              <Globe className="w-5 h-5 mr-2 text-blue-600" />
+              Chain Distribution
+            </h2>
+            
             <div className="space-y-4">
-              {Object.entries(stats.networkDistribution).map(([chainId, count]) => (
-                <div key={chainId} className="flex items-center justify-between">
+              {stats?.chainDistribution?.map((chain) => (
+                <div key={chain.chainId} className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <div className="w-3 h-3 bg-primary-600 rounded-full mr-3"></div>
-                    <span className="font-medium">{getChainName(parseInt(chainId))}</span>
+                    <div className="w-3 h-3 bg-blue-600 rounded-full mr-3"></div>
+                    <span className="text-gray-700">{getChainName(chain.chainId)}</span>
                   </div>
-                  <div className="flex items-center">
-                    <span className="text-lg font-semibold text-secondary-900 mr-2">{count}</span>
-                    <span className="text-sm text-secondary-500">
-                      ({((count / stats.totalDAOs) * 100).toFixed(1)}%)
+                  <div className="flex items-center space-x-2">
+                    <div className="w-24 bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-blue-600 h-2 rounded-full" 
+                        style={{ width: `${(chain.count / stats.totalDAOs) * 100}%` }}
+                      ></div>
+                    </div>
+                    <span className="text-sm font-medium text-gray-900 w-12 text-right">
+                      {chain.count}
                     </span>
                   </div>
                 </div>
               ))}
             </div>
-          ) : (
-            <p className="text-secondary-500">No network distribution data available</p>
-          )}
-        </div>
+          </div>
 
-        {/* Governance Types */}
-        <div className="card">
-          <h2 className="text-xl font-semibold text-secondary-900 mb-6 flex items-center">
-            <Target className="w-5 h-5 mr-2" />
-            Governance Types
-          </h2>
-          {stats.governanceTypes ? (
+          {/* Status Distribution */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+              <Shield className="w-5 h-5 mr-2 text-green-600" />
+              Status Distribution
+            </h2>
+            
             <div className="space-y-4">
-              {Object.entries(stats.governanceTypes).map(([type, count]) => (
-                <div key={type} className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <div className="w-3 h-3 bg-green-600 rounded-full mr-3"></div>
-                    <span className="font-medium">{type}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-lg font-semibold text-secondary-900 mr-2">{count}</span>
-                    <span className="text-sm text-secondary-500">
-                      ({((count / stats.totalDAOs) * 100).toFixed(1)}%)
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-secondary-500">No governance type data available</p>
-          )}
-        </div>
-
-        {/* Status Distribution */}
-        <div className="card">
-          <h2 className="text-xl font-semibold text-secondary-900 mb-6 flex items-center">
-            <Activity className="w-5 h-5 mr-2" />
-            Status Distribution
-          </h2>
-          {stats.statusDistribution ? (
-            <div className="space-y-4">
-              {Object.entries(stats.statusDistribution).map(([status, count]) => (
-                <div key={status} className="flex items-center justify-between">
+              {stats?.statusDistribution?.map((status) => (
+                <div key={status.status} className="flex items-center justify-between">
                   <div className="flex items-center">
                     <div className={`w-3 h-3 rounded-full mr-3 ${
-                      status === 'Active' ? 'bg-green-600' :
-                      status === 'Pending' ? 'bg-yellow-600' :
-                      status === 'Suspended' ? 'bg-red-600' :
-                      'bg-gray-600'
+                      status.status === 'Active' ? 'bg-green-600' :
+                      status.status === 'Pending' ? 'bg-yellow-600' :
+                      status.status === 'Suspended' ? 'bg-red-600' : 'bg-gray-600'
                     }`}></div>
-                    <span className="font-medium">{status}</span>
+                    <span className="text-gray-700">{status.status}</span>
                   </div>
-                  <div className="flex items-center">
-                    <span className="text-lg font-semibold text-secondary-900 mr-2">{count}</span>
-                    <span className="text-sm text-secondary-500">
-                      ({((count / stats.totalDAOs) * 100).toFixed(1)}%)
+                  <div className="flex items-center space-x-2">
+                    <div className="w-24 bg-gray-200 rounded-full h-2">
+                      <div 
+                        className={`h-2 rounded-full ${
+                          status.status === 'Active' ? 'bg-green-600' :
+                          status.status === 'Pending' ? 'bg-yellow-600' :
+                          status.status === 'Suspended' ? 'bg-red-600' : 'bg-gray-600'
+                        }`}
+                        style={{ width: `${(status.count / stats.totalDAOs) * 100}%` }}
+                      ></div>
+                    </div>
+                    <span className="text-sm font-medium text-gray-900 w-12 text-right">
+                      {status.count}
                     </span>
                   </div>
                 </div>
               ))}
             </div>
-          ) : (
-            <p className="text-secondary-500">No status distribution data available</p>
-          )}
-        </div>
-
-        {/* Recent Activity */}
-        <div className="card">
-          <h2 className="text-xl font-semibold text-secondary-900 mb-6 flex items-center">
-            <TrendingUp className="w-5 h-5 mr-2" />
-            Recent Activity
-          </h2>
-          {stats.recentActivity ? (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-secondary-600">New DAOs (30 days):</span>
-                <span className="font-semibold text-secondary-900">{stats.recentActivity.newDAOs || 0}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-secondary-600">Updated DAOs (30 days):</span>
-                <span className="font-semibold text-secondary-900">{stats.recentActivity.updatedDAOs || 0}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-secondary-600">Total Proposals:</span>
-                <span className="font-semibold text-secondary-900">{stats.recentActivity.totalProposals || 0}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-secondary-600">Active Proposals:</span>
-                <span className="font-semibold text-secondary-900">{stats.recentActivity.activeProposals || 0}</span>
-              </div>
-            </div>
-          ) : (
-            <p className="text-secondary-500">No recent activity data available</p>
-          )}
+          </div>
         </div>
       </div>
 
-      {/* Additional Metrics */}
-      {stats.additionalMetrics && (
-        <div className="card mt-8">
-          <h2 className="text-xl font-semibold text-secondary-900 mb-6">Additional Metrics</h2>
+      {/* Enhanced Growth Metrics */}
+      <div className="max-w-6xl mx-auto">
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+            <TrendingUp className="w-5 h-5 mr-2 text-purple-600" />
+            Growth Metrics
+          </h2>
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center">
-              <div className="text-2xl font-bold text-primary-600 mb-2">
-                {stats.additionalMetrics.averageMembers || 0}
+              <div className="text-2xl font-bold text-gray-900 mb-1">
+                {stats?.growthRate?.daoGrowth || 0}%
               </div>
-              <div className="text-secondary-600">Average Members per DAO</div>
+              <p className="text-gray-600">DAO Growth Rate</p>
+              <div className="mt-2 text-sm text-green-600">
+                +{stats?.growthRate?.newDAOs || 0} new DAOs
+              </div>
             </div>
+            
             <div className="text-center">
-              <div className="text-2xl font-bold text-primary-600 mb-2">
-                {stats.additionalMetrics.averageProposals || 0}
+              <div className="text-2xl font-bold text-gray-900 mb-1">
+                {stats?.growthRate?.memberGrowth || 0}%
               </div>
-              <div className="text-secondary-600">Average Proposals per DAO</div>
+              <p className="text-gray-600">Member Growth Rate</p>
+              <div className="mt-2 text-sm text-green-600">
+                +{stats?.growthRate?.newMembers || 0} new members
+              </div>
             </div>
+            
             <div className="text-center">
-              <div className="text-2xl font-bold text-primary-600 mb-2">
-                {stats.additionalMetrics.totalTreasuryValue || 0} ETH
+              <div className="text-2xl font-bold text-gray-900 mb-1">
+                {stats?.growthRate?.proposalGrowth || 0}%
               </div>
-              <div className="text-secondary-600">Total Treasury Value</div>
+              <p className="text-gray-600">Proposal Growth Rate</p>
+              <div className="mt-2 text-sm text-green-600">
+                +{stats?.growthRate?.newProposals || 0} new proposals
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Enhanced Top DAOs */}
+      {stats?.topDAOs && stats.topDAOs.length > 0 && (
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">Top DAOs by Activity</h2>
+            
+            <div className="space-y-4">
+              {stats.topDAOs.map((dao, index) => (
+                <div key={dao.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center">
+                    <div className="w-8 h-8 bg-blue-600 text-white rounded-lg flex items-center justify-center mr-4 font-bold">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <h3 className="font-medium text-gray-900">{dao.name}</h3>
+                      <p className="text-sm text-gray-600">{getChainName(dao.chainId)}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-medium text-gray-900">{dao.activityScore}</div>
+                    <div className="text-sm text-gray-600">Activity Score</div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       )}
-
-      {/* Last Updated */}
-      <div className="text-center mt-8 text-secondary-500 text-sm">
-        <p>Last updated: {new Date().toLocaleString()}</p>
-        <p className="mt-2">
-          Statistics are updated in real-time from blockchain data
-        </p>
-      </div>
     </div>
   );
 };
