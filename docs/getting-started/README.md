@@ -1,6 +1,6 @@
 # Getting Started
 
-Welcome to the DAO Registry documentation! This guide will help you get started with the DAO Registry system, a comprehensive platform for tracking, analyzing, and governing Decentralized Autonomous Organizations (DAOs) across multiple blockchain networks.
+Welcome to the DAO Registry documentation! This guide will help you get started with the DAO Registry system, a   platform for tracking, analyzing, and governing Decentralized Autonomous Organizations (DAOs) across multiple blockchain networks.
 
 ## What is DAO Registry?
 
@@ -15,7 +15,7 @@ The DAO Registry is a decentralized platform that provides:
 ## Key Features
 
 ### **DAO Registration & Management**
-- Register new DAOs with comprehensive metadata
+- Register new DAOs with   metadata
 - Track governance structures and voting mechanisms
 - Monitor treasury operations and token distributions
 
@@ -39,7 +39,7 @@ The DAO Registry is a decentralized platform that provides:
 
 ### **ISO Compliance**
 - ISO 23081-2:2021 metadata standards
-- Comprehensive audit trails
+-   audit trails
 - Data retention policies
 - Security classification system
 
@@ -97,7 +97,7 @@ The DAO Registry is a decentralized platform that provides:
 
 ## Getting Help
 
-- **Documentation**: This comprehensive guide covers all aspects
+- **Documentation**: This   guide covers all aspects
 - **GitHub Issues**: Report bugs and request features
 - **Discord Community**: Join our community for support
 - **Email Support**: Contact us directly for enterprise support

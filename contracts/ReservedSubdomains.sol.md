@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `ReservedSubdomains.sol` contract manages reserved subdomains for the DAO Registry system. It provides a comprehensive system for managing subdomain reservations with priority levels, access control, and ENS integration.
+The `ReservedSubdomains.sol` contract manages reserved subdomains for the DAO Registry system. It provides a   system for managing subdomain reservations with priority levels, access control, and ENS integration.
 
 ## Contract Information
 
@@ -516,7 +516,7 @@ ReservedSubdomainInfo memory info = reservedSubdomains.getSubdomainInfo("governa
 ## Security Best Practices
 
 ### Code Review
-- Comprehensive security review
+-   security review
 - External audit recommendations
 - Bug bounty program
 
@@ -526,6 +526,6 @@ ReservedSubdomainInfo memory info = reservedSubdomains.getSubdomainInfo("governa
 - Emergency pause functionality
 
 ### Testing
-- Comprehensive test coverage
+-   test coverage
 - Fuzzing and property-based testing
 - Formal verification where applicable 

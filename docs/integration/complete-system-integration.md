@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide demonstrates how all DAO Registry components work together to provide a comprehensive blockchain governance and metadata management system.
+This guide demonstrates how all DAO Registry components work together to provide a   blockchain governance and metadata management system.
 
 ## System Architecture
 
@@ -49,7 +49,7 @@ const dnsSafe = URLEncodingService.encodeDNS('Hello World!');
 const ensSafe = URLEncodingService.encodeENS('My Domain');
 // Result: "my-domain"
 
-// Validation with comprehensive checks
+// Validation with   checks
 const validation = URLEncodingService.validateSubdomainFormat('test-subdomain');
 // Returns: { isValid: boolean, errors: string[], sanitized?: string }
 ```
@@ -75,7 +75,7 @@ const priority = reservedService.getPriority('voting');
 
 // Validate subdomain with URL encoding
 const validation = reservedService.validateSubdomain('my-subdomain');
-// Returns comprehensive validation result with encoding stats
+// Returns   validation result with encoding stats
 ```
 
 ### 3. ENS Integration
@@ -520,7 +520,7 @@ curl "http://localhost:3000/api/reserved-subdomains?priority=1"
 
 ## System Benefits
 
-### 1. **Comprehensive Validation**
+### 1. **  Validation**
 - URL encoding ensures DNS and ENS compatibility
 - Reserved subdomains prevent conflicts
 - ISO metadata standards ensure quality
@@ -541,7 +541,7 @@ curl "http://localhost:3000/api/reserved-subdomains?priority=1"
 - ISO metadata standards
 
 ### 5. **Developer Experience**
-- Comprehensive error handling
+-   error handling
 - Detailed validation responses
 - Clear API documentation
 

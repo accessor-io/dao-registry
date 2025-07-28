@@ -1,14 +1,10 @@
 const { logger } = require('../utils/logger');
-
-// Import comprehensive mock data
-const { comprehensiveMockDAOs } = require('./mock-data');
-
-// Use comprehensive mock data
-const mockDAOs = comprehensiveMockDAOs;
+const { DAOContractService } = require('./blockchain/dao-contract-service');
 
 class DAOService {
   constructor() {
-    this.daos = [...mockDAOs];
+    this.blockchainService = new DAOContractService();
+    this.useBlockchainData = process.env.USE_BLOCKCHAIN_DATA === 'true' || true; // Default to true
   }
 
   /**
@@ -19,82 +15,100 @@ class DAOService {
    */
   async getAllDAOs(filters = {}, options = {}) {
     try {
-      const {
-        page = 1,
-        limit = 20,
-        sortBy = 'createdAt',
-        sortOrder = 'desc'
-      } = options;
-
-      let filteredDAOs = [...this.daos];
-
-      // Apply filters
-      if (filters.chainId) {
-        filteredDAOs = filteredDAOs.filter(dao => dao.chainId === filters.chainId);
-      }
-
-      if (filters.status) {
-        filteredDAOs = filteredDAOs.filter(dao => dao.status === filters.status);
-      }
-
-      if (filters.verified !== null) {
-        filteredDAOs = filteredDAOs.filter(dao => dao.verified === filters.verified);
-      }
-
-      if (filters.tags && filters.tags.length > 0) {
-        filteredDAOs = filteredDAOs.filter(dao => 
-          dao.tags && dao.tags.some(tag => filters.tags.includes(tag))
-        );
-      }
-
-      if (filters.search) {
-        const searchLower = filters.search.toLowerCase();
-        filteredDAOs = filteredDAOs.filter(dao => 
-          dao.name.toLowerCase().includes(searchLower) ||
-          dao.description.toLowerCase().includes(searchLower)
-        );
-      }
-
-      // Sort
-      filteredDAOs.sort((a, b) => {
-        const aVal = a[sortBy];
-        const bVal = b[sortBy];
+      if (this.useBlockchainData) {
+        // Use blockchain data
+        const result = await this.blockchainService.getAllDAOs(filters, options);
         
-        if (sortOrder === 'asc') {
-          return aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
-        } else {
-          return aVal > bVal ? -1 : aVal < bVal ? 1 : 0;
+        logger.info(`Retrieved ${result.daos.length} DAOs from blockchain`, {
+          filters,
+          options,
+          total: result.total,
+          page: result.page,
+          totalPages: result.totalPages
+        });
+
+        return result;
+      } else {
+        // Fallback to mock data (for development/testing)
+        const {
+          page = 1,
+          limit = 20,
+          sortBy = 'createdAt',
+          sortOrder = 'desc'
+        } = options;
+
+        // Import mock data only when needed
+        const {  MockDAOs } = require('./mock-data');
+        let filteredDAOs = [... MockDAOs];
+
+        // Apply filters
+        if (filters.chainId) {
+          filteredDAOs = filteredDAOs.filter(dao => dao.chainId === filters.chainId);
         }
-      });
 
-      // Paginate
-      const offset = (page - 1) * limit;
-      const paginatedDAOs = filteredDAOs.slice(offset, offset + limit);
+        if (filters.status) {
+          filteredDAOs = filteredDAOs.filter(dao => dao.status === filters.status);
+        }
 
-      const total = filteredDAOs.length;
-      const totalPages = Math.ceil(total / limit);
-      const hasNext = page < totalPages;
-      const hasPrev = page > 1;
+        if (filters.verified !== null) {
+          filteredDAOs = filteredDAOs.filter(dao => dao.verified === filters.verified);
+        }
 
-      const result = {
-        daos: paginatedDAOs,
-        total,
-        page,
-        limit,
-        totalPages,
-        hasNext,
-        hasPrev
-      };
+        if (filters.tags && filters.tags.length > 0) {
+          filteredDAOs = filteredDAOs.filter(dao => 
+            dao.tags && dao.tags.some(tag => filters.tags.includes(tag))
+          );
+        }
 
-      logger.info(`Retrieved ${paginatedDAOs.length} DAOs`, {
-        filters,
-        options,
-        total: result.total,
-        page: result.page,
-        totalPages: result.totalPages
-      });
+        if (filters.search) {
+          const searchLower = filters.search.toLowerCase();
+          filteredDAOs = filteredDAOs.filter(dao => 
+            dao.name.toLowerCase().includes(searchLower) ||
+            dao.description.toLowerCase().includes(searchLower)
+          );
+        }
 
-      return result;
+        // Sort
+        filteredDAOs.sort((a, b) => {
+          const aVal = a[sortBy];
+          const bVal = b[sortBy];
+          
+          if (sortOrder === 'asc') {
+            return aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+          } else {
+            return aVal > bVal ? -1 : aVal < bVal ? 1 : 0;
+          }
+        });
+
+        // Paginate
+        const offset = (page - 1) * limit;
+        const paginatedDAOs = filteredDAOs.slice(offset, offset + limit);
+
+        const total = filteredDAOs.length;
+        const totalPages = Math.ceil(total / limit);
+        const hasNext = page < totalPages;
+        const hasPrev = page > 1;
+
+        const result = {
+          daos: paginatedDAOs,
+          total,
+          page,
+          limit,
+          totalPages,
+          hasNext,
+          hasPrev
+        };
+
+        logger.info(`Retrieved ${paginatedDAOs.length} DAOs from mock data`, {
+          filters,
+          options,
+          total: result.total,
+          page: result.page,
+          totalPages: result.totalPages
+        });
+
+        return result;
+      }
     } catch (error) {
       logger.error('Error getting all DAOs:', error);
       throw error;
@@ -104,18 +118,33 @@ class DAOService {
   /**
    * Get DAO by ID
    * @param {string} id - DAO ID
+   * @param {number} chainId - Chain ID (optional, defaults to 1)
    * @returns {Object} DAO data
    */
-  async getDAOById(id) {
+  async getDAOById(id, chainId = 1) {
     try {
-      const dao = this.daos.find(d => d.id === id);
-      
-      if (!dao) {
-        throw new Error('DAO not found');
-      }
+      if (this.useBlockchainData) {
+        // Use blockchain data
+        const dao = await this.blockchainService.getDAOById(id, chainId);
+        
+        if (!dao) {
+          throw new Error('DAO not found');
+        }
 
-      logger.info(`Retrieved DAO: ${id}`);
-      return dao;
+        logger.info(`Retrieved DAO from blockchain: ${id} on chain ${chainId}`);
+        return dao;
+      } else {
+        // Fallback to mock data
+        const {  MockDAOs } = require('./mock-data');
+        const dao =  MockDAOs.find(d => d.id === id);
+        
+        if (!dao) {
+          throw new Error('DAO not found');
+        }
+
+        logger.info(`Retrieved DAO from mock data: ${id}`);
+        return dao;
+      }
     } catch (error) {
       logger.error(`Error getting DAO by ID ${id}:`, error);
       throw error;
@@ -130,12 +159,31 @@ class DAOService {
    */
   async getDAOByAddress(contractAddress, chainId) {
     try {
-      const dao = this.daos.find(d => 
-        d.contractAddress.toLowerCase() === contractAddress.toLowerCase() && 
-        d.chainId === chainId
-      );
+      if (this.useBlockchainData) {
+        // Use blockchain data
+        const dao = await this.blockchainService.getDAOByAddress(contractAddress, chainId);
+        
+        if (!dao) {
+          throw new Error('DAO not found');
+        }
 
-      return dao;
+        logger.info(`Retrieved DAO from blockchain by address: ${contractAddress} on chain ${chainId}`);
+        return dao;
+      } else {
+        // Fallback to mock data
+        const {  MockDAOs } = require('./mock-data');
+        const dao =  MockDAOs.find(d => 
+          d.contractAddress.toLowerCase() === contractAddress.toLowerCase() && 
+          d.chainId === chainId
+        );
+
+        if (!dao) {
+          throw new Error('DAO not found');
+        }
+
+        logger.info(`Retrieved DAO from mock data by address: ${contractAddress}`);
+        return dao;
+      }
     } catch (error) {
       logger.error(`Error getting DAO by address ${contractAddress}:`, error);
       throw error;
@@ -287,29 +335,41 @@ class DAOService {
    */
   async getRegistryStats() {
     try {
-      const totalDAOs = this.daos.length;
-      const activeDAOs = this.daos.filter(d => d.status === 'Active').length;
-      const verifiedDAOs = this.daos.filter(d => d.verified).length;
-      const pendingDAOs = this.daos.filter(d => d.status === 'Pending').length;
+      if (this.useBlockchainData) {
+        // Use blockchain data
+        const stats = await this.blockchainService.getRegistryStats();
+        logger.info('Retrieved registry stats from blockchain');
+        return stats;
+      } else {
+        // Fallback to mock data
+        const {  MockDAOs } = require('./mock-data');
+        const totalDAOs =  MockDAOs.length;
+        const activeDAOs =  MockDAOs.filter(d => d.status === 'Active').length;
+        const verifiedDAOs =  MockDAOs.filter(d => d.verified).length;
+        const pendingDAOs =  MockDAOs.filter(d => d.status === 'Pending').length;
 
-      const chainStats = {};
-      this.daos.forEach(dao => {
-        chainStats[dao.chainId] = (chainStats[dao.chainId] || 0) + 1;
-      });
+        const chainStats = {};
+         MockDAOs.forEach(dao => {
+          chainStats[dao.chainId] = (chainStats[dao.chainId] || 0) + 1;
+        });
 
-      const governanceTypeStats = {};
-      this.daos.forEach(dao => {
-        governanceTypeStats[dao.governanceType] = (governanceTypeStats[dao.governanceType] || 0) + 1;
-      });
+        const governanceTypeStats = {};
+         MockDAOs.forEach(dao => {
+          governanceTypeStats[dao.governanceType] = (governanceTypeStats[dao.governanceType] || 0) + 1;
+        });
 
-      return {
-        totalDAOs,
-        activeDAOs,
-        verifiedDAOs,
-        pendingDAOs,
-        chainStats,
-        governanceTypeStats
-      };
+        const stats = {
+          totalDAOs,
+          activeDAOs,
+          verifiedDAOs,
+          pendingDAOs,
+          chainStats,
+          governanceTypeStats
+        };
+
+        logger.info('Retrieved registry stats from mock data');
+        return stats;
+      }
     } catch (error) {
       logger.error('Error getting registry stats:', error);
       throw error;

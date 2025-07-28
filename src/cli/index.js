@@ -3,7 +3,7 @@
 /**
  * DAO Registry CLI - Admin Management Terminal
  * 
- * Comprehensive CLI for managing the DAO Registry system
+ *   CLI for managing the DAO Registry system
  * Features: Governance, Analytics, Contracts, Services, Monitoring
  */
 
