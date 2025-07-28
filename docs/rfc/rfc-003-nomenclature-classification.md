@@ -11,7 +11,7 @@
 
 ## Abstract
 
-This RFC defines a comprehensive technical reference nomenclature and classification system for strings, variables, character usage, and validation rules in the context of blockchain services integrating Ethereum Name Service (ENS) for metadata and DAO data management. The specification establishes standardized naming conventions, data point classifications, character usage guidelines, and validation protocols to ensure consistency, security, and interoperability across the DAO Registry ecosystem.
+This RFC defines a   technical reference nomenclature and classification system for strings, variables, character usage, and validation rules in the context of blockchain services integrating Ethereum Name Service (ENS) for metadata and DAO data management. The specification establishes standardized naming conventions, data point classifications, character usage guidelines, and validation protocols to ensure consistency, security, and interoperability across the DAO Registry ecosystem.
 
 ## Table of Contents
 
@@ -31,12 +31,12 @@ This RFC defines a comprehensive technical reference nomenclature and classifica
 
 ### 1.1 Motivation
 
-The DAO Registry system requires consistent naming conventions, standardized data point classifications, and robust validation rules to ensure data integrity, security, and interoperability. This RFC addresses the need for comprehensive nomenclature and classification systems that support blockchain integration, ENS metadata management, and DAO data processing.
+The DAO Registry system requires consistent naming conventions, standardized data point classifications, and robust validation rules to ensure data integrity, security, and interoperability. This RFC addresses the need for   nomenclature and classification systems that support blockchain integration, ENS metadata management, and DAO data processing.
 
 ### 1.2 Goals
 
 - Establish standardized naming conventions across all system components
-- Define comprehensive data point classification systems
+- Define   data point classification systems
 - Implement robust character usage and validation rules
 - Ensure security and XSS prevention
 - Provide clear implementation guidelines and examples

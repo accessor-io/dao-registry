@@ -11,7 +11,7 @@
 
 ## Abstract
 
-This RFC defines a comprehensive technical specification for datapoint classifiers in a blockchain service that integrates Ethereum Name Service (ENS) for metadata and DAO data management. The specification establishes standardized classification systems for various data types, validation rules, and processing protocols to ensure data integrity and interoperability across the DAO Registry ecosystem.
+This RFC defines a   technical specification for datapoint classifiers in a blockchain service that integrates Ethereum Name Service (ENS) for metadata and DAO data management. The specification establishes standardized classification systems for various data types, validation rules, and processing protocols to ensure data integrity and interoperability across the DAO Registry ecosystem.
 
 ## Table of Contents
 
@@ -33,7 +33,7 @@ This RFC defines a comprehensive technical specification for datapoint classifie
 
 ### 1.1 Motivation
 
-The DAO Registry system processes diverse data types from multiple sources including blockchain events, ENS domains, user inputs, and off-chain metadata. Without standardized classification systems, data processing becomes inconsistent, error-prone, and difficult to maintain. This RFC addresses these challenges by establishing comprehensive datapoint classifiers.
+The DAO Registry system processes diverse data types from multiple sources including blockchain events, ENS domains, user inputs, and off-chain metadata. Without standardized classification systems, data processing becomes inconsistent, error-prone, and difficult to maintain. This RFC addresses these challenges by establishing   datapoint classifiers.
 
 ### 1.2 Goals
 

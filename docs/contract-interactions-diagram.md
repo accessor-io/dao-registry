@@ -528,4 +528,4 @@ graph LR
 3. **Treasury**: User → MockTreasury → Manages MockERC20 tokens
 4. **Schema**: User → ReservedSubdomains → Stores CCIP data
 
-This architecture provides a comprehensive, testable, and extensible system for DAO management with cross-chain compatibility. 
+This architecture provides a  , testable, and extensible system for DAO management with cross-chain compatibility. 

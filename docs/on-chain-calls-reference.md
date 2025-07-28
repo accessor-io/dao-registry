@@ -1,6 +1,6 @@
 # On-Chain Calls Reference
 
-This document provides a comprehensive reference of all on-chain calls made during the development and testing of the DAO Registry system.
+This document provides a   reference of all on-chain calls made during the development and testing of the DAO Registry system.
 
 ## Contract Deployments
 

@@ -6,7 +6,7 @@
 {
   "name": "dao-registry",
   "version": "1.0.0",
-  "description": "Comprehensive DAO Registry system with URL encoding, reserved subdomains, ENS integration, and ISO metadata standards",
+  "description": "  DAO Registry system with URL encoding, reserved subdomains, ENS integration, and ISO metadata standards",
   "main": "src/index.js",
   "author": "DAO Registry Team",
   "license": "MIT"

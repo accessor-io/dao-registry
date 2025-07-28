@@ -82,7 +82,7 @@ interface GovernancePrediction {
 
 ### 2. Governance Health Scoring
 
-**Comprehensive Health Metrics:**
+**  Health Metrics:**
 
 ```typescript
 interface GovernanceHealthScore {

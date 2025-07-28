@@ -33,7 +33,7 @@ This RFC defines the complete technical specification for the DAO Registry syste
 The decentralized finance (DeFi) ecosystem has seen exponential growth in Decentralized Autonomous Organizations (DAOs), each with unique governance structures, treasury management, and operational protocols. However, the lack of a standardized registry system has created several challenges:
 
 - **Fragmented Information**: DAO data is scattered across multiple platforms
-- **Limited Analytics**: No comprehensive analytics for DAO performance and governance
+- **Limited Analytics**: No   analytics for DAO performance and governance
 - **Inconsistent Standards**: Lack of standardized data formats and APIs
 - **Cross-chain Complexity**: Difficulty in tracking DAOs across multiple blockchain networks
 - **ENS Integration Gap**: Limited integration with Ethereum Name Service for human-readable DAO identification
@@ -42,7 +42,7 @@ The decentralized finance (DeFi) ecosystem has seen exponential growth in Decent
 
 This specification aims to address these challenges by providing:
 
-- A comprehensive DAO registry system
+- A   DAO registry system
 - Standardized data models and APIs
 - Multi-chain support and integration
 - Advanced analytics and governance tools
@@ -145,7 +145,7 @@ This RFC covers:
 
 #### 3.2.2 Analytics Engine
 
-**Purpose**: Provides comprehensive analytics and insights
+**Purpose**: Provides   analytics and insights
 
 **Responsibilities**:
 - Performance metrics calculation

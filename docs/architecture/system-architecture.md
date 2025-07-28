@@ -2,7 +2,7 @@
 
 ## Overview
 
-The DAO Registry system is built with a modular, layered architecture designed for scalability, security, and maintainability. The system integrates multiple blockchain networks, ENS services, and provides comprehensive analytics and governance tools.
+The DAO Registry system is built with a modular, layered architecture designed for scalability, security, and maintainability. The system integrates multiple blockchain networks, ENS services, and provides   analytics and governance tools.
 
 ## Architecture Layers
 
@@ -178,7 +178,7 @@ Proposal Creation → Governance Engine → Voting → Quorum Check → Executio
 - Multi-region deployment
 - High availability configuration
 - Automated backups and disaster recovery
-- Comprehensive monitoring and alerting
+-   monitoring and alerting
 
 ## Technology Stack
 

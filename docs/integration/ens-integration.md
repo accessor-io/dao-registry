@@ -280,7 +280,7 @@ class ENSMetadataService {
     this.ipfsGateway = ipfsGateway;
   }
   
-  // Get comprehensive ENS metadata
+  // Get   ENS metadata
   async getENSMetadata(domain: string): Promise<ENSMetadata> {
     const [
       address,
