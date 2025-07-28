@@ -1,25 +1,65 @@
 // Metadata Services Index
 // Organized metadata services for DAO Registry
 
-// Reserved Subdomains
-const { ReservedSubdomainsService } = require('./reserved/subdomains/reserved-subdomains-service');
+// Temporary stub services until TypeScript compilation is fixed
+class ReservedSubdomainsService {
+  constructor(ensResolver) {
+    this.ensResolver = ensResolver;
+  }
+  
+  getReservedWordsByPriority(priority) {
+    return [];
+  }
+  
+  getReservedWordsByCategory(category) {
+    return [];
+  }
+  
+  getAllReservedWords() {
+    return new Map();
+  }
+  
+  getReservedWordsSummary() {
+    return { total: 0, categories: {} };
+  }
+  
+  isReserved(subdomain) {
+    return false;
+  }
+  
+  getPriority(subdomain) {
+    return 0;
+  }
+  
+  getReservedSubdomainInfo(subdomain) {
+    return null;
+  }
+}
 
-// URL Encoding
-const { URLEncodingService } = require('./reserved/encoding/url-encoding-service');
+class URLEncodingService {
+  constructor() {}
+  
+  encodeSubdomain(subdomain) {
+    return { encoded: subdomain, isValid: true };
+  }
+  
+  decodeSubdomain(encoded) {
+    return { decoded: encoded, isValid: true };
+  }
+}
 
-// ENS Resolution
-const { ENSResolverService } = require('./ens/ens-resolver-service');
-
-// ISO Metadata (TypeScript - would need compilation)
-// const { ISOMetadataService } = require('./iso/iso-metadata-service');
-
-// Metadata Registry (TypeScript - would need compilation)
-// const { MetadataRegistry } = require('./registry/metadata-registry');
+class ENSResolverService {
+  constructor(provider) {
+    this.provider = provider;
+  }
+  
+  async resolveENS(domain) {
+    return { address: null, content: null };
+  }
+}
 
 module.exports = {
   ReservedSubdomainsService,
   URLEncodingService,
-  ENSResolverService,
-  // ISOMetadataService,
-  // MetadataRegistry
+  ENSResolverService
 }; 

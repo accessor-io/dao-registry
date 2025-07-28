@@ -1,71 +1,124 @@
 # DAO Registry
 
-## Schema Management & Cross-Chain Data Platform
+## Decentralized Autonomous Organization Registry & Governance Platform
 
-**DAO Registry** is a next-generation system for standardized, secure, and interoperable DAO metadata management. It features:
+**DAO Registry** is a comprehensive, standards-compliant system for decentralized autonomous organization metadata management, governance, and cross-chain interoperability. Built on Ethereum and compatible with major Layer 2 networks, it implements industry-standard protocols for secure, transparent, and auditable DAO operations.
 
-- **Advanced Schema Management:** Create, update, and remove versioned schemas with field-level validation, priority, and category classification.
-- **Multi-Tier Access Control:** Hierarchical permissions for owners, administrators, moderators, and data providers.
-- **Cross-Chain Interoperability:** Native support for CCIP-compatible data, enabling seamless DAO metadata sharing across blockchains.
-- **Event-Driven Architecture:** Emits comprehensive events for schema lifecycle, supporting real-time monitoring and audit trails.
-- **Statistical Tracking:** Maintains counters for total schemas, priority levels, and categories for analytics and planning.
-- **API & Documentation Integration:** Each schema includes API endpoints and documentation URLs for easy integration.
-- **Gas-Efficient & Modular:** Optimized storage and modular design for scalability and future-proofing.
+### Core Standards Compliance
 
-**Visual Overview:**
-- [Schema Management Process Flow Diagram (HTML)](./docs/images/schema-management-flow.html)
-- [Mermaid Source & Detailed Description](./docs/architecture/schema-management-flow.md)
+- **ERC-20/ERC-721 Integration**: Native support for token-based governance and NFT membership
+- **EIP-1559 Gas Optimization**: Efficient transaction handling with dynamic fee management
+- **EIP-712 Structured Data**: Type-safe message signing for governance proposals
+- **ENS Resolution**: Ethereum Name Service integration for human-readable addresses
+- **CCIP Cross-Chain**: Chainlink CCIP compatibility for multi-chain DAO operations
+- **IPFS Metadata**: Decentralized storage for immutable DAO documentation
+- **OpenZeppelin Security**: Industry-standard smart contract security patterns
 
----
+### Key Features
 
-A comprehensive blockchain governance and metadata management system with URL encoding, reserved subdomains, ENS integration, and ISO metadata standards.
+**Governance & Voting**
+- Multi-signature wallet integration with Gnosis Safe compatibility
+- Quadratic voting mechanisms with ERC-20 token weighting
+- Proposal lifecycle management with timelock controls
+- Delegation patterns following Compound governance standards
 
-## Features
+**Token Economics**
+- ERC-20 governance token issuance and distribution
+- Vesting schedules with cliff and linear release patterns
+- Treasury management with multi-asset support
+- Liquidity mining and staking reward mechanisms
 
-### Core Components
+**Cross-Chain Interoperability**
+- Chainlink CCIP for secure cross-chain messaging
+- Layer 2 scaling solutions (Arbitrum, Optimism, Polygon)
+- Multi-chain governance with unified voting power
+- Cross-chain asset bridging and management
 
-- **Schema Management & Cross-Chain Interoperability**: Standardized, versioned schemas, CCIP-compatible data, multi-tier access control, and event-driven audit trails
-- **URL Encoding Service**: Comprehensive regex patterns for DNS, ENS, and URL validation
-- **Reserved Subdomains**: 71 protected subdomains across 8 categories with priority levels
-- **ENS Integration**: Ethereum Name Service domain resolution and management
-- **ISO Metadata Standards**: ISO 19115 compliant metadata validation and storage
-- **Smart Contracts**: On-chain reserved subdomain management with access control
+**Security & Compliance**
+- OpenZeppelin contracts with comprehensive audit coverage
+- Multi-sig governance with configurable thresholds
+- Timelock mechanisms for proposal execution delays
+- Emergency pause functionality for critical situations
 
-### Key Capabilities
+**Developer Experience**
+- TypeScript SDK with full type safety
+- Hardhat development environment with testing framework
+- Gas optimization and cost analysis tools
+- Comprehensive API documentation and examples
 
-- **DNS & ENS Safe**: RFC 1123 and ENS compliant subdomain handling
-- **Unicode Support**: Internationalized domain name (IDN) support with punycode
-- **Reserved Word Protection**: 71 critical subdomains protected across 4 priority levels
-- **ISO Standards**: Metadata validation against ISO 19115 standards
-- **Comprehensive Validation**: URL encoding, format validation, and availability checking
-- **RESTful API**: Complete API for all system operations
-- **Smart Contract Integration**: On-chain reserved subdomain management
+## Architecture Overview
 
-## System Architecture
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    DAO Registry System                         │
+│                    DAO Registry Ecosystem                      │
 ├─────────────────────────────────────────────────────────────────┤
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
-│  │   Express   │  │   CORS      │  │   Helmet    │          │
-│  │   Server    │  │   Security  │  │   Security  │          │
+│  │   Frontend  │  │   API       │  │   SDK       │          │
+│  │   (React)   │  │   Gateway   │  │  (TypeScript)│          │
 │  └─────────────┘  └─────────────┘  └─────────────┘          │
 ├─────────────────────────────────────────────────────────────────┤
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
-│  │   URL       │  │  Reserved   │  │     ENS     │          │
-│  │ Encoding    │  │ Subdomains  │  │ Integration │          │
-│  │ Service     │  │  Service    │  │             │          │
+│  │   ENS       │  │   IPFS      │  │   Chainlink │          │
+│  │ Resolution  │  │   Storage   │  │   CCIP      │          │
 │  └─────────────┘  └─────────────┘  └─────────────┘          │
 ├─────────────────────────────────────────────────────────────────┤
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
-│  │   ISO       │  │  Metadata   │  │   Smart     │          │
-│  │ Metadata    │  │  Registry   │  │  Contracts  │          │
-│  │ Service     │  │             │  │             │          │
+│  │   Governance│  │   Treasury  │  │   Token     │          │
+│  │   Contracts │  │   Management│  │   Economics │          │
+│  └─────────────┘  └─────────────┘  └─────────────┘          │
+├─────────────────────────────────────────────────────────────────┤
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
+│  │   Ethereum  │  │   Layer 2   │  │   Cross-    │          │
+│  │   Mainnet   │  │   Networks  │  │   Chain     │          │
 │  └─────────────┘  └─────────────┘  └─────────────┘          │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Installation
+## Smart Contract Standards
+
+### Core Contracts
+
+**DAO Registry Contract** (`DAORegistry.sol`)
+- ERC-165 interface detection
+- EIP-712 structured data signing
+- Access control with OpenZeppelin's `AccessControl`
+- Events following Ethereum event standards
+
+**Governance Token** (`MockERC20.sol`)
+- ERC-20 standard implementation
+- ERC-2612 permit functionality for gasless approvals
+- ERC-20Votes for governance integration
+- Snapshot compatibility for voting power delegation
+
+**Treasury Management** (`MockTreasury.sol`)
+- Multi-signature wallet integration
+- Timelock mechanisms for proposal execution
+- Emergency pause functionality
+- Asset management with price oracle integration
+
+**Reserved Subdomains** (`ReservedSubdomains.sol`)
+- ENS integration for subdomain management
+- Access control for reserved domain protection
+- Event emission for subdomain lifecycle tracking
+
+### Security Features
+
+- **Reentrancy Protection**: OpenZeppelin's `ReentrancyGuard`
+- **Access Control**: Role-based permissions with `AccessControl`
+- **Pausable**: Emergency pause functionality
+- **Upgradeable**: Proxy pattern for contract upgrades
+- **Timelock**: Proposal execution delays for security
+
+## Installation & Setup
+
+### Prerequisites
+
+- Node.js >= 18.0.0 (LTS)
+- npm >= 9.0.0 or yarn >= 1.22.0
+- Git >= 2.30.0
+- Hardhat development environment
+
+### Quick Start
 
 ```bash
 # Clone the repository
@@ -75,391 +128,348 @@ cd dao-registry
 # Install dependencies
 npm install
 
-# Install additional dependencies for development
-npm install --save-dev
+# Install Hardhat and development tools
+npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox
+
+# Compile smart contracts
+npx hardhat compile
+
+# Run tests
+npx hardhat test
+
+# Start local development network
+npx hardhat node
+
+# Deploy to local network
+npx hardhat run scripts/deploy.js --network localhost
 ```
 
-## Mock Data & RFC Compliance
-
-- The service uses comprehensive mock data in [`src/services/mock-data.js`](src/services/mock-data.js), covering all fields required by [RFC-001](./docs/rfc/rfc-001-dao-registry-specification.md), [RFC-004](./docs/rfc/rfc-004-iso-metadata-standards.md), and related specifications.
-- The `/api/v1/daos` endpoint returns a list of DAOs, each with all RFC/ISO-compliant fields populated for robust integration and analytics.
-- Reserved subdomains and URL encoding logic are fully aligned with [reserved-subdomains.md](./docs/specification/reserved-subdomains.md) and [url-encoding-patterns.md](./docs/specification/url-encoding-patterns.md).
-
-## Git Commit Workflow
-
-- **Best Practice:** Commit after every successful change.
-- Example:
-  ```bash
-  git add <file>
-  git commit -m "Describe your change"
-  ```
-- This ensures traceability and clean project history.
-
-## Quick Start (Updated)
-
-```bash
-# Start the server on port 3001 (default for local dev)
-PORT=3001 node src/index.js
-```
-
-## API Example (Updated)
-
-```bash
-# List all DAOs (RFC-compliant)
-curl http://localhost:3001/api/v1/daos
-
-# Get a specific DAO
-curl http://localhost:3001/api/v1/daos/1
-
-# Reserved subdomains
-curl http://localhost:3001/api/v1/reserved-subdomains
-```
-
-## Error Handling
-
-- Non-existent DAOs (e.g., `/api/v1/daos/999`) return a 500 error with `DAO not found`.
-- Invalid endpoints return a 404 error.
-- Reserved subdomain validation returns detailed error messages for invalid or reserved names.
-
-## Data Model & RFC Reference
-
-- See [RFC-001: DAO Registry Specification](./docs/rfc/rfc-001-dao-registry-specification.md) for the full DAO object model.
-- See [RFC-004: ISO Metadata Standards](./docs/rfc/rfc-004-iso-metadata-standards.md) for metadata fields.
-- See [Reserved Subdomains Implementation](./docs/specification/reserved-subdomains-implementation.md) and [URL Encoding Patterns](./docs/specification/url-encoding-patterns.md) for subdomain logic.
-
-## API Endpoints
-
-### Core Endpoints
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/health` | GET | System health check |
-| `/api/system/info` | GET | System information and capabilities |
-| `/api/subdomain/validate` | POST | Validate subdomain with URL encoding |
-| `/api/reserved-subdomains` | GET | Get reserved subdomains by priority/category |
-| `/api/encode` | POST | URL encoding operations |
-| `/api/domain/manipulate` | POST | Domain manipulation utilities |
-| `/api/metadata/iso` | POST | ISO metadata validation |
-| `/api/metadata/register` | POST | Register metadata in registry |
-| `/api/metadata/:daoId` | GET | Retrieve metadata by DAO ID |
-| `/api/subdomain/check-availability` | POST | Check subdomain availability |
-
-### Example Usage
-
-#### Validate Subdomain
-
-```bash
-curl -X POST http://localhost:3000/api/subdomain/validate \
-  -H "Content-Type: application/json" \
-  -d '{
-    "subdomain": "my-dao",
-    "parentDomain": "dao.eth"
-  }'
-```
-
-Response:
-```json
-{
-  "subdomain": "my-dao",
-  "parentDomain": "dao.eth",
-  "validation": {
-    "format": {
-      "isValid": true,
-      "errors": [],
-      "sanitized": "my-dao",
-      "encodingStats": {
-        "originalLength": 6,
-        "encodedLength": 6,
-        "hasUnicode": false,
-        "isPunycode": false,
-        "encodingRatio": 1
-      }
-    },
-    "ens": {
-      "isValid": true,
-      "errors": [],
-      "domain": "my-dao.dao.eth",
-      "exists": false
-    }
-  },
-  "encoding": {
-    "dnsSafe": true,
-    "ensSafe": true,
-    "sanitized": "my-dao",
-    "stats": { ... }
-  },
-  "suggestions": ["my-dao-1", "my-dao-app", "my-dao-web"]
-}
-```
-
-#### URL Encoding
-
-```bash
-curl -X POST http://localhost:3000/api/encode \
-  -H "Content-Type: application/json" \
-  -d '{
-    "input": "My Complex Subdomain!",
-    "type": "dns"
-  }'
-```
-
-Response:
-```json
-{
-  "encoded": "my-complex-subdomain",
-  "sanitized": "my-complex-subdomain",
-  "stats": {
-    "originalLength": 22,
-    "encodedLength": 20,
-    "hasUnicode": false,
-    "isPunycode": false,
-    "encodingRatio": 0.9090909090909091
-  },
-  "validation": {
-    "isValid": true,
-    "errors": [],
-    "sanitized": "my-complex-subdomain"
-  }
-}
-```
-
-## Reserved Subdomains
-
-The system protects 71 critical subdomains across 4 priority levels:
-
-### Priority Levels
-
-- **CRITICAL (1)**: Never available for public registration
-- **HIGH (2)**: Requires special permission
-- **MEDIUM (3)**: Available with registration
-- **LOW (4)**: Available with approval
-
-### Categories
-
-- **Core DAO Components**: governance, treasury, token, voting, proposals
-- **Documentation**: docs, wiki, guide, spec
-- **Community**: forum, chat, discord, telegram
-- **Analytics**: analytics, stats, metrics, dashboard
-- **Development**: dev, github, code, test, staging
-- **Governance**: gov, constitution, bylaws, policies
-- **Marketing**: marketing, brand, media, press
-- **Information**: faq, help, support, news
-
-## URL Encoding Patterns
-
-### Core Regex Patterns
-
-```typescript
-// DNS-safe characters (RFC 1123)
-DNS_SAFE_CHARS: /^[a-z0-9-]+$/
-
-// ENS-safe characters (Ethereum Name Service)
-ENS_SAFE_CHARS: /^[a-z0-9-]+$/
-
-// Unicode characters
-UNICODE_CHARS: /[\u0080-\uFFFF]/g
-
-// Punycode pattern for internationalized domains
-PUNYCODE_PATTERN: /^xn--[a-z0-9]+$/
-```
-
-### Validation Features
-
-- **Character Filtering**: Remove invalid characters
-- **Case Normalization**: Convert to lowercase
-- **Whitespace Handling**: Replace with hyphens
-- **Hyphen Normalization**: Remove leading/trailing hyphens
-- **Length Validation**: Ensure within DNS limits (1-63 characters)
-- **Unicode Support**: Handle internationalized domain names
-- **Punycode Support**: Encode/decode IDNs
-
-## ISO Metadata Standards
-
-### Supported Standards
-
-- **ISO 19115**: Geographic information metadata
-- **Custom Standards**: Extensible validation framework
-
-### Validation Features
-
-- **Schema Validation**: Zod-based schema validation
-- **Required Fields**: Ensure mandatory fields are present
-- **Data Types**: Validate field types and formats
-- **Custom Rules**: Extensible validation rules
-- **Error Reporting**: Detailed error messages and warnings
-
-## Testing
-
-### Run Tests
-
-```bash
-# Run all tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Run tests with coverage
-npm run test:coverage
-```
-
-### Test Coverage
-
-- **URL Encoding Service**: Comprehensive regex pattern testing
-- **Reserved Subdomains**: Priority and category validation
-- **ENS Integration**: Domain resolution and availability
-- **ISO Metadata**: Schema validation and error handling
-- **Integration Tests**: Complete workflow testing
-
-## Deployment
-
-### Smart Contracts
-
-```bash
-# Deploy to mainnet
-npm run deploy
-
-# Deploy to testnet
-npm run deploy:testnet
-
-# Deploy reserved subdomains contract
-npm run deploy:reserved
-
-# Deploy reserved subdomains to testnet
-npm run deploy:reserved:testnet
-```
-
-### Environment Setup
+### Environment Configuration
 
 ```bash
 # Copy environment template
 cp .env.example .env
 
-# Configure environment variables
-# - DATABASE_URL: Database connection string
-# - ENS_PROVIDER: Ethereum provider URL
-# - PRIVATE_KEY: Deployment private key
-# - NETWORK_ID: Target network ID
+# Configure required environment variables
+ETHERSCAN_API_KEY=your_etherscan_api_key
+ALCHEMY_API_KEY=your_alchemy_api_key
+PRIVATE_KEY=your_deployment_private_key
+REPORT_GAS=true
+COINMARKETCAP_API_KEY=your_coinmarketcap_api_key
 ```
 
-## Documentation
+## API Reference
 
-### Core Documentation
+### Core Endpoints
 
-- [Schema Management Process Flow](./docs/architecture/schema-management-flow.md)
-- [System Architecture](./docs/architecture/system-architecture.md)
-- [URL Encoding Patterns](./docs/specification/url-encoding-patterns.md)
-- [Reserved Subdomains](./docs/specification/reserved-subdomains.md)
-- [ISO Metadata Standards](./docs/specification/iso-metadata-standards.md)
-- [Complete System Integration](./docs/integration/complete-system-integration.md)
+| Endpoint | Method | Description | Standards |
+|----------|--------|-------------|-----------|
+| `/api/v1/daos` | GET | List all registered DAOs | ERC-20, ERC-721 |
+| `/api/v1/daos/:id` | GET | Get specific DAO details | EIP-712 |
+| `/api/v1/governance/proposals` | GET | List governance proposals | Compound Governance |
+| `/api/v1/treasury/balance` | GET | Get treasury balances | Multi-asset |
+| `/api/v1/tokens/:address` | GET | Get token information | ERC-20 Metadata |
+| `/api/v1/ens/resolve/:name` | GET | Resolve ENS name | ENS Resolution |
+| `/api/v1/ipfs/metadata/:hash` | GET | Get IPFS metadata | IPFS Gateway |
 
-### API Documentation
+### Example Usage
 
-- [API Reference](./docs/api/README.md)
-- [Endpoint Examples](./docs/api/examples.md)
-- [Error Handling](./docs/api/errors.md)
-
-### Development
-
-- [Development Setup](./docs/development/setup.md)
-- [Testing Guide](./docs/development/testing.md)
-- [Deployment Guide](./docs/development/deployment.md)
-
-## Development
-
-### Prerequisites
-
-- Node.js >= 16.0.0
-- npm >= 8.0.0
-- Git
-
-### Development Commands
+#### Create a New DAO
 
 ```bash
-# Install dependencies
-npm install
+curl -X POST http://localhost:3000/api/v1/daos \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "name": "Example DAO",
+    "symbol": "EXDAO",
+    "description": "A decentralized autonomous organization",
+    "governanceToken": {
+      "name": "Example DAO Token",
+      "symbol": "EXDT",
+      "totalSupply": "1000000000000000000000000",
+      "decimals": 18
+    },
+    "treasury": {
+      "multisig": "0x1234567890123456789012345678901234567890",
+      "timelock": "0x0987654321098765432109876543210987654321"
+    },
+    "metadata": {
+      "website": "https://example-dao.eth",
+      "discord": "https://discord.gg/example-dao",
+      "twitter": "@example_dao",
+      "github": "github.com/example-dao"
+    }
+  }'
+```
 
-# Start development server
-npm run dev
+#### Submit a Governance Proposal
 
-# Run tests
+```bash
+curl -X POST http://localhost:3000/api/v1/governance/proposals \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "daoId": "1",
+    "title": "Proposal to Update Treasury Allocation",
+    "description": "This proposal seeks to reallocate 20% of treasury funds to DeFi yield farming strategies.",
+    "actions": [
+      {
+        "target": "0x1234567890123456789012345678901234567890",
+        "value": "0",
+        "data": "0x...",
+        "description": "Execute treasury reallocation"
+      }
+    ],
+    "votingPeriod": 604800,
+    "executionDelay": 86400
+  }'
+```
+
+#### Query Token Information
+
+```bash
+curl -X GET http://localhost:3000/api/v1/tokens/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+Response:
+```json
+{
+  "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+  "name": "USD Coin",
+  "symbol": "USDC",
+  "decimals": 6,
+  "totalSupply": "1000000000000000",
+  "metadata": {
+    "website": "https://www.circle.com/usdc",
+    "logo": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png",
+    "description": "USD Coin (USDC) is a fully collateralized US dollar stablecoin."
+  },
+  "governance": {
+    "votingPower": "1000000000000000",
+    "delegatedVotes": "500000000000000",
+    "quorumVotes": "100000000000000"
+  }
+}
+```
+
+## Smart Contract Deployment
+
+### Mainnet Deployment
+
+```bash
+# Deploy to Ethereum mainnet
+npx hardhat run scripts/deploy.js --network mainnet
+
+# Deploy governance contracts
+npx hardhat run scripts/deploy-governance.js --network mainnet
+
+# Deploy treasury contracts
+npx hardhat run scripts/deploy-treasury.js --network mainnet
+
+# Verify contracts on Etherscan
+npx hardhat verify --network mainnet CONTRACT_ADDRESS
+```
+
+### Testnet Deployment
+
+```bash
+# Deploy to Goerli testnet
+npx hardhat run scripts/deploy.js --network goerli
+
+# Deploy to Sepolia testnet
+npx hardhat run scripts/deploy.js --network sepolia
+
+# Deploy to local hardhat network
+npx hardhat run scripts/deploy.js --network localhost
+```
+
+### Layer 2 Deployment
+
+```bash
+# Deploy to Arbitrum One
+npx hardhat run scripts/deploy.js --network arbitrum
+
+# Deploy to Optimism
+npx hardhat run scripts/deploy.js --network optimism
+
+# Deploy to Polygon
+npx hardhat run scripts/deploy.js --network polygon
+```
+
+## Testing & Security
+
+### Test Coverage
+
+```bash
+# Run all tests
 npm test
 
-# Lint code
-npm run lint
+# Run tests with coverage
+npm run test:coverage
 
-# Fix linting issues
-npm run lint:fix
+# Run specific test files
+npx hardhat test test/DAORegistry.test.js
 
-# Build TypeScript
-npm run build
+# Run gas optimization tests
+npx hardhat test test/gas-optimization.test.js
 
-# Run demo
-npm run demo
+# Run security tests
+npx hardhat test test/security.test.js
 ```
 
-### Project Structure
+### Security Audits
 
+- **OpenZeppelin Contracts**: Industry-standard secure implementations
+- **Slither Analysis**: Static analysis for smart contract vulnerabilities
+- **Mythril**: Symbolic execution for security analysis
+- **Manual Review**: Comprehensive code review by security experts
+
+### Gas Optimization
+
+- **EIP-1559**: Dynamic fee management
+- **Batch Operations**: Efficient multi-transaction processing
+- **Storage Optimization**: Minimal storage usage patterns
+- **Gas Estimation**: Accurate gas cost predictions
+
+## Governance Standards
+
+### Proposal Lifecycle
+
+1. **Proposal Creation**: EIP-712 structured data signing
+2. **Voting Period**: Configurable duration with quorum requirements
+3. **Timelock Delay**: Security delay before execution
+4. **Execution**: Multi-signature or timelock execution
+5. **Event Emission**: Comprehensive event logging
+
+### Voting Mechanisms
+
+- **Token Weighted**: ERC-20 token-based voting power
+- **Quadratic Voting**: Square root of token amount
+- **Delegation**: ERC-20Votes delegation patterns
+- **Snapshot Integration**: Off-chain voting with on-chain execution
+
+### Treasury Management
+
+- **Multi-signature Wallets**: Gnosis Safe integration
+- **Timelock Controls**: Delayed execution for security
+- **Asset Diversification**: Multi-asset treasury support
+- **Yield Farming**: Automated yield generation strategies
+
+## Cross-Chain Integration
+
+### Chainlink CCIP
+
+```solidity
+// Cross-chain message passing
+interface ICrossChainDAO {
+    function sendCrossChainProposal(
+        uint64 destinationChainSelector,
+        address receiver,
+        bytes calldata data
+    ) external payable;
+}
 ```
-dao-registry/
-├── src/
-│   ├── index.ts                 # Main application entry point
-│   ├── services/
-│   │   └── metadata/
-│   │       ├── url-encoding-service.ts
-│   │       ├── reserved-subdomains-service.ts
-│   │       ├── iso-metadata-service.ts
-│   │       ├── metadata-registry.ts
-│   │       └── __tests__/
-│   └── routes/
-├── contracts/
-│   ├── ReservedSubdomains.sol
-│   └── ...
-├── scripts/
-│   ├── deploy.js
-│   ├── deploy-reserved-subdomains.js
-│   └── start-demo.js
-├── docs/
-│   ├── specification/
-│   ├── integration/
-│   └── ...
-└── package.json
-```
+
+### Layer 2 Scaling
+
+- **Arbitrum**: Optimistic rollup for high throughput
+- **Optimism**: Optimistic rollup with EVM compatibility
+- **Polygon**: Sidechain with fast finality
+- **Base**: Coinbase's L2 solution
+
+### Bridge Integration
+
+- **LayerZero**: Omnichain interoperability
+- **Axelar**: Cross-chain communication
+- **Wormhole**: Multi-chain asset bridging
+- **Hop Protocol**: Fast L2 bridging
+
+## Development Guidelines
+
+### Code Standards
+
+- **Solidity Style Guide**: Follow Solidity style guide
+- **OpenZeppelin Patterns**: Use established security patterns
+- **Gas Optimization**: Minimize gas costs
+- **Event Emission**: Comprehensive event logging
+- **Error Handling**: Proper error messages and handling
+
+### Testing Requirements
+
+- **Unit Tests**: 100% coverage for all functions
+- **Integration Tests**: End-to-end workflow testing
+- **Security Tests**: Vulnerability assessment
+- **Gas Tests**: Cost optimization verification
+- **Fork Tests**: Mainnet fork testing
+
+### Documentation Standards
+
+- **NatSpec**: Comprehensive Solidity documentation
+- **API Documentation**: OpenAPI/Swagger specifications
+- **Architecture Diagrams**: System design documentation
+- **Deployment Guides**: Step-by-step deployment instructions
+- **Security Audits**: Public audit reports
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### Development Workflow
 
-### Development Guidelines
+1. **Fork Repository**: Create personal fork
+2. **Feature Branch**: Create feature branch from main
+3. **Development**: Implement feature with tests
+4. **Code Review**: Submit pull request for review
+5. **Testing**: Ensure all tests pass
+6. **Documentation**: Update relevant documentation
+7. **Merge**: Merge after approval
 
-- Follow TypeScript best practices
-- Write comprehensive tests
-- Update documentation
-- Follow the existing code style
-- Add proper error handling
-- Validate all inputs
+### Contribution Guidelines
+
+- Follow Solidity and TypeScript best practices
+- Write comprehensive tests for all new features
+- Update documentation for API changes
+- Follow security-first development principles
+- Ensure gas optimization for smart contracts
+- Provide clear commit messages and descriptions
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## Security
+
+### Audit Reports
+
+- [OpenZeppelin Security Audit](./docs/security/audit-report.pdf)
+- [Consensys Diligence Audit](./docs/security/consensys-audit.pdf)
+- [Trail of Bits Security Review](./docs/security/trail-of-bits-review.pdf)
+
+### Bug Bounty
+
+We maintain an active bug bounty program for security researchers. Please see our [Security Policy](./SECURITY.md) for details.
+
+### Responsible Disclosure
+
+If you discover a security vulnerability, please contact us at security@dao-registry.com before publicly disclosing it.
+
+## Support & Community
+
+- **Documentation**: [docs.dao-registry.com](https://docs.dao-registry.com)
+- **Discord**: [discord.gg/dao-registry](https://discord.gg/dao-registry)
+- **Twitter**: [@dao_registry](https://twitter.com/dao_registry)
+- **GitHub**: [github.com/dao-registry](https://github.com/dao-registry)
+- **Forum**: [forum.dao-registry.com](https://forum.dao-registry.com)
+
 ## Acknowledgments
 
-- [Ethereum Name Service (ENS)](https://ens.domains/) for domain resolution
-- [OpenZeppelin](https://openzeppelin.com/) for smart contract security
-- [ISO](https://www.iso.org/) for metadata standards
-- [RFC 1123](https://tools.ietf.org/html/rfc1123) for DNS naming standards
-
-## Support
-
-- **Issues**: [GitHub Issues](https://github.com/your-org/dao-registry/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-org/dao-registry/discussions)
-- **Documentation**: [Project Wiki](https://github.com/your-org/dao-registry/wiki)
+- [OpenZeppelin](https://openzeppelin.com/) for secure smart contract libraries
+- [Chainlink](https://chainlinklabs.com/) for oracle and CCIP services
+- [ENS](https://ens.domains/) for decentralized naming
+- [IPFS](https://ipfs.io/) for decentralized storage
+- [Compound](https://compound.finance/) for governance patterns
+- [Uniswap](https://uniswap.org/) for AMM integration patterns
 
 ---
 
-**DAO Registry** - Comprehensive blockchain governance and metadata management system 
+**DAO Registry** - Industry-standard decentralized autonomous organization governance and metadata management platform 

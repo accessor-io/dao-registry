@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAO CLI Module Function Call Graph</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 3em;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header p {
+            margin: 15px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.2em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .controls {
+            padding: 25px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid #dee2e6;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .control-group label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        select, input, button {
+            padding: 12px 16px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            background: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        select:focus, input:focus, button:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 44px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+
+        .search-container input {
+            padding-left: 40px;
+        }
+        
+        .graph-container {
+            padding: 30px;
+            height: 700px;
+            position: relative;
+            background: #fafbfc;
+        }
+        
+        .node {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .node:hover {
+            filter: brightness(1.1);
+            transform: scale(1.05);
+        }
+
+        .node.selected {
+            filter: brightness(1.2);
+            transform: scale(1.1);
+        }
+        
+        .node text {
+            font-size: 11px;
+            font-weight: 600;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            fill: white;
+            pointer-events: none;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .link {
+            stroke: #6c757d;
+            stroke-width: 2;
+            fill: none;
+            opacity: 0.4;
+            transition: all 0.3s ease;
+        }
+        
+        .link:hover {
+            stroke-width: 4;
+            opacity: 0.8;
+        }
+
+        .link.highlighted {
+            stroke-width: 4;
+            opacity: 1;
+            stroke: #667eea;
+        }
+        
+        .legend {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            font-size: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .legend h4 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            transition: background 0.2s ease;
+        }
+
+        .legend-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .legend-color {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 2px solid rgba(255,255,255,0.8);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .legend-item span {
+            font-weight: 500;
+        }
+        
+        .tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.95);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 13px;
+            pointer-events: none;
+            z-index: 1000;
+            max-width: 300px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
+
+        .tooltip h4 {
+            margin: 0 0 8px 0;
+            color: #667eea;
+            font-size: 14px;
+        }
+
+        .tooltip p {
+            margin: 5px 0;
+            line-height: 1.4;
+        }
+
+        .tooltip .dependencies {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .function-details {
+            margin-top: 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .function-details h3 {
+            margin: 0 0 20px 0;
+            color: #2c3e50;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .function-details h3 i {
+            color: #667eea;
+        }
+        
+        .function-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .function-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .function-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        
+        .function-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .function-card h4 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .function-card .type-badge {
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .function-card p {
+            margin: 8px 0;
+            font-size: 14px;
+            color: #6c757d;
+            line-height: 1.5;
+        }
+        
+        .function-card strong {
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .function-card .dependencies-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .dependency-tag {
+            background: #e9ecef;
+            color: #495057;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .no-dependencies {
+            color: #6c757d;
+            font-style: italic;
+            font-size: 12px;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            color: #6c757d;
+            font-size: 16px;
+        }
+
+        .loading i {
+            margin-right: 10px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px;
+            border: 1px solid #f5c6cb;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px;
+            border: 1px solid #c3e6cb;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .controls {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .function-info {
+                grid-template-columns: 1fr;
+            }
+
+            .legend {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-project-diagram"></i> DAO CLI Module Function Call Graph</h1>
+            <p>Interactive visualization of function relationships and data flow architecture</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalFunctions">12</div>
+                    <div class="stat-label">Functions</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalConnections">15</div>
+                    <div class="stat-label">Connections</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="categories">5</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label><i class="fas fa-eye"></i> View Mode</label>
+                <select id="viewMode">
+                    <option value="hierarchical">Hierarchical Layout</option>
+                    <option value="force">Force-Directed</option>
+                    <option value="radial">Radial Layout</option>
+                    <option value="tree">Tree Layout</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label><i class="fas fa-filter"></i> Function Type</label>
+                <select id="functionFilter">
+                    <option value="all">All Functions</option>
+                    <option value="core">Core Management</option>
+                    <option value="data">Data Operations</option>
+                    <option value="interactive">Interactive Helpers</option>
+                    <option value="analytics">Analytics</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label><i class="fas fa-search"></i> Search Functions</label>
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search function names...">
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label><i class="fas fa-cog"></i> Actions</label>
+                <button onclick="resetView()">
+                    <i class="fas fa-undo"></i> Reset View
+                </button>
+            </div>
+
+            <div class="control-group">
+                <label><i class="fas fa-download"></i> Export</label>
+                <button onclick="exportGraph()">
+                    <i class="fas fa-download"></i> Export SVG
+                </button>
+            </div>
+        </div>
+        
+        <div class="graph-container" id="graphContainer">
+            <div class="legend">
+                <h4><i class="fas fa-info-circle"></i> Function Types</h4>
+                <div class="legend-item" data-filter="entry">
+                    <div class="legend-color" style="background: #e74c3c;"></div>
+                    <span>Entry Points</span>
+                </div>
+                <div class="legend-item" data-filter="core">
+                    <div class="legend-color" style="background: #3498db;"></div>
+                    <span>Core Functions</span>
+                </div>
+                <div class="legend-item" data-filter="data">
+                    <div class="legend-color" style="background: #2ecc71;"></div>
+                    <span>Data Operations</span>
+                </div>
+                <div class="legend-item" data-filter="interactive">
+                    <div class="legend-color" style="background: #f39c12;"></div>
+                    <span>Interactive Helpers</span>
+                </div>
+                <div class="legend-item" data-filter="analytics">
+                    <div class="legend-color" style="background: #9b59b6;"></div>
+                    <span>Analytics</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="function-details">
+            <h3><i class="fas fa-code"></i> Function Details</h3>
+            <div class="function-info" id="functionInfo">
+                <div class="loading">
+                    <i class="fas fa-spinner"></i> Click on any function node to view details
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced function data structure
+        const functionData = {
+            nodes: [
+                // Entry Points
+                { 
+                    id: "handleCommand", 
+                    name: "handleCommand", 
+                    type: "entry", 
+                    category: "core", 
+                    description: "Main entry point for programmatic CLI operations. Routes command-line arguments to appropriate functions.",
+                    dependencies: ["listDAOs", "getDAO", "createDAO", "updateDAO", "deleteDAO", "startInteractive"],
+                    parameters: "options object",
+                    returns: "Promise<void>",
+                    complexity: "Low"
+                },
+                { 
+                    id: "startInteractive", 
+                    name: "startInteractive", 
+                    type: "entry", 
+                    category: "core", 
+                    description: "Initiates interactive CLI session with menu-driven interface. Provides continuous loop for user interaction.",
+                    dependencies: ["handleDAOAction"],
+                    parameters: "None",
+                    returns: "Promise<void>",
+                    complexity: "Medium"
+                },
+                
+                // Core Management
+                { 
+                    id: "handleDAOAction", 
+                    name: "handleDAOAction", 
+                    type: "core", 
+                    category: "core", 
+                    description: "Routes interactive menu selections to appropriate functions. Handles error recovery and progress indication.",
+                    dependencies: ["listDAOs", "interactiveGetDAO", "createDAO", "interactiveUpdateDAO", "interactiveDeleteDAO", "showAnalytics"],
+                    parameters: "action string",
+                    returns: "Promise<void>",
+                    complexity: "Medium"
+                },
+                
+                // Data Operations
+                { 
+                    id: "listDAOs", 
+                    name: "listDAOs", 
+                    type: "data", 
+                    category: "data", 
+                    description: "Displays all DAOs in formatted table with key metrics. Uses CLI-Table3 for structured output.",
+                    dependencies: [],
+                    parameters: "None",
+                    returns: "Promise<void>",
+                    complexity: "Low"
+                },
+                { 
+                    id: "getDAO", 
+                    name: "getDAO", 
+                    type: "data", 
+                    category: "data", 
+                    description: "Displays detailed information for a specific DAO including contracts, ENS, social links, and tags.",
+                    dependencies: [],
+                    parameters: "daoId string",
+                    returns: "Promise<void>",
+                    complexity: "Low"
+                },
+                { 
+                    id: "createDAO", 
+                    name: "createDAO", 
+                    type: "data", 
+                    category: "data", 
+                    description: "Creates new DAO entity with user-provided data. Includes validation for Ethereum addresses and required fields.",
+                    dependencies: [],
+                    parameters: "None (prompts)",
+                    returns: "Promise<void>",
+                    complexity: "Medium"
+                },
+                { 
+                    id: "updateDAO", 
+                    name: "updateDAO", 
+                    type: "data", 
+                    category: "data", 
+                    description: "Updates existing DAO entity with new information. Supports partial updates with empty field filtering.",
+                    dependencies: [],
+                    parameters: "daoId string",
+                    returns: "Promise<void>",
+                    complexity: "Medium"
+                },
+                { 
+                    id: "deleteDAO", 
+                    name: "deleteDAO", 
+                    type: "data", 
+                    category: "data", 
+                    description: "Removes DAO entity from registry. Includes confirmation dialog in interactive mode for safety.",
+                    dependencies: [],
+                    parameters: "daoId string",
+                    returns: "Promise<void>",
+                    complexity: "Low"
+                },
+                { 
+                    id: "showAnalytics", 
+                    name: "showAnalytics", 
+                    type: "analytics", 
+                    category: "analytics", 
+                    description: "Displays comprehensive analytics about DAO registry including counts, distributions, and metrics.",
+                    dependencies: [],
+                    parameters: "None",
+                    returns: "Promise<void>",
+                    complexity: "Low"
+                },
+                
+                // Interactive Helpers
+                { 
+                    id: "interactiveGetDAO", 
+                    name: "interactiveGetDAO", 
+                    type: "interactive", 
+                    category: "interactive", 
+                    description: "Prompts user for DAO ID and calls getDAO function. Provides input validation.",
+                    dependencies: ["getDAO"],
+                    parameters: "None (prompts)",
+                    returns: "Promise<void>",
+                    complexity: "Low"
+                },
+                { 
+                    id: "interactiveUpdateDAO", 
+                    name: "interactiveUpdateDAO", 
+                    type: "interactive", 
+                    category: "interactive", 
+                    description: "Prompts user for DAO ID and calls updateDAO function. Handles user input validation.",
+                    dependencies: ["updateDAO"],
+                    parameters: "None (prompts)",
+                    returns: "Promise<void>",
+                    complexity: "Low"
+                },
+                { 
+                    id: "interactiveDeleteDAO", 
+                    name: "interactiveDeleteDAO", 
+                    type: "interactive", 
+                    category: "interactive", 
+                    description: "Prompts user for DAO ID and confirmation before deletion. Implements double confirmation for safety.",
+                    dependencies: ["deleteDAO"],
+                    parameters: "None (prompts)",
+                    returns: "Promise<void>",
+                    complexity: "Low"
+                }
+            ],
+            
+            links: [
+                // Entry point connections
+                { source: "handleCommand", target: "listDAOs" },
+                { source: "handleCommand", target: "getDAO" },
+                { source: "handleCommand", target: "createDAO" },
+                { source: "handleCommand", target: "updateDAO" },
+                { source: "handleCommand", target: "deleteDAO" },
+                { source: "handleCommand", target: "startInteractive" },
+                
+                // Interactive flow
+                { source: "startInteractive", target: "handleDAOAction" },
+                { source: "handleDAOAction", target: "listDAOs" },
+                { source: "handleDAOAction", target: "interactiveGetDAO" },
+                { source: "handleDAOAction", target: "createDAO" },
+                { source: "handleDAOAction", target: "interactiveUpdateDAO" },
+                { source: "handleDAOAction", target: "interactiveDeleteDAO" },
+                { source: "handleDAOAction", target: "showAnalytics" },
+                
+                // Interactive helper connections
+                { source: "interactiveGetDAO", target: "getDAO" },
+                { source: "interactiveUpdateDAO", target: "updateDAO" },
+                { source: "interactiveDeleteDAO", target: "deleteDAO" }
+            ]
+        };
+
+        // Enhanced color scheme
+        const colors = {
+            entry: "#e74c3c",
+            core: "#3498db",
+            data: "#2ecc71",
+            interactive: "#f39c12",
+            analytics: "#9b59b6"
+        };
+
+        // D3.js visualization
+        let svg, simulation, nodes, links;
+        let width, height;
+        let selectedNode = null;
+        let tooltip = null;
+
+        function initializeGraph() {
+            const container = document.getElementById('graphContainer');
+            width = container.clientWidth - 60;
+            height = container.clientHeight - 60;
+
+            // Clear existing SVG
+            d3.select("#graphContainer svg").remove();
+
+            // Create SVG
+            svg = d3.select("#graphContainer")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            // Create arrow marker
+            svg.append("defs").append("marker")
+                .attr("id", "arrowhead")
+                .attr("viewBox", "0 -5 10 10")
+                .attr("refX", 25)
+                .attr("refY", 0)
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 6)
+                .attr("orient", "auto")
+                .append("path")
+                .attr("d", "M0,-5L10,0L0,5")
+                .attr("fill", "#6c757d");
+
+            // Create tooltip
+            tooltip = d3.select("body").append("div")
+                .attr("class", "tooltip")
+                .style("position", "absolute")
+                .style("visibility", "hidden");
+
+            // Create links
+            links = svg.append("g")
+                .selectAll("line")
+                .data(functionData.links)
+                .enter().append("line")
+                .attr("class", "link")
+                .attr("marker-end", "url(#arrowhead)");
+
+            // Create nodes
+            nodes = svg.append("g")
+                .selectAll("g")
+                .data(functionData.nodes)
+                .enter().append("g")
+                .attr("class", "node")
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended));
+
+            // Add circles to nodes
+            nodes.append("circle")
+                .attr("r", d => d.type === "entry" ? 22 : 18)
+                .attr("fill", d => colors[d.type])
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 3)
+                .attr("filter", "drop-shadow(0 2px 4px rgba(0,0,0,0.2))");
+
+            // Add text to nodes
+            nodes.append("text")
+                .text(d => d.name)
+                .attr("font-size", d => d.type === "entry" ? "11px" : "10px")
+                .attr("font-weight", "600");
+
+            // Add event listeners
+            nodes.on("click", function(event, d) {
+                selectNode(d);
+                showFunctionDetails(d);
+            });
+
+            nodes.on("mouseover", function(event, d) {
+                showTooltip(event, d);
+                highlightConnections(d);
+            });
+
+            nodes.on("mouseout", function(event, d) {
+                hideTooltip();
+                removeHighlights();
+            });
+
+            // Create simulation
+            simulation = d3.forceSimulation(functionData.nodes)
+                .force("link", d3.forceLink(functionData.links).id(d => d.id).distance(120))
+                .force("charge", d3.forceManyBody().strength(-400))
+                .force("center", d3.forceCenter(width / 2, height / 2))
+                .on("tick", ticked);
+
+            // Add controls event listeners
+            document.getElementById('viewMode').addEventListener('change', updateLayout);
+            document.getElementById('functionFilter').addEventListener('change', filterFunctions);
+            document.getElementById('searchInput').addEventListener('input', searchFunctions);
+
+            // Add legend click handlers
+            document.querySelectorAll('.legend-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const filter = this.dataset.filter;
+                    document.getElementById('functionFilter').value = filter;
+                    filterFunctions();
+                });
+            });
+
+            // Update stats
+            updateStats();
+        }
+
+        function ticked() {
+            links
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
+
+            nodes
+                .attr("transform", d => `translate(${d.x},${d.y})`);
+        }
+
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+
+        function selectNode(d) {
+            // Remove previous selection
+            nodes.selectAll("circle").attr("stroke", "#fff");
+            
+            // Add selection to current node
+            d3.select(event.target.parentNode).select("circle").attr("stroke", "#667eea").attr("stroke-width", 4);
+            selectedNode = d;
+        }
+
+        function showTooltip(event, d) {
+            tooltip.html(`
+                <h4>${d.name}</h4>
+                <p><strong>Type:</strong> ${d.type}</p>
+                <p><strong>Category:</strong> ${d.category}</p>
+                <p><strong>Complexity:</strong> ${d.complexity}</p>
+                <p><strong>Parameters:</strong> ${d.parameters}</p>
+                <p><strong>Returns:</strong> ${d.returns}</p>
+                <div class="dependencies">
+                    <p><strong>Dependencies:</strong></p>
+                    <p>${d.dependencies.length > 0 ? d.dependencies.join(', ') : 'None'}</p>
+                </div>
+            `)
+            .style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 10) + "px")
+            .style("visibility", "visible")
+            .classed("show", true);
+        }
+
+        function hideTooltip() {
+            tooltip.style("visibility", "hidden").classed("show", false);
+        }
+
+        function highlightConnections(d) {
+            links.classed("highlighted", link => 
+                link.source.id === d.id || link.target.id === d.id
+            );
+        }
+
+        function removeHighlights() {
+            links.classed("highlighted", false);
+        }
+
+        function updateLayout() {
+            const mode = document.getElementById('viewMode').value;
+            
+            if (mode === "hierarchical") {
+                simulation.force("link").distance(100);
+                simulation.force("charge").strength(-300);
+            } else if (mode === "force") {
+                simulation.force("link").distance(120);
+                simulation.force("charge").strength(-400);
+            } else if (mode === "radial") {
+                simulation.force("link").distance(150);
+                simulation.force("charge").strength(-500);
+            } else if (mode === "tree") {
+                simulation.force("link").distance(80);
+                simulation.force("charge").strength(-200);
+            }
+            
+            simulation.alpha(1).restart();
+        }
+
+        function filterFunctions() {
+            const filter = document.getElementById('functionFilter').value;
+            
+            nodes.style("opacity", d => {
+                if (filter === "all") return 1;
+                return d.category === filter ? 1 : 0.2;
+            });
+            
+            links.style("opacity", d => {
+                if (filter === "all") return 0.4;
+                const sourceVisible = d.source.category === filter;
+                const targetVisible = d.target.category === filter;
+                return (sourceVisible || targetVisible) ? 0.6 : 0.1;
+            });
+        }
+
+        function searchFunctions() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            nodes.style("opacity", d => {
+                if (!searchTerm) return 1;
+                return d.name.toLowerCase().includes(searchTerm) || 
+                       d.description.toLowerCase().includes(searchTerm) ? 1 : 0.2;
+            });
+        }
+
+        function showFunctionDetails(functionData) {
+            const container = document.getElementById('functionInfo');
+            
+            const card = document.createElement('div');
+            card.className = 'function-card';
+            
+            const dependenciesList = functionData.dependencies.length > 0 
+                ? functionData.dependencies.map(dep => `<span class="dependency-tag">${dep}</span>`).join('')
+                : '<span class="no-dependencies">No dependencies</span>';
+            
+            card.innerHTML = `
+                <h4>
+                    <i class="fas fa-code"></i>
+                    ${functionData.name}
+                    <span class="type-badge">${functionData.type}</span>
+                </h4>
+                <p><strong>Description:</strong> ${functionData.description}</p>
+                <p><strong>Category:</strong> ${functionData.category}</p>
+                <p><strong>Complexity:</strong> ${functionData.complexity}</p>
+                <p><strong>Parameters:</strong> ${functionData.parameters}</p>
+                <p><strong>Returns:</strong> ${functionData.returns}</p>
+                <div class="dependencies-list">
+                    <strong>Dependencies:</strong><br>
+                    ${dependenciesList}
+                </div>
+            `;
+            
+            // Add to container (limit to 6 cards)
+            if (container.children.length >= 6) {
+                container.removeChild(container.firstChild);
+            }
+            container.appendChild(card);
+        }
+
+        function updateStats() {
+            document.getElementById('totalFunctions').textContent = functionData.nodes.length;
+            document.getElementById('totalConnections').textContent = functionData.links.length;
+            
+            const categories = new Set(functionData.nodes.map(n => n.category));
+            document.getElementById('categories').textContent = categories.size;
+        }
+
+        function resetView() {
+            simulation.alpha(1).restart();
+            nodes.style("opacity", 1);
+            links.style("opacity", 0.4);
+            document.getElementById('functionFilter').value = 'all';
+            document.getElementById('viewMode').value = 'hierarchical';
+            document.getElementById('searchInput').value = '';
+            removeHighlights();
+            
+            // Clear function details
+            const container = document.getElementById('functionInfo');
+            container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i> Click on any function node to view details</div>';
+        }
+
+        function exportGraph() {
+            const svgElement = document.querySelector("#graphContainer svg");
+            const svgData = new XMLSerializer().serializeToString(svgElement);
+            const svgBlob = new Blob([svgData], {type: "image/svg+xml;charset=utf-8"});
+            const svgUrl = URL.createObjectURL(svgBlob);
+            
+            const downloadLink = document.createElement("a");
+            downloadLink.href = svgUrl;
+            downloadLink.download = "dao-cli-function-graph.svg";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+
+            // Show success message
+            showMessage('Graph exported successfully!', 'success');
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type === 'success' ? 'success-message' : 'error-message';
+            messageDiv.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
+                ${message}
+            `;
+            
+            document.querySelector('.container').insertBefore(messageDiv, document.querySelector('.controls'));
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 3000);
+        }
+
+        // Initialize on load
+        window.addEventListener('load', initializeGraph);
+        window.addEventListener('resize', () => {
+            setTimeout(initializeGraph, 100);
+        });
+    </script>
+</body>
+</html> 

@@ -80,7 +80,7 @@ graph TB
     CrossChainQuery --> UnifiedDataLayer[Unified Data Layer]
     
     %% Event System
-    UnifiedDataLayer --> EventSystem[Comprehensive Event Logging]
+    UnifiedDataLayer --> EventSystem[  Event Logging]
     EventSystem --> SchemaEvents[Schema Creation/Update/Removal Events]
     EventSystem --> UsageEvents[Usage Pattern Tracking]
     EventSystem --> AuditTrail[Audit Trail Maintenance]
@@ -93,7 +93,7 @@ graph TB
     Statistics --> UsageTrends[Usage Trend Analysis]
     
     %% Error Handling
-    UsageTrends --> ErrorHandling[Comprehensive Error Handling]
+    UsageTrends --> ErrorHandling[  Error Handling]
     ErrorHandling --> InputValidation[Input Validation]
     ErrorHandling --> BusinessLogic[Business Logic Validation]
     ErrorHandling --> DescriptiveErrors[Descriptive Error Messages]
@@ -176,7 +176,7 @@ graph TB
 ### 3. Schema Evolution
 - **Version Control**: Semantic versioning with backward compatibility
 - **Atomic Updates**: Complete schema replacement with event logging
-- **Clean Removal**: Comprehensive cleanup of deprecated schemas
+- **Clean Removal**:   cleanup of deprecated schemas
 - **Event Tracking**: Complete audit trail of all changes
 
 ### 4. Access Control System
@@ -189,7 +189,7 @@ graph TB
 - **CCIP Compatibility**: Standardized data formats for cross-chain use
 - **Unified Data Layer**: Consistent data access across networks
 - **API Integration**: RESTful endpoints for external systems
-- **Documentation Access**: Comprehensive schema documentation
+- **Documentation Access**:   schema documentation
 
 ### 6. Monitoring and Analytics
 - **Event System**: Real-time monitoring of schema activities
@@ -201,7 +201,7 @@ graph TB
 
 1. **Standardization**: Consistent data structures across the ecosystem
 2. **Interoperability**: Cross-chain and cross-platform compatibility
-3. **Security**: Comprehensive access control and validation
+3. **Security**:   access control and validation
 4. **Scalability**: Modular design for easy extension
 5. **Transparency**: Complete audit trail and event logging
 6. **Efficiency**: Gas-optimized operations and storage

@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 /**
  * @title DAO Registry
- * @dev A comprehensive registry for managing Decentralized Autonomous Organizations (DAOs)
+ * @dev A   registry for managing Decentralized Autonomous Organizations (DAOs)
  * across multiple blockchain networks with governance tracking and analytics support.
  */
 contract DAORegistry is Ownable, ReentrancyGuard, Pausable {

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `DAORegistry.sol` contract is a comprehensive registry for managing Decentralized Autonomous Organizations (DAOs) across multiple blockchain networks. It provides governance tracking, analytics support, and multi-chain DAO management capabilities.
+The `DAORegistry.sol` contract is a   registry for managing Decentralized Autonomous Organizations (DAOs) across multiple blockchain networks. It provides governance tracking, analytics support, and multi-chain DAO management capabilities.
 
 ## Contract Information
 
@@ -450,7 +450,7 @@ function isMember(uint256 daoId, address memberAddress) external view returns (b
 ## Security Best Practices
 
 ### Code Review
-- Comprehensive security review
+-   security review
 - External audit recommendations
 - Bug bounty program
 
@@ -460,6 +460,6 @@ function isMember(uint256 daoId, address memberAddress) external view returns (b
 - Emergency pause functionality
 
 ### Testing
-- Comprehensive test coverage
+-   test coverage
 - Fuzzing and property-based testing
 - Formal verification where applicable 

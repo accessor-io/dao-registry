@@ -257,7 +257,7 @@ plugins: [
 ```
 
 ### Installed Plugins
-- **Hardhat Toolbox**: Comprehensive development toolkit
+- **Hardhat Toolbox**:   development toolkit
 - **Contract Sizer**: Analyze contract sizes
 
 ## Environment Variables

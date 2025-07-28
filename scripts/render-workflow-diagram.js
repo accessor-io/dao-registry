@@ -169,7 +169,7 @@ const htmlTemplate = `
     <div class="container">
         <div class="header">
             <h1>DAO Registry Workflow</h1>
-            <p>Comprehensive system architecture and data flow diagrams</p>
+            <p>  system architecture and data flow diagrams</p>
         </div>
         
         <div class="content">
