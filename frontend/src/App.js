@@ -4,6 +4,8 @@ import SearchPage from './components/SearchPage';
 import DAODetail from './components/DAODetail';
 import RegistryStats from './components/RegistryStats';
 import Documentation from './components/Documentation';
+import DAORegistry from './components/DAORegistry';
+import DAORegistration from './components/DAORegistration';
 import { Search, BarChart3, Home, Database, BookOpen } from 'lucide-react';
 import './App.css';
 
@@ -13,6 +15,7 @@ const Navigation = () => {
   
   const navItems = [
     { path: '/', label: 'Search DAOs', icon: Search },
+    { path: '/registry', label: 'DAO Registry', icon: Database },
     { path: '/stats', label: 'Registry Stats', icon: BarChart3 },
     { path: '/docs', label: 'Documentation', icon: BookOpen },
   ];
@@ -69,6 +72,8 @@ function App() {
           <Routes>
             <Route path="/" element={<SearchPage />} />
             <Route path="/dao/:id" element={<DAODetail />} />
+            <Route path="/registry" element={<DAORegistry />} />
+            <Route path="/register" element={<DAORegistration />} />
             <Route path="/stats" element={<RegistryStats />} />
             <Route path="/docs" element={<Documentation />} />
           </Routes>
