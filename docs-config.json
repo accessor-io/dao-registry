@@ -1,0 +1,123 @@
+{
+  "project": {
+    "name": "DAO Registry",
+    "version": "1.0.0",
+    "description": "Decentralized DAO registry with ENS integration and advanced Ethereum features"
+  },
+  "docs": [
+    {
+      "category": "frontend",
+      "title": "DAO Registry Component",
+      "filename": "dao-registry-component.md",
+      "options": {
+        "quickReference": "React component for displaying DAO registry with search, filtering, and sorting capabilities",
+        "implementation": "The DAORegistry component provides a comprehensive interface for browsing and managing DAO registrations. It includes real-time search, advanced filtering by chain, governance type, and status, as well as sorting functionality.",
+        "examples": "```jsx\n// Basic usage\n<DAORegistry />\n\n// With custom filters\n<DAORegistry \n  defaultChainId={1}\n  showVerifiedOnly={true}\n  sortBy=\"memberCount\"\n/>\n```",
+        "styling": "Uses Tailwind CSS classes for responsive design. Key classes include:\n- `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3` for responsive grid layout\n- `bg-white rounded-lg shadow-sm` for card styling\n- `hover:shadow-md transition-shadow` for interactive effects",
+        "stateManagement": "Uses React hooks for state management:\n- `useState` for local component state\n- `useEffect` for data fetching and filtering\n- Custom hooks for search and filter logic",
+        "testing": "```javascript\n// Test component rendering\nit('renders DAO registry', () => {\n  render(<DAORegistry />);\n  expect(screen.getByText('DAO Registry')).toBeInTheDocument();\n});\n\n// Test search functionality\nit('filters DAOs by search term', () => {\n  render(<DAORegistry />);\n  fireEvent.change(screen.getByPlaceholderText('Search DAOs...'), {\n    target: { value: 'test' }\n  });\n  expect(screen.getByText('Test DAO')).toBeInTheDocument();\n});\n```",
+        "troubleshooting": "Common issues:\n- **Search not working**: Check if search term is properly debounced\n- **Filters not applying**: Verify filter state is properly updated\n- **Performance issues**: Implement virtualization for large lists",
+        "related": "[DAO Registration Component](../components/dao-registration.md), [Documentation Viewer](../components/documentation-viewer.md)"
+      }
+    },
+    {
+      "category": "frontend",
+      "title": "DAO Registration Form",
+      "filename": "dao-registration-form.md",
+      "options": {
+        "quickReference": "Multi-step form component for DAO registration with ENS integration and smart contract validation",
+        "implementation": "The DAORegistration component implements a comprehensive 6-step registration process that adheres to the RFC-001 specification. It includes wallet connection, form validation, ENS domain configuration, and advanced Ethereum features.",
+        "examples": "```jsx\n// Basic usage\n<DAORegistration />\n\n// With custom validation\n<DAORegistration \n  onSuccess={handleRegistrationSuccess}\n  validateENS={true}\n  enableAdvancedFeatures={true}\n/>\n```",
+        "styling": "Uses Tailwind CSS with custom form styling:\n- `space-y-6` for consistent spacing\n- `bg-gradient-to-r` for step indicators\n- `border-l-4 border-blue-500` for active step highlighting",
+        "stateManagement": "Complex state management with:\n- Multi-step form state\n- Wallet connection state\n- Form validation state\n- ENS integration state",
+        "testing": "```javascript\n// Test form validation\nit('validates required fields', () => {\n  render(<DAORegistration />);\n  fireEvent.click(screen.getByText('Next'));\n  expect(screen.getByText('DAO name is required')).toBeInTheDocument();\n});\n\n// Test wallet connection\nit('connects wallet successfully', async () => {\n  render(<DAORegistration />);\n  fireEvent.click(screen.getByText('Connect Wallet'));\n  await waitFor(() => {\n    expect(screen.getByText('Wallet Connected')).toBeInTheDocument();\n  });\n});\n```",
+        "troubleshooting": "Common issues:\n- **Wallet connection fails**: Check MetaMask installation and network\n- **ENS validation errors**: Verify domain format and availability\n- **Form submission fails**: Check smart contract deployment and gas fees",
+        "related": "[DAO Registry Component](../components/dao-registry-component.md), [ENS Integration](../blockchain/ens-integration.md)"
+      }
+    },
+    {
+      "category": "backend",
+      "title": "DAO API Service",
+      "filename": "dao-api-service.md",
+      "options": {
+        "quickReference": "RESTful API service for DAO management with validation, caching, and blockchain integration",
+        "implementation": "The DAO API service provides comprehensive endpoints for DAO CRUD operations, search, filtering, and analytics. It integrates with PostgreSQL for data persistence, Redis for caching, and blockchain networks for verification.",
+        "apiEndpoint": "```\nGET /api/v1/daos\nPOST /api/v1/daos\nGET /api/v1/daos/{id}\nPUT /api/v1/daos/{id}\nDELETE /api/v1/daos/{id}\n```",
+        "schema": "```typescript\ninterface CreateDAORequest {\n  name: string;\n  symbol: string;\n  description: string;\n  chainId: number;\n  contractAddress: string;\n  tokenAddress: string;\n  treasuryAddress: string;\n  governanceType: GovernanceType;\n  ensDomain?: string;\n}\n\ninterface DAOResponse {\n  id: string;\n  name: string;\n  symbol: string;\n  status: DAOStatus;\n  verified: boolean;\n  createdAt: string;\n  updatedAt: string;\n}\n```",
+        "errorHandling": "Standardized error responses:\n- `400 Bad Request`: Validation errors\n- `404 Not Found`: DAO not found\n- `409 Conflict`: Duplicate registration\n- `500 Internal Server Error`: Blockchain errors",
+        "testing": "```javascript\n// Test DAO creation\nit('creates DAO successfully', async () => {\n  const response = await request(app)\n    .post('/api/v1/daos')\n    .send(validDAOData);\n  \n  expect(response.status).toBe(201);\n  expect(response.body.id).toBeDefined();\n});\n\n// Test validation\nit('validates required fields', async () => {\n  const response = await request(app)\n    .post('/api/v1/daos')\n    .send({});\n  \n  expect(response.status).toBe(400);\n  expect(response.body.errors).toBeDefined();\n});\n```",
+        "troubleshooting": "Common issues:\n- **Database connection errors**: Check PostgreSQL configuration\n- **Cache misses**: Verify Redis connection and key patterns\n- **Blockchain timeouts**: Implement retry logic and fallbacks",
+        "related": "[Database Schema](../database/schema.md), [Blockchain Integration](../blockchain/integration.md)"
+      }
+    },
+    {
+      "category": "blockchain",
+      "title": "DAO Registry Contract",
+      "filename": "dao-registry-contract.md",
+      "options": {
+        "quickReference": "Smart contract for DAO registration with ENS integration and verification system",
+        "implementation": "The DAORegistry contract provides on-chain DAO registration with metadata storage, verification system, and ENS integration. It supports multi-chain deployments and includes gas optimization features.",
+        "contractInterface": "```solidity\ninterface IDAORegistry {\n  struct DAOInfo {\n    string name;\n    string symbol;\n    string description;\n    address contractAddress;\n    address tokenAddress;\n    address treasuryAddress;\n    uint256 chainId;\n    bool verified;\n    uint256 createdAt;\n  }\n  \n  function registerDAO(\n    string memory name,\n    string memory symbol,\n    string memory description,\n    address contractAddress,\n    address tokenAddress,\n    address treasuryAddress,\n    uint256 chainId\n  ) external returns (uint256 daoId);\n  \n  function getDAO(uint256 daoId) external view returns (DAOInfo memory);\n  function verifyDAO(uint256 daoId) external;\n}\n```",
+        "deployment": "```bash\n# Deploy to local network\nnpx hardhat run scripts/deploy.js --network localhost\n\n# Deploy to testnet\nnpx hardhat run scripts/deploy.js --network sepolia\n\n# Verify contract\nnpx hardhat verify --network mainnet CONTRACT_ADDRESS\n```",
+        "testing": "```javascript\n// Test DAO registration\nit('registers DAO successfully', async () => {\n  const tx = await daoRegistry.registerDAO(\n    'Test DAO',\n    'TEST',\n    'Test description',\n    contractAddress,\n    tokenAddress,\n    treasuryAddress,\n    1\n  );\n  \n  await expect(tx).to.emit(daoRegistry, 'DAORegistered');\n});\n\n// Test verification\nit('verifies DAO correctly', async () => {\n  await daoRegistry.verifyDAO(daoId);\n  const dao = await daoRegistry.getDAO(daoId);\n  expect(dao.verified).to.be.true;\n});\n```",
+        "gasOptimization": "Gas optimization techniques:\n- Use `uint256` for IDs instead of strings\n- Pack structs efficiently\n- Minimize storage operations\n- Use events for off-chain data\n- Implement batch operations",
+        "troubleshooting": "Common issues:\n- **Gas limit exceeded**: Optimize contract functions\n- **Verification fails**: Check contract permissions\n- **ENS integration errors**: Verify ENS resolver setup",
+        "related": "[ENS Integration](../blockchain/ens-integration.md), [Treasury Contract](../blockchain/treasury-contract.md)"
+      }
+    },
+    {
+      "category": "blockchain",
+      "title": "ENS Integration",
+      "filename": "ens-integration.md",
+      "options": {
+        "quickReference": "Ethereum Name Service integration for human-readable DAO addresses and metadata management",
+        "implementation": "ENS integration provides human-readable addresses for DAOs and their components. It includes subdomain management, metadata storage, and reverse resolution capabilities.",
+        "contractInterface": "```solidity\ninterface IENSIntegration {\n  struct ENSRegistration {\n    string primaryDomain;\n    string governanceSubdomain;\n    string treasurySubdomain;\n    string tokenSubdomain;\n    address daoAddress;\n    bool verified;\n    uint256 registrationDate;\n  }\n  \n  function registerDAOWithENS(\n    string memory primaryDomain,\n    string memory governanceSubdomain,\n    string memory treasurySubdomain,\n    string memory tokenSubdomain,\n    address daoAddress\n  ) external returns (uint256 registrationId);\n  \n  function getDAOByENSDomain(\n    string memory domain\n  ) external view returns (address daoAddress);\n}\n```",
+        "deployment": "```bash\n# Deploy ENS resolver\nnpx hardhat run scripts/deploy-ens.js --network mainnet\n\n# Register subdomains\nnpx hardhat run scripts/register-subdomains.js --network mainnet\n\n# Set up reverse resolution\nnpx hardhat run scripts/setup-reverse.js --network mainnet\n```",
+        "testing": "```javascript\n// Test ENS registration\nit('registers ENS domain', async () => {\n  const tx = await ensIntegration.registerDAOWithENS(\n    'testdao.eth',\n    'governance.testdao.eth',\n    'treasury.testdao.eth',\n    'token.testdao.eth',\n    daoAddress\n  );\n  \n  await expect(tx).to.emit(ensIntegration, 'DAOENSRegistered');\n});\n\n// Test domain resolution\nit('resolves domain to DAO', async () => {\n  const dao = await ensIntegration.getDAOByENSDomain('testdao.eth');\n  expect(dao).to.equal(daoAddress);\n});\n```",
+        "gasOptimization": "ENS gas optimization:\n- Use namehash for domain lookups\n- Batch subdomain registrations\n- Cache resolved addresses\n- Use events for metadata updates",
+        "troubleshooting": "Common issues:\n- **Domain not found**: Check ENS registry and resolver\n- **Permission denied**: Verify domain ownership\n- **Subdomain conflicts**: Check for existing registrations",
+        "related": "[DAO Registry Contract](../blockchain/dao-registry-contract.md), [Reserved Subdomains](../blockchain/reserved-subdomains.md)"
+      }
+    },
+    {
+      "category": "deployment",
+      "title": "Production Deployment",
+      "filename": "production-deployment.md",
+      "options": {
+        "quickReference": "Complete production deployment guide with Docker, CI/CD, and monitoring setup",
+        "implementation": "Production deployment includes containerized services, automated CI/CD pipelines, monitoring, and backup systems. The deployment supports multiple environments and includes disaster recovery procedures.",
+        "examples": "```yaml\n# docker-compose.yml\nversion: '3.8'\nservices:\n  app:\n    build: .\n    ports:\n      - '3000:3000'\n    environment:\n      - NODE_ENV=production\n      - DATABASE_URL=postgresql://user:pass@db:5432/dao_registry\n    depends_on:\n      - db\n      - redis\n  \n  db:\n    image: postgres:13\n    environment:\n      - POSTGRES_DB=dao_registry\n    volumes:\n      - postgres_data:/var/lib/postgresql/data\n```",
+        "prerequisites": "- Docker and Docker Compose\n- PostgreSQL 13+\n- Redis 6+\n- Node.js 18+\n- SSL certificates\n- Domain configuration",
+        "troubleshooting": "Common deployment issues:\n- **Database connection fails**: Check connection strings and network\n- **Container startup errors**: Verify environment variables\n- **SSL certificate issues**: Check certificate paths and permissions",
+        "related": "[Environment Configuration](../deployment/environment.md), [Monitoring Setup](../deployment/monitoring.md)"
+      }
+    },
+    {
+      "category": "testing",
+      "title": "Testing Strategy",
+      "filename": "testing-strategy.md",
+      "options": {
+        "quickReference": "Comprehensive testing strategy covering unit, integration, and end-to-end tests",
+        "implementation": "The testing strategy includes unit tests for components and services, integration tests for API endpoints, and end-to-end tests for complete user workflows. It also includes smart contract testing and performance testing.",
+        "examples": "```javascript\n// Unit test example\nit('filters DAOs correctly', () => {\n  const daos = [\n    { name: 'Test DAO', chainId: 1 },\n    { name: 'Other DAO', chainId: 2 }\n  ];\n  \n  const filtered = filterDAOs(daos, { chainId: 1 });\n  expect(filtered).toHaveLength(1);\n  expect(filtered[0].name).toBe('Test DAO');\n});\n\n// Integration test example\nit('creates DAO via API', async () => {\n  const response = await request(app)\n    .post('/api/v1/daos')\n    .send(validDAOData);\n  \n  expect(response.status).toBe(201);\n  expect(response.body.id).toBeDefined();\n});\n```",
+        "prerequisites": "- Jest testing framework\n- React Testing Library\n- Supertest for API testing\n- Hardhat for contract testing\n- Cypress for E2E testing",
+        "troubleshooting": "Common testing issues:\n- **Mock setup errors**: Check mock implementations\n- **Async test failures**: Use proper wait utilities\n- **Contract test timeouts**: Increase timeout values",
+        "related": "[Test Configuration](../testing/config.md), [Performance Testing](../testing/performance.md)"
+      }
+    }
+  ],
+  "scripts": {
+    "generate": "node scripts/generate-docs.js --config docs-config.json",
+    "parse": "node scripts/parse-docs.js --all --index --search --report",
+    "validate": "node scripts/validate-docs.js",
+    "search": "node scripts/search-docs.js"
+  },
+  "templates": {
+    "frontend": "templates/frontend.md",
+    "backend": "templates/backend.md",
+    "blockchain": "templates/blockchain.md",
+    "deployment": "templates/deployment.md",
+    "testing": "templates/testing.md"
+  }
+}
