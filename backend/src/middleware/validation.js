@@ -7,8 +7,14 @@ const addFormats = require('ajv-formats');
 const ajv = new Ajv({ allErrors: true, strict: false });
 addFormats(ajv);
 
+function resolveRepoRoot() {
+  // __dirname is backend/src/middleware → repo root is three levels up
+  return path.resolve(__dirname, '..', '..', '..');
+}
+
 function loadJsonSchema(schemaName) {
-  const schemaPath = path.join(process.cwd(), 'shared', 'schemas', `${schemaName}.schema.json`);
+  const repoRoot = resolveRepoRoot();
+  const schemaPath = path.join(repoRoot, 'shared', 'schemas', `${schemaName}.schema.json`);
   if (!fs.existsSync(schemaPath)) return null;
   try {
     const raw = fs.readFileSync(schemaPath, 'utf8');
@@ -37,7 +43,6 @@ const validateRequest = (schema, property = 'body', schemaName = null) => {
   return (req, res, next) => {
     let data = req[property];
 
-    // First, JSON Schema validation if provided
     if (schemaName) {
       const { valid, errors } = validateWithSchema(schemaName, data);
       if (!valid) {
@@ -49,7 +54,6 @@ const validateRequest = (schema, property = 'body', schemaName = null) => {
       }
     }
 
-    // Then, Joi validation if schema provided
     if (schema) {
       const { error, value } = schema.validate(data, {
         abortEarly: false,
@@ -65,7 +69,6 @@ const validateRequest = (schema, property = 'body', schemaName = null) => {
         });
       }
 
-      // Replace the request property with validated data
       req[property] = value;
     }
 
@@ -73,6 +76,4 @@ const validateRequest = (schema, property = 'body', schemaName = null) => {
   };
 };
 
-module.exports = {
-  validateRequest
-}; 
+module.exports = { validateRequest }; 
