@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Ajv from 'ajv';
+import addFormats from 'ajv-formats';
 import { 
   Plus, 
   Save, 
@@ -54,6 +56,8 @@ import {
 const DAORegistration = () => {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [schema, setSchema] = useState(null);
+  const [ajvValidator, setAjvValidator] = useState(null);
   const [formData, setFormData] = useState({
     // Core Identification (RFC-001 Section 4.1)
     id: '', // Will be generated
@@ -200,6 +204,22 @@ const DAORegistration = () => {
   const [walletConnected, setWalletConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState('');
 
+  useEffect(() => {
+    const loadSchema = async () => {
+      try {
+        const res = await fetch('/api/schemas/CreateDAORequest');
+        if (!res.ok) return;
+        const json = await res.json();
+        const ajv = new Ajv({ allErrors: true, strict: false });
+        addFormats(ajv);
+        const validate = ajv.compile(json);
+        setSchema(json);
+        setAjvValidator(() => validate);
+      } catch {}
+    };
+    loadSchema();
+  }, []);
+
   const governanceTypes = [
     { id: 'TokenWeighted', name: 'Token Weighted Voting', description: 'Voting power based on token holdings' },
     { id: 'Quadratic', name: 'Quadratic Voting', description: 'Voting power increases with square root of tokens' },
@@ -237,13 +257,8 @@ const DAORegistration = () => {
       ...prev,
       [field]: value
     }));
-    
-    // Clear error when user starts typing
     if (errors[field]) {
-      setErrors(prev => ({
-        ...prev,
-        [field]: null
-      }));
+      setErrors(prev => ({ ...prev, [field]: null }));
     }
   };
 
@@ -257,16 +272,26 @@ const DAORegistration = () => {
     }));
   };
 
+  const runAjvValidation = () => {
+    if (!ajvValidator) return true;
+    const valid = ajvValidator(formData);
+    if (valid) return true;
+    const fieldErrors = {};
+    (ajvValidator.errors || []).forEach(err => {
+      const path = (err.instancePath || '').replace(/^\//, '');
+      const key = path.includes('/') ? path.split('/')[0] : path || err.params.missingProperty || 'root';
+      fieldErrors[key] = err.message;
+    });
+    setErrors(prev => ({ ...prev, ...fieldErrors }));
+    return false;
+  };
+
   const handleLogoUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setFormData(prev => ({
-          ...prev,
-          logo: file,
-          logoPreview: e.target.result
-        }));
+        setFormData(prev => ({ ...prev, logo: file, logoPreview: e.target.result }));
       };
       reader.readAsDataURL(file);
     }
@@ -274,79 +299,49 @@ const DAORegistration = () => {
 
   const addTag = (tag) => {
     if (tag && !formData.tags.includes(tag)) {
-      setFormData(prev => ({
-        ...prev,
-        tags: [...prev.tags, tag]
-      }));
+      setFormData(prev => ({ ...prev, tags: [...prev.tags, tag] }));
     }
   };
 
   const removeTag = (tagToRemove) => {
-    setFormData(prev => ({
-      ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove)
-    }));
+    setFormData(prev => ({ ...prev, tags: prev.tags.filter(tag => tag !== tagToRemove) }));
   };
 
   const validateStep = (currentStep) => {
     const newErrors = {};
-
+    // Local step checks
     switch (currentStep) {
-      case 1: // Core Identification
+      case 1:
         if (!formData.name.trim()) newErrors.name = 'DAO name is required';
         if (!formData.symbol.trim()) newErrors.symbol = 'Token symbol is required';
         if (!formData.description.trim()) newErrors.description = 'Description is required';
         if (formData.symbol.length > 10) newErrors.symbol = 'Symbol must be 10 characters or less';
         break;
-
-      case 2: // Smart Contract Addresses
+      case 2:
         if (!formData.tokenAddress.trim()) newErrors.tokenAddress = 'Token address is required';
         if (!formData.governanceAddress.trim()) newErrors.governanceAddress = 'Governance address is required';
         if (!formData.treasuryAddress.trim()) newErrors.treasuryAddress = 'Treasury address is required';
-        // Add Ethereum address validation
         const ethAddressRegex = /^0x[a-fA-F0-9]{40}$/;
-        if (formData.tokenAddress && !ethAddressRegex.test(formData.tokenAddress)) {
-          newErrors.tokenAddress = 'Invalid Ethereum address format';
-        }
-        if (formData.governanceAddress && !ethAddressRegex.test(formData.governanceAddress)) {
-          newErrors.governanceAddress = 'Invalid Ethereum address format';
-        }
-        if (formData.treasuryAddress && !ethAddressRegex.test(formData.treasuryAddress)) {
-          newErrors.treasuryAddress = 'Invalid Ethereum address format';
-        }
+        if (formData.tokenAddress && !ethAddressRegex.test(formData.tokenAddress)) newErrors.tokenAddress = 'Invalid Ethereum address format';
+        if (formData.governanceAddress && !ethAddressRegex.test(formData.governanceAddress)) newErrors.governanceAddress = 'Invalid Ethereum address format';
+        if (formData.treasuryAddress && !ethAddressRegex.test(formData.treasuryAddress)) newErrors.treasuryAddress = 'Invalid Ethereum address format';
         break;
-
-      case 3: // Governance Configuration
+      case 3:
         if (formData.votingPeriod < 1) newErrors.votingPeriod = 'Voting period must be at least 1 day';
-        if (formData.quorum < 0 || formData.quorum > 100) {
-          newErrors.quorum = 'Quorum must be between 0 and 100%';
-        }
+        if (formData.quorum < 0 || formData.quorum > 100) newErrors.quorum = 'Quorum must be between 0 and 100%';
         if (formData.proposalThreshold < 0) newErrors.proposalThreshold = 'Proposal threshold must be positive';
         break;
-
-      case 4: // ENS Integration
-        if (formData.ensDomain && !formData.ensDomain.endsWith('.eth')) {
-          newErrors.ensDomain = 'ENS domain must end with .eth';
-        }
-        if (formData.ensDomain && formData.ensDomain.length < 4) {
-          newErrors.ensDomain = 'ENS domain must be at least 4 characters';
-        }
+      case 4:
+        if (formData.ensDomain && !formData.ensDomain.endsWith('.eth')) newErrors.ensDomain = 'ENS domain must end with .eth';
+        if (formData.ensDomain && formData.ensDomain.length < 4) newErrors.ensDomain = 'ENS domain must be at least 4 characters';
         break;
-
-      case 5: // Advanced Features
-        // Optional step - no validation required
-        break;
-
-      case 6: // Review & Submit
-        // Final validation before submission
-        if (!walletConnected) {
-          newErrors.wallet = 'Wallet connection required for submission';
-        }
+      default:
         break;
     }
-
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    // Global schema check (Ajv)
+    const ajvOk = runAjvValidation();
+    return Object.keys(newErrors).length === 0 && ajvOk;
   };
 
   const isValidUrl = (string) => {
@@ -374,32 +369,13 @@ const DAORegistration = () => {
 
   const handleSubmit = async () => {
     if (!validateStep(step)) return;
-
-    if (step < 6) {
-      setStep(step + 1);
-      return;
-    }
-
+    if (step < 6) { setStep(step + 1); return; }
     setLoading(true);
     try {
-      // Here you would integrate with your smart contracts
-      // For now, we'll simulate the registration process
-      
-      const registrationData = {
-        ...formData,
-        registeredBy: walletAddress,
-        registrationDate: new Date().toISOString(),
-        status: 'Pending'
-      };
-
+      const registrationData = { ...formData, registeredBy: walletAddress, registrationDate: new Date().toISOString(), status: 'Pending' };
       console.log('Registration data:', registrationData);
-      
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Success - you would redirect to the DAO detail page
       alert('DAO registration submitted successfully!');
-      
     } catch (error) {
       console.error('Registration error:', error);
       alert('Registration failed. Please try again.');
