@@ -1,4 +1,5 @@
 const express = require('express');
+const { validateRequest } = require('../middleware/validation');
 const router = express.Router();
 
 // Data source classification
@@ -39,6 +40,35 @@ router.get('/categories', (req, res) => {
     categories: DATA_CATEGORIES,
     description: 'Available data point categories and sources'
   });
+});
+
+// POST analytics (Ajv-validated)
+router.post('/external/analytics', validateRequest(null, 'body', 'AnalyticsRequest'), async (req, res) => {
+  try {
+    const { daoId, timeRange, metrics } = req.body;
+    // Mock external analytics call
+    res.json({
+      daoAnalytics: {
+        totalMembers: 1000,
+        totalProposals: 50,
+        treasuryValue: 1_000_000,
+        participationRate: 0.5,
+        averageVotingPower: 10000,
+        activeProposals: 2,
+        executedProposals: 20,
+        totalVotingPower: 200000,
+        quorumMet: 18,
+        proposalsThisMonth: 3,
+        proposalsThisYear: 25,
+        averageProposalDuration: 5,
+        treasuryGrowth: 0.12,
+        averageProposalValue: 10000,
+        totalExecutedValue: 200000
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to process analytics request', message: error.message });
+  }
 });
 
 // =======================================================================

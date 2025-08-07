@@ -65,7 +65,7 @@ async function main() {
     'DAO', 'CreateDAORequest', 'UpdateDAORequest', 'DAOResponse',
     'Proposal', 'CreateProposalRequest', 'VoteRequest', 'ProposalResponse',
     'Member', 'AddMemberRequest', 'UpdateMemberRequest', 'MemberResponse',
-    'ENSRegistrationRequest', 'ENSUpdateRequest', 'ENSOwnershipVerificationRequest',
+    'ENSRegistrationRequest', 'ENSUpdateRequest', 'ENSOwnershipVerificationRequest', 'ENSResolveRequest',
     'AnalyticsRequest', 'AnalyticsResponse'
   ].filter((name) => symbols.includes(name));
 
