@@ -1,11 +1,10 @@
 const express = require('express');
-const { ReservedSubdomainsService, ENSResolverService } = require('../services/metadata');
+const { ReservedSubdomainsService } = require('../services/reserved-subdomains-service');
 
 const router = express.Router();
 
-// Initialize services
-const ensResolver = new ENSResolverService(/* provider */);
-const reservedSubdomainsService = new ReservedSubdomainsService(ensResolver);
+// Initialize service
+const reservedSubdomainsService = new ReservedSubdomainsService();
 
 /**
  * @route GET /api/v1/reserved-subdomains
