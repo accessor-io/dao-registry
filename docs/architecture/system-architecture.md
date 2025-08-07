@@ -2,7 +2,7 @@
 
 ## Overview
 
-The DAO Registry system is built with a modular, layered architecture designed for scalability, security, and maintainability. The system integrates multiple blockchain networks, ENS services, and provides   analytics and governance tools.
+The DAO Registry system is built with a modular, layered architecture designed for scalability, security, and maintainability. The system integrates multiple blockchain networks, ENS services, and provides comprehensive analytics and governance tools.
 
 ## Architecture Layers
 
@@ -111,174 +111,761 @@ Blockchain Events → Event Listeners → Analytics Engine → Data Processing �
 Proposal Creation → Governance Engine → Voting → Quorum Check → Execution → Blockchain
 ```
 
-## Security Architecture
+## Enhanced OSS Standards Architecture
 
-### 1. Input Validation
+### Research Foundation
 
-- All user inputs are validated and sanitized
-- XSS prevention through content filtering
-- SQL injection prevention through parameterized queries
-- Path traversal prevention through path validation
+Based on the research paper "Open-source models for development of data and metadata standards" (Rokem et al., 2025), this architecture applies OSS development practices to blockchain governance standards development.
 
-### 2. Authentication & Authorization
+### Key Research Insights Applied
 
-- JWT-based authentication
-- Role-based access control (RBAC)
-- API key management for external integrations
-- Multi-factor authentication support
+#### 1. OSS Development Practices for Standards
+- **GitHub-Based Workflow**: Use pull requests and issue tracking for standards evolution
+- **Community-Driven Governance**: Enable broad stakeholder participation
+- **Version Control for Standards**: Implement semantic versioning
+- **Transparent Development Process**: Open development with clear contribution pathways
 
-### 3. Data Protection
+#### 2. Balancing Flexibility vs. Stability
+- **Long-term Compatibility**: Ensure standards work with existing datasets
+- **Evolutionary Development**: Allow standards to adapt while maintaining stability
+- **Migration Paths**: Provide clear paths for standards evolution
+- **Backward Compatibility**: Maintain compatibility with existing implementations
 
-- Encryption at rest for sensitive data
-- TLS/SSL for data in transit
-- Regular security audits
-- GDPR compliance measures
+#### 3. Cross-Domain Standards Development
+- **Meta-Standards Framework**: Create overarching standards for blockchain governance
+- **Cross-Domain Integration**: Bridge gaps between different blockchain networks
+- **Shared Best Practices**: Develop common patterns for DAO governance standards
+- **Interoperability Focus**: Ensure standards work across multiple domains
 
-## Scalability Considerations
+## Enhanced System Architecture
 
-### 1. Horizontal Scaling
+### 1. OSS-Based Standards Development Layer
 
-- Stateless API design
-- Load balancing across multiple instances
-- Database read replicas
-- CDN for static content
+```typescript
+// OSS-inspired standards development architecture
+interface OSSStandardsArchitecture {
+  // GitHub-based workflow
+  githubWorkflow: {
+    pullRequestProcess: PullRequestProcess;
+    issueTracking: IssueTracking;
+    communityReview: CommunityReview;
+    automatedValidation: AutomatedValidation;
+  };
+  
+  // Version control for standards
+  versionControl: {
+    semanticVersioning: SemanticVersioning;
+    changelog: Changelog;
+    migrationGuides: MigrationGuide[];
+  };
+  
+  // Community governance
+  communityGovernance: {
+    stakeholderParticipation: StakeholderParticipation;
+    consensusBuilding: ConsensusBuilding;
+    transparency: Transparency;
+  };
+  
+  // Standards evolution
+  standardsEvolution: {
+    enhancementProposals: EnhancementProposal[];
+    communityVoting: CommunityVoting;
+    backwardCompatibility: boolean;
+  };
+}
+```
 
-### 2. Caching Strategy
+### 2. Enhanced Metadata Standards Architecture
 
-- Redis for session management
-- CDN for static assets
-- Database query caching
-- API response caching
+```typescript
+// Enhanced metadata standards based on OSS practices
+interface EnhancedMetadataStandards {
+  // FAIR principles integration
+  fairPrinciples: {
+    findability: FindabilityMetrics;
+    accessibility: AccessibilityMetrics;
+    interoperability: InteroperabilityMetrics;
+    reusability: ReusabilityMetrics;
+  };
+  
+  // OSS development practices
+  ossPractices: {
+    openDevelopment: boolean;
+    communityContributions: boolean;
+    transparentProcess: boolean;
+    versionControl: boolean;
+  };
+  
+  // Cross-domain compatibility
+  crossDomainCompatibility: {
+    blockchainNetworks: string[];
+    governanceModels: string[];
+    metadataFormats: string[];
+    interoperabilityStandards: string[];
+  };
+  
+  // Machine-readable standards
+  machineReadableStandards: {
+    schemaSpecifications: SchemaSpecification[];
+    validationRules: ValidationRule[];
+    migrationTools: MigrationTool[];
+  };
+}
+```
 
-### 3. Performance Optimization
+### 3. Meta-Standards Framework
 
-- Database indexing strategies
-- Query optimization
-- Connection pooling
-- Asynchronous processing
+```typescript
+// Meta-standards for blockchain governance
+interface MetaStandards {
+  // Cross-domain standards
+  crossDomainStandards: {
+    governancePatterns: GovernancePattern[];
+    metadataSchemas: MetadataSchema[];
+    interoperabilityProtocols: InteroperabilityProtocol[];
+  };
+  
+  // Maturity model
+  maturityModel: {
+    readinessAssessment: ReadinessAssessment;
+    adoptionMetrics: AdoptionMetrics;
+    evolutionPath: EvolutionPath;
+  };
+  
+  // Best practices
+  bestPractices: {
+    communitySize: number;
+    technicalExpertise: TechnicalExpertise;
+    adoptionBarriers: AdoptionBarrier[];
+  };
+  
+  // Standards lifecycle
+  standardsLifecycle: {
+    development: DevelopmentPhase;
+    adoption: AdoptionPhase;
+    evolution: EvolutionPhase;
+    deprecation: DeprecationPhase;
+  };
+}
+```
+
+## API Architecture
+
+### 1. OSS-Based API Standards
+
+```typescript
+// OSS-inspired API standards
+interface OSSAPIStandards {
+  // Open development
+  openDevelopment: {
+    publicRepository: boolean;
+    communityContributions: boolean;
+    transparentProcess: boolean;
+  };
+  
+  // Version control
+  versionControl: {
+    semanticVersioning: boolean;
+    backwardCompatibility: boolean;
+    deprecationPolicy: DeprecationPolicy;
+  };
+  
+  // Community governance
+  communityGovernance: {
+    stakeholderParticipation: boolean;
+    consensusBuilding: boolean;
+    transparency: boolean;
+  };
+  
+  // Automated validation
+  automatedValidation: {
+    schemaValidation: SchemaValidation;
+    complianceChecking: ComplianceChecking;
+    qualityMetrics: QualityMetrics;
+  };
+}
+```
+
+### 2. Enhanced Metadata API
+
+```typescript
+// Enhanced metadata API based on OSS practices
+interface EnhancedMetadataAPI {
+  // FAIR principles endpoints
+  '/api/metadata/fair': {
+    findability: FindabilityAPI;
+    accessibility: AccessibilityAPI;
+    interoperability: InteroperabilityAPI;
+    reusability: ReusabilityAPI;
+  };
+  
+  // Standards management
+  '/api/standards': {
+    version: StandardsVersionAPI;
+    validation: StandardsValidationAPI;
+    migration: StandardsMigrationAPI;
+  };
+  
+  // Community governance
+  '/api/governance/standards': {
+    proposals: EnhancementProposalAPI;
+    voting: CommunityVotingAPI;
+    consensus: ConsensusBuildingAPI;
+  };
+  
+  // Cross-domain standards
+  '/api/standards/cross-domain': {
+    patterns: GovernancePatternAPI;
+    schemas: MetadataSchemaAPI;
+    protocols: InteroperabilityProtocolAPI;
+  };
+}
+```
+
+## Enhanced Database Schema
+
+### 1. OSS Standards Tables
+
+```sql
+-- OSS-based standards development tables
+CREATE TABLE standards_development (
+  id SERIAL PRIMARY KEY,
+  standard_id UUID REFERENCES standards(id),
+  github_repository VARCHAR(255),
+  pull_request_count INTEGER DEFAULT 0,
+  issue_count INTEGER DEFAULT 0,
+  community_contributors INTEGER DEFAULT 0,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE standards_governance (
+  id SERIAL PRIMARY KEY,
+  standard_id UUID REFERENCES standards(id),
+  enhancement_proposal_id VARCHAR(100),
+  community_vote_result VARCHAR(50),
+  consensus_status VARCHAR(50),
+  stakeholder_participation_rate DECIMAL(5,2),
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE standards_evolution (
+  id SERIAL PRIMARY KEY,
+  standard_id UUID REFERENCES standards(id),
+  version_from VARCHAR(50),
+  version_to VARCHAR(50),
+  migration_path TEXT,
+  backward_compatibility BOOLEAN DEFAULT TRUE,
+  deprecation_cycle INTEGER,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE cross_domain_standards (
+  id SERIAL PRIMARY KEY,
+  standard_id UUID REFERENCES standards(id),
+  domain_type VARCHAR(100),
+  interoperability_level DECIMAL(5,2),
+  adoption_rate DECIMAL(5,2),
+  maturity_score DECIMAL(5,2),
+  created_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+### 2. Enhanced Metadata Tables
+
+```sql
+-- Enhanced metadata tables with OSS practices
+CREATE TABLE fair_metadata (
+  id SERIAL PRIMARY KEY,
+  metadata_id UUID REFERENCES metadata(id),
+  findability_score DECIMAL(5,2),
+  accessibility_score DECIMAL(5,2),
+  interoperability_score DECIMAL(5,2),
+  reusability_score DECIMAL(5,2),
+  overall_fair_score DECIMAL(5,2),
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE oss_practices (
+  id SERIAL PRIMARY KEY,
+  standard_id UUID REFERENCES standards(id),
+  open_development BOOLEAN DEFAULT FALSE,
+  community_contributions BOOLEAN DEFAULT FALSE,
+  transparent_process BOOLEAN DEFAULT FALSE,
+  version_control BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE machine_readable_standards (
+  id SERIAL PRIMARY KEY,
+  standard_id UUID REFERENCES standards(id),
+  schema_specification TEXT,
+  validation_rules JSONB,
+  migration_tools JSONB,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+## Research Integration Architecture
+
+### 1. OSS-Based Standards Development
+
+```typescript
+interface OSSStandardsDevelopment {
+  // GitHub workflow integration
+  githubIntegration: {
+    repository: string;
+    pullRequestProcess: PullRequestProcess;
+    issueTracking: IssueTracking;
+    communityReview: CommunityReview;
+  };
+  
+  // Version control
+  versionControl: {
+    semanticVersioning: SemanticVersioning;
+    changelog: Changelog;
+    migrationGuides: MigrationGuide[];
+  };
+  
+  // Community governance
+  communityGovernance: {
+    stakeholderParticipation: StakeholderParticipation;
+    consensusBuilding: ConsensusBuilding;
+    transparency: Transparency;
+  };
+  
+  // Automated validation
+  automatedValidation: {
+    schemaValidation: SchemaValidation;
+    complianceChecking: ComplianceChecking;
+    qualityMetrics: QualityMetrics;
+  };
+}
+```
+
+### 2. Meta-Standards Development
+
+```typescript
+interface MetaStandardsDevelopment {
+  // Cross-domain standards
+  crossDomainStandards: {
+    governancePatterns: GovernancePattern[];
+    metadataSchemas: MetadataSchema[];
+    interoperabilityProtocols: InteroperabilityProtocol[];
+  };
+  
+  // Maturity model
+  maturityModel: {
+    readinessAssessment: ReadinessAssessment;
+    adoptionMetrics: AdoptionMetrics;
+    evolutionPath: EvolutionPath;
+  };
+  
+  // Best practices
+  bestPractices: {
+    communitySize: number;
+    technicalExpertise: TechnicalExpertise;
+    adoptionBarriers: AdoptionBarrier[];
+  };
+  
+  // Standards lifecycle
+  standardsLifecycle: {
+    development: DevelopmentPhase;
+    adoption: AdoptionPhase;
+    evolution: EvolutionPhase;
+    deprecation: DeprecationPhase;
+  };
+}
+```
+
+## Enhanced Security Architecture
+
+### 1. OSS-Based Security
+
+```typescript
+interface OSSBasedSecurity {
+  // Transparent security practices
+  transparentSecurity: {
+    openSecurityReviews: boolean;
+    communitySecurityAudits: boolean;
+    publicVulnerabilityReporting: boolean;
+  };
+  
+  // Community-driven security
+  communitySecurity: {
+    stakeholderSecurityReviews: boolean;
+    consensusSecurityDecisions: boolean;
+    transparentSecurityProcesses: boolean;
+  };
+  
+  // Automated security validation
+  automatedSecurityValidation: {
+    securitySchemaValidation: SecuritySchemaValidation;
+    complianceSecurityChecking: ComplianceSecurityChecking;
+    securityQualityMetrics: SecurityQualityMetrics;
+  };
+}
+```
+
+### 2. Enhanced Access Control
+
+```typescript
+interface OSSBasedAccessControl {
+  // Community-driven access
+  communityAccess: {
+    stakeholderAccessParticipation: boolean;
+    consensusAccessDecisions: boolean;
+    transparentAccessProcesses: boolean;
+  };
+  
+  // Open development access
+  openDevelopmentAccess: {
+    publicRepositoryAccess: boolean;
+    communityContributionsAccess: boolean;
+    transparentProcessAccess: boolean;
+  };
+  
+  // Version-controlled access
+  versionControlledAccess: {
+    semanticVersioningAccess: boolean;
+    backwardCompatibilityAccess: boolean;
+    deprecationPolicyAccess: boolean;
+  };
+}
+```
 
 ## Deployment Architecture
 
-### 1. Development Environment
+### 1. Container Orchestration
 
-- Local development with Docker Compose
-- Hot reloading for development
-- Local blockchain networks (Hardhat, Ganache)
-- Development database with sample data
+```yaml
+# Docker Compose configuration
+version: '3.8'
+services:
+  api-gateway:
+    image: dao-registry/api-gateway:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://user:pass@db:5432/dao_registry
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - db
+      - redis
 
-### 2. Staging Environment
+  registry-engine:
+    image: dao-registry/registry-engine:latest
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://user:pass@db:5432/dao_registry
+    depends_on:
+      - db
 
-- Cloud-based staging environment
-- Test blockchain networks
-- Automated testing and validation
-- Performance monitoring
+  analytics-engine:
+    image: dao-registry/analytics-engine:latest
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://user:pass@db:5432/dao_registry
+    depends_on:
+      - db
 
-### 3. Production Environment
+  governance-engine:
+    image: dao-registry/governance-engine:latest
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://user:pass@db:5432/dao_registry
+    depends_on:
+      - db
 
-- Multi-region deployment
-- High availability configuration
-- Automated backups and disaster recovery
--   monitoring and alerting
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=dao_registry
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
-## Technology Stack
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
 
-### Backend Technologies
+volumes:
+  postgres_data:
+  redis_data:
+```
 
-- **Runtime**: Node.js with TypeScript
-- **Framework**: Express.js
-- **Database**: PostgreSQL, Redis, MongoDB
-- **Blockchain**: ethers.js, ENS.js
-- **Validation**: Zod, Joi
-- **Testing**: Jest, Mocha
+### 2. Kubernetes Deployment
 
-### Frontend Technologies
-
-- **Framework**: React with TypeScript
-- **State Management**: Redux Toolkit
-- **UI Library**: Material-UI or Ant Design
-- **Charts**: Chart.js or D3.js
-- **Testing**: React Testing Library
-
-### Smart Contracts
-
-- **Language**: Solidity
-- **Framework**: Hardhat
-- **Testing**: Chai, Mocha
-- **Deployment**: Hardhat scripts
-
-### DevOps
-
-- **Containerization**: Docker
-- **Orchestration**: Kubernetes
-- **CI/CD**: GitHub Actions
-- **Monitoring**: Prometheus, Grafana
-- **Logging**: ELK Stack
-
-## Integration Points
-
-### 1. Blockchain Networks
-
-- **Ethereum Mainnet**: Primary network for production
-- **Polygon**: Layer 2 scaling solution
-- **Arbitrum**: High-performance L2 network
-- **Test Networks**: Goerli, Mumbai, Sepolia
-
-### 2. External Services
-
-- **ENS**: Ethereum Name Service integration
-- **IPFS**: Decentralized file storage
-- **The Graph**: Blockchain indexing
-- **Alchemy/Infura**: Blockchain node providers
-
-### 3. Third-party APIs
-
-- **CoinGecko**: Token price data
-- **Etherscan**: Transaction verification
-- **Dune Analytics**: Blockchain analytics
-- **Tenderly**: Smart contract monitoring
+```yaml
+# Kubernetes deployment configuration
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dao-registry-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dao-registry-api
+  template:
+    metadata:
+      labels:
+        app: dao-registry-api
+    spec:
+      containers:
+      - name: api
+        image: dao-registry/api:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: dao-registry-secrets
+              key: database-url
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+```
 
 ## Monitoring and Observability
 
-### 1. Application Monitoring
+### 1. Metrics Collection
 
-- **APM**: New Relic or DataDog
-- **Error Tracking**: Sentry
-- **Performance**: Lighthouse CI
-- **Uptime**: Pingdom or UptimeRobot
+```typescript
+// Metrics collection interface
+interface MetricsCollection {
+  // System metrics
+  systemMetrics: {
+    cpuUsage: number;
+    memoryUsage: number;
+    diskUsage: number;
+    networkIO: number;
+  };
+  
+  // Application metrics
+  applicationMetrics: {
+    requestCount: number;
+    responseTime: number;
+    errorRate: number;
+    activeConnections: number;
+  };
+  
+  // Business metrics
+  businessMetrics: {
+    daoRegistrationCount: number;
+    proposalCreationCount: number;
+    votingParticipationRate: number;
+    treasuryValue: number;
+  };
+}
+```
 
-### 2. Infrastructure Monitoring
+### 2. Logging Strategy
 
-- **Server Monitoring**: Prometheus + Grafana
-- **Log Management**: ELK Stack
-- **Alerting**: PagerDuty or OpsGenie
-- **Metrics**: Custom dashboards
+```typescript
+// Logging configuration
+interface LoggingStrategy {
+  // Log levels
+  levels: {
+    error: boolean;
+    warn: boolean;
+    info: boolean;
+    debug: boolean;
+  };
+  
+  // Log formats
+  formats: {
+    json: boolean;
+    structured: boolean;
+    humanReadable: boolean;
+  };
+  
+  // Log destinations
+  destinations: {
+    console: boolean;
+    file: boolean;
+    elasticsearch: boolean;
+    cloudwatch: boolean;
+  };
+}
+```
 
-### 3. Blockchain Monitoring
+## Performance Optimization
 
-- **Transaction Monitoring**: Custom scripts
-- **Gas Price Tracking**: Gas station APIs
-- **Network Status**: Blockchain node health
-- **Smart Contract Events**: Event listeners
+### 1. Caching Strategy
 
-## Future Considerations
+```typescript
+// Caching configuration
+interface CachingStrategy {
+  // Redis caching
+  redis: {
+    enabled: boolean;
+    ttl: number;
+    maxMemory: string;
+    evictionPolicy: string;
+  };
+  
+  // CDN caching
+  cdn: {
+    enabled: boolean;
+    cacheHeaders: Record<string, string>;
+    purgeStrategy: string;
+  };
+  
+  // Application caching
+  application: {
+    daoData: number;
+    proposalData: number;
+    analyticsData: number;
+    ensData: number;
+  };
+}
+```
 
-### 1. Scalability Improvements
+### 2. Database Optimization
 
-- Microservices architecture migration
-- Event-driven architecture
-- GraphQL federation
-- Real-time analytics with Apache Kafka
+```sql
+-- Database optimization indexes
+CREATE INDEX idx_daos_chain_id ON daos(chain_id);
+CREATE INDEX idx_daos_status ON daos(status);
+CREATE INDEX idx_daos_verified ON daos(verified);
+CREATE INDEX idx_proposals_dao_id ON proposals(dao_id);
+CREATE INDEX idx_proposals_status ON proposals(status);
+CREATE INDEX idx_members_dao_id ON members(dao_id);
+CREATE INDEX idx_members_address ON members(address);
 
-### 2. Feature Enhancements
+-- Partitioning for large tables
+CREATE TABLE proposals_partitioned (
+  LIKE proposals INCLUDING ALL
+) PARTITION BY RANGE (created_at);
 
-- Multi-language support
-- Advanced analytics dashboard
-- Mobile app development
-- API marketplace
+CREATE TABLE proposals_2024 PARTITION OF proposals_partitioned
+FOR VALUES FROM ('2024-01-01') TO ('2025-01-01');
+```
 
-### 3. Blockchain Integration
+## Security Architecture
 
-- Additional L2 networks
-- Cross-chain bridges
-- Zero-knowledge proofs
-- Layer 3 solutions 
+### 1. Authentication and Authorization
+
+```typescript
+// Authentication configuration
+interface AuthenticationConfig {
+  // JWT configuration
+  jwt: {
+    secret: string;
+    expiresIn: string;
+    refreshExpiresIn: string;
+  };
+  
+  // OAuth providers
+  oauth: {
+    google: OAuthProvider;
+    github: OAuthProvider;
+    discord: OAuthProvider;
+  };
+  
+  // Role-based access control
+  rbac: {
+    roles: Role[];
+    permissions: Permission[];
+    policies: Policy[];
+  };
+}
+```
+
+### 2. Data Protection
+
+```typescript
+// Data protection configuration
+interface DataProtection {
+  // Encryption
+  encryption: {
+    atRest: boolean;
+    inTransit: boolean;
+    algorithm: string;
+    keyRotation: number;
+  };
+  
+  // Privacy
+  privacy: {
+    gdprCompliance: boolean;
+    dataRetention: number;
+    anonymization: boolean;
+  };
+  
+  // Audit logging
+  audit: {
+    enabled: boolean;
+    retention: number;
+    encryption: boolean;
+  };
+}
+```
+
+## Disaster Recovery
+
+### 1. Backup Strategy
+
+```typescript
+// Backup configuration
+interface BackupStrategy {
+  // Database backups
+  database: {
+    frequency: string;
+    retention: number;
+    encryption: boolean;
+    compression: boolean;
+  };
+  
+  // File backups
+  files: {
+    frequency: string;
+    retention: number;
+    encryption: boolean;
+    compression: boolean;
+  };
+  
+  // Configuration backups
+  config: {
+    frequency: string;
+    retention: number;
+    encryption: boolean;
+  };
+}
+```
+
+### 2. Recovery Procedures
+
+```typescript
+// Recovery procedures
+interface RecoveryProcedures {
+  // Database recovery
+  databaseRecovery: {
+    rto: number; // Recovery Time Objective in minutes
+    rpo: number; // Recovery Point Objective in minutes
+    procedures: string[];
+  };
+  
+  // Application recovery
+  applicationRecovery: {
+    rto: number;
+    procedures: string[];
+    rollback: boolean;
+  };
+  
+  // Data recovery
+  dataRecovery: {
+    rto: number;
+    rpo: number;
+    procedures: string[];
+  };
+} 

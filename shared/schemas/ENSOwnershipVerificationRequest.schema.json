@@ -1,0 +1,25 @@
+{
+  "$ref": "#/definitions/ENSOwnershipVerificationRequest",
+  "definitions": {
+    "ENSOwnershipVerificationRequest": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "address",
+        "domain",
+        "signature"
+      ]
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

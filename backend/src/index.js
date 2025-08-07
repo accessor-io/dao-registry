@@ -5,6 +5,7 @@ const compression = require('compression');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const path = require('path');
+const fs = require('fs');
 
 // Load environment variables
 dotenv.config();
@@ -69,6 +70,17 @@ app.use('/api/ens', require('./routes/ens'));
 // Add comprehensive data points API
 app.use('/api/data-points', require('./routes/data-points'));
 
+// Expose generated JSON Schemas for consumption
+app.get('/api/schemas/:name', (req, res) => {
+  const { name } = req.params;
+  const filePath = path.join(process.cwd(), 'shared', 'schemas', `${name}.schema.json`);
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ success: false, error: 'Schema not found' });
+  }
+  res.setHeader('Content-Type', 'application/json');
+  fs.createReadStream(filePath).pipe(res);
+});
+
 // Add basic documentation endpoint
 app.get('/api/docs', (req, res) => {
   res.json({
@@ -80,7 +92,8 @@ app.get('/api/docs', (req, res) => {
       "/api/metadata - Metadata operations", 
       "/api/ens - ENS integration",
       "/api/reserved-subdomains - Subdomain management",
-      "/api/data-points - Comprehensive data point management"
+      "/api/data-points - Data point management",
+      "/api/schemas/:name - JSON Schema by name (e.g., CreateDAORequest)"
     ]
   });
 });
@@ -130,6 +143,7 @@ app.listen(PORT, () => {
   console.log(`- ENS API:                http://localhost:${PORT}/api/ens`);
   console.log(`- Data Points API:        http://localhost:${PORT}/api/data-points`);
   console.log(`- Reserved Subdomains API: http://localhost:${PORT}/api/reserved-subdomains`);
+  console.log(`- Schemas:                http://localhost:${PORT}/api/schemas/CreateDAORequest`);
   console.log(`- Documentation API:      http://localhost:${PORT}/api/docs`);
   console.log('User Interface:');
   console.log(`- UI:                     http://localhost:${PORT}/`);

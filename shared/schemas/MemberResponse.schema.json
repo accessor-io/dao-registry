@@ -1,0 +1,206 @@
+{
+  "$ref": "#/definitions/MemberResponse",
+  "definitions": {
+    "MemberResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Member"
+        },
+        "activity": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MemberActivity"
+          }
+        },
+        "analytics": {
+          "$ref": "#/definitions/MemberAnalytics"
+        }
+      },
+      "required": [
+        "activity",
+        "analytics",
+        "data"
+      ]
+    },
+    "Member": {
+      "description": "Member Entity Types\nRFC-001: DAO Registry Specification - Member Types",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "daoId": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "tokenBalance": {
+          "type": "number"
+        },
+        "votingPower": {
+          "type": "number"
+        },
+        "proposalsCreated": {
+          "type": "number"
+        },
+        "proposalsVoted": {
+          "type": "number"
+        },
+        "lastActivity": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MemberRole"
+          }
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Permission"
+          }
+        }
+      },
+      "required": [
+        "address",
+        "daoId",
+        "id",
+        "lastActivity",
+        "permissions",
+        "proposalsCreated",
+        "proposalsVoted",
+        "roles",
+        "tokenBalance",
+        "votingPower"
+      ]
+    },
+    "MemberRole": {
+      "type": "string",
+      "enum": [
+        "admin",
+        "moderator",
+        "member",
+        "guest"
+      ]
+    },
+    "Permission": {
+      "type": "string",
+      "enum": [
+        "create_proposal",
+        "vote",
+        "execute_proposal",
+        "manage_members",
+        "manage_settings",
+        "view_analytics"
+      ]
+    },
+    "MemberActivity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "memberId": {
+          "type": "string"
+        },
+        "activityType": {
+          "$ref": "#/definitions/ActivityType"
+        },
+        "description": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "metadata": {
+          "$ref": "#/definitions/Record<string,any>"
+        }
+      },
+      "required": [
+        "activityType",
+        "description",
+        "id",
+        "memberId",
+        "timestamp"
+      ]
+    },
+    "ActivityType": {
+      "type": "string",
+      "enum": [
+        "proposal_created",
+        "vote_cast",
+        "proposal_executed",
+        "member_joined",
+        "member_left",
+        "role_changed"
+      ]
+    },
+    "Record<string,any>": {
+      "type": "object"
+    },
+    "MemberAnalytics": {
+      "type": "object",
+      "properties": {
+        "totalMembers": {
+          "type": "number"
+        },
+        "activeMembers": {
+          "type": "number"
+        },
+        "averageVotingPower": {
+          "type": "number"
+        },
+        "participationRate": {
+          "type": "number"
+        },
+        "topContributors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TopContributor"
+          }
+        }
+      },
+      "required": [
+        "activeMembers",
+        "averageVotingPower",
+        "participationRate",
+        "topContributors",
+        "totalMembers"
+      ]
+    },
+    "TopContributor": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "votingPower": {
+          "type": "number"
+        },
+        "proposalsCreated": {
+          "type": "number"
+        },
+        "proposalsVoted": {
+          "type": "number"
+        },
+        "lastActivity": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "address",
+        "lastActivity",
+        "proposalsCreated",
+        "proposalsVoted",
+        "votingPower"
+      ]
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -18,7 +18,7 @@ const createDAOSchema = Joi.object({
   treasuryAddress: Joi.string().required(),
   governanceAddress: Joi.string().required(),
   chainId: Joi.number().integer().positive().required(),
-  governanceType: Joi.string().valid('TokenWeighted', 'Quadratic', 'Reputation', 'Liquid', 'Hybrid').required(),
+  governanceType: Joi.string().required(),
   votingPeriod: Joi.number().integer().positive().required(),
   quorum: Joi.number().integer().min(0).max(10000).required(),
   proposalThreshold: Joi.number().integer().positive().required(),
@@ -30,7 +30,8 @@ const createDAOSchema = Joi.object({
     github: Joi.string().uri().optional(),
     medium: Joi.string().uri().optional(),
     reddit: Joi.string().uri().optional()
-  }).optional()
+  }).optional(),
+  ensDomain: Joi.string().optional()
 });
 
 const updateDAOSchema = Joi.object({
@@ -47,7 +48,8 @@ const updateDAOSchema = Joi.object({
     github: Joi.string().uri().optional(),
     medium: Joi.string().uri().optional(),
     reddit: Joi.string().uri().optional()
-  }).optional()
+  }).optional(),
+  status: Joi.string().optional()
 });
 
 const querySchema = Joi.object({
@@ -160,7 +162,7 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // Create new DAO
-router.post('/', validateRequest(createDAOSchema), async (req, res, next) => {
+router.post('/', validateRequest(createDAOSchema, 'body', 'CreateDAORequest'), async (req, res, next) => {
   try {
     const daoData = req.body;
     const userId = 'demo-user'; // Mock user ID for demo
@@ -194,7 +196,7 @@ router.post('/', validateRequest(createDAOSchema), async (req, res, next) => {
 });
 
 // Update DAO
-router.put('/:id', validateRequest(updateDAOSchema), async (req, res, next) => {
+router.put('/:id', validateRequest(updateDAOSchema, 'body', 'UpdateDAORequest'), async (req, res, next) => {
   try {
     const { id } = req.params;
     const updateData = req.body;

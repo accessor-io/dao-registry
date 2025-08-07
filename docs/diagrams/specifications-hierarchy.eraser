@@ -1,0 +1,360 @@
+# DAO Registry Specifications Hierarchy
+
+## Core Types Hierarchy
+
+```mermaid
+graph TB
+    subgraph "Core Types"
+        DAO[DAO Entity]
+        Proposal[Proposal Entity]
+        Member[Member Entity]
+        
+        DAO --> ENSSubdomains
+        DAO --> ENSMetadata
+        DAO --> SocialLinks
+        DAO --> GovernanceType
+        DAO --> DAOStatus
+        
+        Proposal --> ProposalAction
+        Proposal --> ProposalMetadata
+        Proposal --> ProposalStatus
+        Proposal --> VoteType
+        
+        Member --> MemberRole
+        Member --> Permission
+        Member --> MemberActivity
+        Member --> ActivityType
+    end
+```
+
+## ENS Integration Hierarchy
+
+```mermaid
+graph TB
+    subgraph "ENS Integration"
+        ENSRegistration[ENSRegistration]
+        ENSSubdomain[ENSSubdomain]
+        ENSMetadata[ENSMetadata]
+        ENSResolution[ENSResolution]
+        
+        ENSRegistration --> ENSSubdomain
+        ENSRegistration --> ENSMetadata
+        ENSSubdomain --> ENSSubdomainType
+        ENSResolution --> ENSResolutionStatus
+    end
+```
+
+## Analytics Hierarchy
+
+```mermaid
+graph TB
+    subgraph "Analytics Types"
+        DAOAnalytics[DAOAnalytics]
+        ProposalAnalytics[ProposalAnalytics]
+        MemberAnalytics[MemberAnalytics]
+        TreasuryAnalytics[TreasuryAnalytics]
+        RiskMetrics[RiskMetrics]
+        ComparativeAnalytics[ComparativeAnalytics]
+        
+        DAOAnalytics --> TopContributor
+        MemberAnalytics --> TopContributor
+        TreasuryAnalytics --> AssetBreakdown
+        TreasuryAnalytics --> AssetInfo
+        ComparativeAnalytics --> PeerComparison
+        ComparativeAnalytics --> IndustryBenchmark
+        ComparativeAnalytics --> HistoricalTrend
+        ComparativeAnalytics --> PerformanceMetric
+    end
+```
+
+## API Types Hierarchy
+
+```mermaid
+graph TB
+    subgraph "API Types"
+        RESTEndpoints[RESTEndpoints]
+        GraphQLSchema[GraphQLSchema]
+        WebSocketAPI[WebSocketAPI]
+        
+        RESTEndpoints --> DAOListRequest
+        RESTEndpoints --> CreateDAORequest
+        RESTEndpoints --> ProposalListRequest
+        RESTEndpoints --> MemberListRequest
+        RESTEndpoints --> ENSRequest
+        RESTEndpoints --> AnalyticsRequest
+        
+        GraphQLSchema --> DAOQuery
+        GraphQLSchema --> ProposalQuery
+        GraphQLSchema --> MemberQuery
+        GraphQLSchema --> ENSQuery
+        GraphQLSchema --> AnalyticsQuery
+        
+        WebSocketAPI --> SubscribeMessage
+        WebSocketAPI --> UnsubscribeMessage
+        WebSocketAPI --> DAOUpdateEvent
+        WebSocketAPI --> ProposalCreatedEvent
+        WebSocketAPI --> VoteCastEvent
+    end
+```
+
+## Blockchain Smart Contracts Hierarchy
+
+```mermaid
+graph TB
+    subgraph "Smart Contract Interfaces"
+        IDAORegistry[IDAORegistry]
+        ITreasury[ITreasury]
+        IENSIntegration[IENSIntegration]
+        IGovernance[IGovernance]
+        IToken[IToken]
+        ICrossChainBridge[ICrossChainBridge]
+        IAnalytics[IAnalytics]
+        ISecurity[ISecurity]
+        
+        IDAORegistry --> DAOInfo
+        ITreasury --> TreasuryInfo
+        IENSIntegration --> ENSInfo
+        IGovernance --> GovernanceInfo
+        IToken --> TokenInfo
+        ICrossChainBridge --> BridgeInfo
+        IAnalytics --> AnalyticsInfo
+        ISecurity --> SecurityInfo
+    end
+```
+
+## Validation Types Hierarchy
+
+```mermaid
+graph TB
+    subgraph "Validation Types"
+        BaseValidator[BaseValidator]
+        ValidationResult[ValidationResult]
+        ValidationError[ValidationError]
+        ValidationWarning[ValidationWarning]
+        
+        BaseValidator --> ENSDomainValidator
+        BaseValidator --> EthereumAddressValidator
+        BaseValidator --> DAONameValidator
+        BaseValidator --> TextRecordValidator
+        BaseValidator --> ContentHashValidator
+        BaseValidator --> NumericValidator
+        BaseValidator --> SecurityValidator
+        
+        ValidationResult --> ValidationError
+        ValidationResult --> ValidationWarning
+    end
+```
+
+## Classification Types Hierarchy
+
+```mermaid
+graph TB
+    subgraph "Classification Types"
+        BaseClassifier[BaseClassifier]
+        ClassificationResult[ClassificationResult]
+        ClassificationRules[ClassificationRules]
+        
+        BaseClassifier --> ENSDomainClassifier
+        BaseClassifier --> EthereumAddressClassifier
+        BaseClassifier --> DAONameClassifier
+        BaseClassifier --> TextRecordClassifier
+        BaseClassifier --> ContentHashClassifier
+        BaseClassifier --> NumericClassifier
+        BaseClassifier --> CompositeClassifier
+        
+        ENSDomainClassifier --> ENSDomainClassification
+        ENSDomainClassifier --> ENSSubdomainClassification
+        ENSDomainClassifier --> TLDClassification
+        
+        EthereumAddressClassifier --> EthereumAddressClassification
+        EthereumAddressClassifier --> AddressCategoryClassification
+        EthereumAddressClassifier --> AddressFormatClassification
+        
+        DAONameClassifier --> DAONameClassification
+        DAONameClassifier --> DAOCategoryClassification
+        DAONameClassifier --> ComplexityClassification
+    end
+```
+
+## Data Source Mapping Hierarchy
+
+```mermaid
+graph TB
+    subgraph "Data Source Mapping"
+        DataSource[DataSource]
+        DataSourceType[DataSourceType]
+        DataSourceMetadata[DataSourceMetadata]
+        
+        DataSource --> SmartContractEventSource
+        DataSource --> ManualRegistrationSource
+        DataSource --> StaticStateDataSource
+        
+        SmartContractEventSource --> EventParameter
+        SmartContractEventSource --> ContractEventMapping
+        
+        ManualRegistrationSource --> RegistrationMethod
+        ManualRegistrationSource --> ValidationStatus
+        ManualRegistrationSource --> ApprovalStatus
+        
+        StaticStateDataSource --> StateType
+        StaticStateDataSource --> UpdateFrequency
+    end
+```
+
+## Event Mappings Hierarchy
+
+```mermaid
+graph TB
+    subgraph "Event Mappings"
+        EventMapping[EventMapping]
+        EventMappingMetadata[EventMappingMetadata]
+        EventValidationRule[EventValidationRule]
+        EventTransformationRule[EventTransformationRule]
+        
+        EventMapping --> DAORegisteredEventMapping
+        EventMapping --> DAOUpdatedEventMapping
+        EventMapping --> DAOVerifiedEventMapping
+        EventMapping --> DAOENSRegisteredEventMapping
+        EventMapping --> ENSSubdomainUpdatedEventMapping
+        EventMapping --> ENSRegistrationVerifiedEventMapping
+        EventMapping --> ProposalCreatedEventMapping
+        EventMapping --> ProposalExecutedEventMapping
+        EventMapping --> VoteCastEventMapping
+        EventMapping --> FundsReceivedEventMapping
+        EventMapping --> FundsWithdrawnEventMapping
+        EventMapping --> MemberAddedEventMapping
+        EventMapping --> MemberRemovedEventMapping
+        EventMapping --> RoleChangedEventMapping
+    end
+```
+
+## Registration Mappings Hierarchy
+
+```mermaid
+graph TB
+    subgraph "Registration Mappings"
+        ManualRegistrationMapping[ManualRegistrationMapping]
+        StaticStateDataMapping[StaticStateDataMapping]
+        
+        ManualRegistrationMapping --> DAORegistrationMapping
+        ManualRegistrationMapping --> ProposalRegistrationMapping
+        ManualRegistrationMapping --> MemberRegistrationMapping
+        ManualRegistrationMapping --> ENSRegistrationMapping
+        
+        StaticStateDataMapping --> ConfigurationMapping
+        StaticStateDataMapping --> ReferenceDataMapping
+        StaticStateDataMapping --> TemplateMapping
+        StaticStateDataMapping --> SchemaMapping
+    end
+```
+
+## Processor Types Hierarchy
+
+```mermaid
+graph TB
+    subgraph "Processor Types"
+        BaseProcessor[BaseProcessor]
+        ProcessingResult[ProcessingResult]
+        ProcessingError[ProcessingError]
+        ProcessingWarning[ProcessingWarning]
+        
+        BaseProcessor --> SmartContractEventProcessor
+        BaseProcessor --> ManualRegistrationProcessor
+        BaseProcessor --> StaticStateDataProcessor
+        
+        SmartContractEventProcessor --> processDAORegistration
+        SmartContractEventProcessor --> processDAOUpdate
+        SmartContractEventProcessor --> processENSRegistration
+        SmartContractEventProcessor --> processProposalCreation
+        SmartContractEventProcessor --> processVoteCast
+        SmartContractEventProcessor --> processTreasuryTransaction
+        
+        ManualRegistrationProcessor --> processDAORegistration
+        ManualRegistrationProcessor --> processDAOUpdate
+        ManualRegistrationProcessor --> processProposalRegistration
+        ManualRegistrationProcessor --> processMemberRegistration
+        ManualRegistrationProcessor --> processENSRegistration
+        
+        StaticStateDataProcessor --> processConfiguration
+        StaticStateDataProcessor --> processReferenceData
+        StaticStateDataProcessor --> processTemplate
+        StaticStateDataProcessor --> processSchema
+    end
+```
+
+## Complete Specifications Directory Structure
+
+```mermaid
+graph TB
+    subgraph "DAO Registry Specifications"
+        Specifications[specifications/]
+        
+        Specifications --> Core[core/]
+        Specifications --> ENS[ens/]
+        Specifications --> Analytics[analytics/]
+        Specifications --> API[api/]
+        Specifications --> Blockchain[blockchain/]
+        Specifications --> Validation[validation/]
+        Specifications --> Classification[classification/]
+        Specifications --> Mapping[mapping/]
+        
+        Core --> DAOTypes[dao.types.ts]
+        Core --> ProposalTypes[proposal.types.ts]
+        Core --> MemberTypes[member.types.ts]
+        
+        ENS --> ENSIntegrationTypes[ens-integration.types.ts]
+        
+        Analytics --> AnalyticsTypes[analytics.types.ts]
+        
+        API --> APITypes[api.types.ts]
+        
+        Blockchain --> SmartContractsTypes[smart-contracts.types.ts]
+        
+        Validation --> ValidationTypes[validation.types.ts]
+        
+        Classification --> ClassifiersTypes[classifiers.types.ts]
+        
+        Mapping --> DataSourcesTypes[data-sources.types.ts]
+        Mapping --> EventMappingsTypes[event-mappings.types.ts]
+        Mapping --> RegistrationMappingsTypes[registration-mappings.types.ts]
+        Mapping --> ProcessorTypes[processor.types.ts]
+        Mapping --> MappingIndex[index.ts]
+        Mapping --> MappingREADME[README.md]
+        
+        Specifications --> Index[index.ts]
+        Specifications --> README[README.md]
+    end
+```
+
+## Type Relationships Overview
+
+```mermaid
+graph TB
+    subgraph "Type Relationships"
+        DAO --> Proposal
+        DAO --> Member
+        DAO --> ENSRegistration
+        
+        Proposal --> Vote
+        Proposal --> ProposalAction
+        
+        Member --> MemberActivity
+        Member --> MemberRole
+        
+        ENSRegistration --> ENSSubdomain
+        ENSRegistration --> ENSMetadata
+        
+        DAOAnalytics --> DAO
+        ProposalAnalytics --> Proposal
+        MemberAnalytics --> Member
+        TreasuryAnalytics --> DAO
+        
+        DataSource --> EventMapping
+        DataSource --> RegistrationMapping
+        DataSource --> Processor
+        
+        BaseValidator --> ValidationResult
+        BaseClassifier --> ClassificationResult
+        BaseProcessor --> ProcessingResult
+    end
+``` 

@@ -1,10 +1,51 @@
 const express = require('express');
 const router = express.Router();
 
-// Import the working metadata services
-const metadataService = require('../services/metadata');
-const isoMetadataService = require('../services/metadata/iso/iso-metadata-service');
-const metadataRegistry = require('../services/metadata/registry/metadata-registry');
+// Simplified metadata service (no TypeScript dependencies)
+const metadataService = {
+  // Mock metadata storage
+  metadata: new Map(),
+  
+  async getMetadata(id) {
+    return this.metadata.get(id) || null;
+  },
+  
+  async createMetadata(data) {
+    const id = Date.now().toString();
+    const metadata = {
+      id,
+      ...data,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    this.metadata.set(id, metadata);
+    return metadata;
+  },
+  
+  async updateMetadata(id, data) {
+    const existing = this.metadata.get(id);
+    if (!existing) return null;
+    
+    const updated = {
+      ...existing,
+      ...data,
+      updatedAt: new Date().toISOString()
+    };
+    this.metadata.set(id, updated);
+    return updated;
+  },
+  
+  async validateMetadata(data) {
+    // Basic validation
+    const required = ['name', 'description'];
+    const missing = required.filter(field => !data[field]);
+    
+    return {
+      isValid: missing.length === 0,
+      errors: missing.length > 0 ? `Missing required fields: ${missing.join(', ')}` : null
+    };
+  }
+};
 
 // Get metadata by ID
 router.get('/:id', async (req, res) => {
@@ -34,8 +75,8 @@ router.post('/', async (req, res) => {
   try {
     const metadataData = req.body;
     
-    // Validate the metadata using ISO service
-    const validationResult = await isoMetadataService.validateMetadata(metadataData);
+    // Validate the metadata
+    const validationResult = await metadataService.validateMetadata(metadataData);
     
     if (!validationResult.isValid) {
       return res.status(400).json({
@@ -61,8 +102,8 @@ router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const metadataData = req.body;
     
-    // Validate the metadata using ISO service
-    const validationResult = await isoMetadataService.validateMetadata(metadataData);
+    // Validate the metadata
+    const validationResult = await metadataService.validateMetadata(metadataData);
     
     if (!validationResult.isValid) {
       return res.status(400).json({
@@ -94,12 +135,11 @@ router.put('/:id', async (req, res) => {
 router.post('/validate', async (req, res) => {
   try {
     const metadataData = req.body;
-    const validationResult = await isoMetadataService.validateMetadata(metadataData);
+    const validationResult = await metadataService.validateMetadata(metadataData);
     
     res.json({
       isValid: validationResult.isValid,
-      validation: validationResult,
-      isoCompliant: validationResult.isoCompliant || false
+      errors: validationResult.errors
     });
   } catch (error) {
     console.error('Error validating metadata:', error);
@@ -110,24 +150,18 @@ router.post('/validate', async (req, res) => {
   }
 });
 
-// Get metadata schema information
-router.get('/schema/:type', async (req, res) => {
+// Get all metadata
+router.get('/', async (req, res) => {
   try {
-    const { type } = req.params;
-    const schema = await metadataRegistry.getSchema(type);
-    
-    if (!schema) {
-      return res.status(404).json({
-        error: 'Schema not found',
-        type: type
-      });
-    }
-    
-    res.json(schema);
+    const allMetadata = Array.from(metadataService.metadata.values());
+    res.json({
+      count: allMetadata.length,
+      metadata: allMetadata
+    });
   } catch (error) {
-    console.error('Error fetching schema:', error);
+    console.error('Error fetching all metadata:', error);
     res.status(500).json({
-      error: 'Failed to fetch schema',
+      error: 'Failed to fetch metadata',
       message: error.message
     });
   }

@@ -1,0 +1,32 @@
+{
+  "$ref": "#/definitions/VoteRequest",
+  "definitions": {
+    "VoteRequest": {
+      "type": "object",
+      "properties": {
+        "proposalId": {
+          "type": "string"
+        },
+        "voteType": {
+          "$ref": "#/definitions/VoteType"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "proposalId",
+        "voteType"
+      ]
+    },
+    "VoteType": {
+      "type": "string",
+      "enum": [
+        "for",
+        "against",
+        "abstain"
+      ]
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

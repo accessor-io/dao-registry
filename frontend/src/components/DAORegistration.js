@@ -79,7 +79,7 @@ const DAORegistration = () => {
     
     // Blockchain Information (RFC-001 Section 4.1)
     chainId: 1,
-    contractAddress: '',
+    governanceAddress: '',
     tokenAddress: '',
     treasuryAddress: '',
     timelockAddress: '',
@@ -301,15 +301,15 @@ const DAORegistration = () => {
 
       case 2: // Smart Contract Addresses
         if (!formData.tokenAddress.trim()) newErrors.tokenAddress = 'Token address is required';
-        if (!formData.contractAddress.trim()) newErrors.contractAddress = 'Contract address is required';
+        if (!formData.governanceAddress.trim()) newErrors.governanceAddress = 'Governance address is required';
         if (!formData.treasuryAddress.trim()) newErrors.treasuryAddress = 'Treasury address is required';
         // Add Ethereum address validation
         const ethAddressRegex = /^0x[a-fA-F0-9]{40}$/;
         if (formData.tokenAddress && !ethAddressRegex.test(formData.tokenAddress)) {
           newErrors.tokenAddress = 'Invalid Ethereum address format';
         }
-        if (formData.contractAddress && !ethAddressRegex.test(formData.contractAddress)) {
-          newErrors.contractAddress = 'Invalid Ethereum address format';
+        if (formData.governanceAddress && !ethAddressRegex.test(formData.governanceAddress)) {
+          newErrors.governanceAddress = 'Invalid Ethereum address format';
         }
         if (formData.treasuryAddress && !ethAddressRegex.test(formData.treasuryAddress)) {
           newErrors.treasuryAddress = 'Invalid Ethereum address format';

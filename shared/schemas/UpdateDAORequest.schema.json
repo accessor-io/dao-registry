@@ -1,0 +1,67 @@
+{
+  "$ref": "#/definitions/UpdateDAORequest",
+  "definitions": {
+    "UpdateDAORequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "symbol": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "socialLinks": {
+          "$ref": "#/definitions/SocialLinks"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "enum": [
+            "active",
+            "inactive",
+            "pending",
+            "suspended"
+          ],
+          "type": "string"
+        }
+      }
+    },
+    "SocialLinks": {
+      "type": "object",
+      "properties": {
+        "twitter": {
+          "type": "string"
+        },
+        "discord": {
+          "type": "string"
+        },
+        "telegram": {
+          "type": "string"
+        },
+        "github": {
+          "type": "string"
+        },
+        "medium": {
+          "type": "string"
+        },
+        "reddit": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
