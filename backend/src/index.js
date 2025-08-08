@@ -73,7 +73,8 @@ app.use('/api/data-points', require('./routes/data-points'));
 // Expose generated JSON Schemas for consumption
 app.get('/api/schemas/:name', (req, res) => {
   const { name } = req.params;
-  const filePath = path.join(process.cwd(), 'shared', 'schemas', `${name}.schema.json`);
+  const repoRoot = path.resolve(__dirname, '..', '..');
+  const filePath = path.join(repoRoot, 'shared', 'schemas', `${name}.schema.json`);
   if (!fs.existsSync(filePath)) {
     return res.status(404).json({ success: false, error: 'Schema not found' });
   }
