@@ -4,7 +4,10 @@ const { DAOContractService } = require('./blockchain/dao-contract-service');
 class DAOService {
   constructor() {
     this.blockchainService = new DAOContractService();
-    this.useBlockchainData = process.env.USE_BLOCKCHAIN_DATA === 'true' || true; // Default to true
+    // Respect environment variable only; default to false when not explicitly true
+    this.useBlockchainData = process.env.USE_BLOCKCHAIN_DATA === 'true';
+    // Initialize in-memory store for demo/mock mode
+    this.daos = [];
   }
 
   /**
@@ -29,7 +32,7 @@ class DAOService {
 
         return result;
       } else {
-        // Fallback to mock data (for development/testing)
+        // Fallback to mock/in-memory data (for development/testing)
         const {
           page = 1,
           limit = 20,
@@ -37,9 +40,8 @@ class DAOService {
           sortOrder = 'desc'
         } = options;
 
-        // Import mock data only when needed
-        const {  MockDAOs } = require('./mock-data');
-        let filteredDAOs = [... MockDAOs];
+        // Start with in-memory daos if present; otherwise use mock
+        let filteredDAOs = this.daos.length ? [...this.daos] : [...require('./mock-data').MockDAOs];
 
         // Apply filters
         if (filters.chainId) {
@@ -99,7 +101,7 @@ class DAOService {
           hasPrev
         };
 
-        logger.info(`Retrieved ${paginatedDAOs.length} DAOs from mock data`, {
+        logger.info(`Retrieved ${paginatedDAOs.length} DAOs from mock/in-memory data`, {
           filters,
           options,
           total: result.total,
@@ -134,15 +136,15 @@ class DAOService {
         logger.info(`Retrieved DAO from blockchain: ${id} on chain ${chainId}`);
         return dao;
       } else {
-        // Fallback to mock data
-        const {  MockDAOs } = require('./mock-data');
-        const dao =  MockDAOs.find(d => d.id === id);
+        // Fallback to in-memory/mock data
+        const source = this.daos.length ? this.daos : require('./mock-data').MockDAOs;
+        const dao = source.find(d => d.id === id);
         
         if (!dao) {
           throw new Error('DAO not found');
         }
 
-        logger.info(`Retrieved DAO from mock data: ${id}`);
+        logger.info(`Retrieved DAO from mock/in-memory data: ${id}`);
         return dao;
       }
     } catch (error) {
@@ -170,9 +172,9 @@ class DAOService {
         logger.info(`Retrieved DAO from blockchain by address: ${contractAddress} on chain ${chainId}`);
         return dao;
       } else {
-        // Fallback to mock data
-        const {  MockDAOs } = require('./mock-data');
-        const dao =  MockDAOs.find(d => 
+        // Fallback to in-memory/mock data
+        const source = this.daos.length ? this.daos : require('./mock-data').MockDAOs;
+        const dao = source.find(d => 
           d.contractAddress.toLowerCase() === contractAddress.toLowerCase() && 
           d.chainId === chainId
         );
@@ -181,7 +183,7 @@ class DAOService {
           throw new Error('DAO not found');
         }
 
-        logger.info(`Retrieved DAO from mock data by address: ${contractAddress}`);
+        logger.info(`Retrieved DAO from mock/in-memory data by address: ${contractAddress}`);
         return dao;
       }
     } catch (error) {
@@ -198,8 +200,9 @@ class DAOService {
    */
   async createDAO(daoData, userId) {
     try {
+      const id = (this.daos.length + 1).toString();
       const newDAO = {
-        id: (this.daos.length + 1).toString(),
+        id,
         ...daoData,
         ownerId: userId,
         status: 'Pending',
@@ -285,8 +288,7 @@ class DAOService {
    */
   async verifyDAO(id, verified) {
     try {
-      const dao = await this.getDAOById(id);
-      
+      const _ = await this.getDAOById(id);
       const updatedDAO = await this.updateDAO(id, { verified });
 
       logger.info(`Updated DAO verification: ${id}`, {
@@ -341,33 +343,21 @@ class DAOService {
         logger.info('Retrieved registry stats from blockchain');
         return stats;
       } else {
-        // Fallback to mock data
-        const {  MockDAOs } = require('./mock-data');
-        const totalDAOs =  MockDAOs.length;
-        const activeDAOs =  MockDAOs.filter(d => d.status === 'Active').length;
-        const verifiedDAOs =  MockDAOs.filter(d => d.verified).length;
-        const pendingDAOs =  MockDAOs.filter(d => d.status === 'Pending').length;
+        // Fallback to mock data based on in-memory / mock arrays
+        const source = this.daos.length ? this.daos : require('./mock-data').MockDAOs;
+        const totalDAOs = source.length;
+        const activeDAOs = source.filter(d => d.status === 'Active').length;
+        const verifiedDAOs = source.filter(d => d.verified).length;
+        const pendingDAOs = source.filter(d => d.status === 'Pending').length;
 
         const chainStats = {};
-         MockDAOs.forEach(dao => {
-          chainStats[dao.chainId] = (chainStats[dao.chainId] || 0) + 1;
-        });
+        source.forEach(dao => { chainStats[dao.chainId] = (chainStats[dao.chainId] || 0) + 1; });
 
         const governanceTypeStats = {};
-         MockDAOs.forEach(dao => {
-          governanceTypeStats[dao.governanceType] = (governanceTypeStats[dao.governanceType] || 0) + 1;
-        });
+        source.forEach(dao => { governanceTypeStats[dao.governanceType] = (governanceTypeStats[dao.governanceType] || 0) + 1; });
 
-        const stats = {
-          totalDAOs,
-          activeDAOs,
-          verifiedDAOs,
-          pendingDAOs,
-          chainStats,
-          governanceTypeStats
-        };
-
-        logger.info('Retrieved registry stats from mock data');
+        const stats = { totalDAOs, activeDAOs, verifiedDAOs, pendingDAOs, chainStats, governanceTypeStats };
+        logger.info('Retrieved registry stats from mock/in-memory data');
         return stats;
       }
     } catch (error) {
