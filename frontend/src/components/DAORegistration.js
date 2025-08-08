@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
+import axios from 'axios';
 import { 
   Plus, 
   Save, 
@@ -59,145 +60,46 @@ const DAORegistration = () => {
   const [schema, setSchema] = useState(null);
   const [ajvValidator, setAjvValidator] = useState(null);
   const [formData, setFormData] = useState({
-    // Core Identification (RFC-001 Section 4.1)
-    id: '', // Will be generated
+    id: '',
     name: '',
     symbol: '',
     description: '',
-    
-    // ENS Information (RFC-001 Section 4.1)
     ensDomain: '',
-    ensSubdomains: {
-      governance: '',
-      treasury: '',
-      token: '',
-      docs: '',
-      forum: '',
-      analytics: ''
-    },
-    ensMetadata: {
-      textRecords: {},
-      contentHash: '',
-      reverseRecord: ''
-    },
-    
-    // Blockchain Information (RFC-001 Section 4.1)
+    ensSubdomains: { governance: '', treasury: '', token: '', docs: '', forum: '', analytics: '' },
+    ensMetadata: { textRecords: {}, contentHash: '', reverseRecord: '' },
     chainId: 1,
+    contractAddress: '',
     governanceAddress: '',
     tokenAddress: '',
     treasuryAddress: '',
     timelockAddress: '',
-    
-    // Governance Structure (RFC-001 Section 4.1)
-    governanceType: 'TokenWeighted',
-    votingPeriod: 7 * 24 * 60 * 60, // 7 days in seconds
-    quorum: 4, // percentage
+    governanceType: 'token',
+    votingPeriod: 7 * 24 * 60 * 60,
+    quorum: 4,
     proposalThreshold: 1000,
     executionDelay: 0,
-    
-    // Metadata (RFC-001 Section 4.1)
     logo: null,
     logoPreview: '',
     website: '',
-    socialLinks: {
-      twitter: '',
-      discord: '',
-      github: '',
-      telegram: '',
-      reddit: '',
-      medium: ''
-    },
+    socialLinks: { twitter: '', discord: '', github: '', telegram: '', reddit: '', medium: '' },
     tags: [],
-    
-    // Timestamps (RFC-001 Section 4.1)
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    
-    // Status (RFC-001 Section 4.1)
     status: 'Pending',
     verified: false,
-    
-    // Additional Information
     memberCount: 0,
     totalSupply: 0,
     circulatingSupply: 0,
     treasuryValue: 0,
     treasuryCurrency: 'USD',
-    
-    // Latest Ethereum Research Integration (RFC-001 Section 4.4)
-    accountAbstraction: {
-      enabled: false,
-      walletAddress: '',
-      entryPoint: '',
-      bundler: '',
-      paymaster: '',
-      gaslessTransactions: false,
-      batchCapabilities: false
-    },
-    
-    layer2Data: {
-      enabled: false,
-      chainId: 0,
-      networkType: 'optimistic',
-      bridgeAddress: '',
-      finalityPeriod: 0,
-      gasOptimization: {
-        gasSavings: 0,
-        transactionCost: 0,
-        optimizationType: 'batch'
-      },
-      crossChainData: {
-        sourceChain: 0,
-        targetChain: 0,
-        bridgeTransaction: '',
-        verificationProof: '',
-        finalityStatus: 'pending'
-      }
-    },
-    
-    mevProtection: {
-      protectionEnabled: false,
-      protectionType: 'fair-ordering',
-      gasOptimization: 0,
-      transactionOrdering: 'fair',
-      mempoolType: 'protected'
-    },
-    
-    blobTransactions: {
-      enabled: false,
-      blobGasUsed: 0,
-      blobGasPrice: 0,
-      blobData: '',
-      dataAvailability: 'blob',
-      compressionRatio: 0
-    },
-    
-    // Advanced Settings
-    customSettings: {
-      enableDelegation: true,
-      enableSnapshot: false,
-      enableMultisig: false,
-      enableTimelock: true,
-      enableEmergencyPause: true,
-      enableUpgradeable: false
-    },
-    
-    // CCIP Integration
+    accountAbstraction: { enabled: false, walletAddress: '', entryPoint: '', bundler: '', paymaster: '', gaslessTransactions: false, batchCapabilities: false },
+    layer2Data: { enabled: false, chainId: 0, networkType: 'optimistic', bridgeAddress: '', finalityPeriod: 0, gasOptimization: { gasSavings: 0, transactionCost: 0, optimizationType: 'batch' }, crossChainData: { sourceChain: 0, targetChain: 0, bridgeTransaction: '', verificationProof: '', finalityStatus: 'pending' } },
+    mevProtection: { protectionEnabled: false, protectionType: 'fair-ordering', gasOptimization: 0, transactionOrdering: 'fair', mempoolType: 'protected' },
+    blobTransactions: { enabled: false, blobGasUsed: 0, blobGasPrice: 0, blobData: '', dataAvailability: 'blob', compressionRatio: 0 },
+    customSettings: { enableDelegation: true, enableSnapshot: false, enableMultisig: false, enableTimelock: true, enableEmergencyPause: true, enableUpgradeable: false },
     ccipEnabled: false,
-    crossChainData: {
-      enabled: false,
-      supportedChains: [],
-      dataProviders: [],
-      updateFrequency: 'per-block'
-    },
-    
-    // Reserved Subdomains
-    reservedSubdomains: {
-      enabled: false,
-      subdomain: '',
-      priority: 'Medium',
-      autoUpdate: true
-    }
+    crossChainData: { enabled: false, supportedChains: [], dataProviders: [], updateFrequency: 'per-block' },
+    reservedSubdomains: { enabled: false, subdomain: '', priority: 'Medium', autoUpdate: true }
   });
 
   const [errors, setErrors] = useState({});
@@ -221,11 +123,10 @@ const DAORegistration = () => {
   }, []);
 
   const governanceTypes = [
-    { id: 'TokenWeighted', name: 'Token Weighted Voting', description: 'Voting power based on token holdings' },
-    { id: 'Quadratic', name: 'Quadratic Voting', description: 'Voting power increases with square root of tokens' },
-    { id: 'Reputation', name: 'Reputation Based', description: 'Voting power based on reputation/contribution' },
-    { id: 'Liquid', name: 'Liquid Democracy', description: 'Delegated voting with transferable votes' },
-    { id: 'Hybrid', name: 'Hybrid System', description: 'Combination of multiple voting mechanisms' }
+    { id: 'token', name: 'Token-based' },
+    { id: 'nft', name: 'NFT-based' },
+    { id: 'multisig', name: 'Multisig' },
+    { id: 'hybrid', name: 'Hybrid' }
   ];
 
   const chains = [
@@ -253,23 +154,12 @@ const DAORegistration = () => {
   ];
 
   const handleInputChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: null }));
-    }
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) setErrors(prev => ({ ...prev, [field]: null }));
   };
 
   const handleNestedChange = (parent, field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [parent]: {
-        ...prev[parent],
-        [field]: value
-      }
-    }));
+    setFormData(prev => ({ ...prev, [parent]: { ...prev[parent], [field]: value } }));
   };
 
   const runAjvValidation = () => {
@@ -298,9 +188,7 @@ const DAORegistration = () => {
   };
 
   const addTag = (tag) => {
-    if (tag && !formData.tags.includes(tag)) {
-      setFormData(prev => ({ ...prev, tags: [...prev.tags, tag] }));
-    }
+    if (tag && !formData.tags.includes(tag)) setFormData(prev => ({ ...prev, tags: [...prev.tags, tag] }));
   };
 
   const removeTag = (tagToRemove) => {
@@ -309,7 +197,6 @@ const DAORegistration = () => {
 
   const validateStep = (currentStep) => {
     const newErrors = {};
-    // Local step checks
     switch (currentStep) {
       case 1:
         if (!formData.name.trim()) newErrors.name = 'DAO name is required';
@@ -318,10 +205,12 @@ const DAORegistration = () => {
         if (formData.symbol.length > 10) newErrors.symbol = 'Symbol must be 10 characters or less';
         break;
       case 2:
+        if (!formData.contractAddress.trim()) newErrors.contractAddress = 'Contract address is required';
         if (!formData.tokenAddress.trim()) newErrors.tokenAddress = 'Token address is required';
         if (!formData.governanceAddress.trim()) newErrors.governanceAddress = 'Governance address is required';
         if (!formData.treasuryAddress.trim()) newErrors.treasuryAddress = 'Treasury address is required';
         const ethAddressRegex = /^0x[a-fA-F0-9]{40}$/;
+        if (formData.contractAddress && !ethAddressRegex.test(formData.contractAddress)) newErrors.contractAddress = 'Invalid Ethereum address format';
         if (formData.tokenAddress && !ethAddressRegex.test(formData.tokenAddress)) newErrors.tokenAddress = 'Invalid Ethereum address format';
         if (formData.governanceAddress && !ethAddressRegex.test(formData.governanceAddress)) newErrors.governanceAddress = 'Invalid Ethereum address format';
         if (formData.treasuryAddress && !ethAddressRegex.test(formData.treasuryAddress)) newErrors.treasuryAddress = 'Invalid Ethereum address format';
@@ -339,7 +228,6 @@ const DAORegistration = () => {
         break;
     }
     setErrors(newErrors);
-    // Global schema check (Ajv)
     const ajvOk = runAjvValidation();
     return Object.keys(newErrors).length === 0 && ajvOk;
   };
@@ -372,10 +260,31 @@ const DAORegistration = () => {
     if (step < 6) { setStep(step + 1); return; }
     setLoading(true);
     try {
-      const registrationData = { ...formData, registeredBy: walletAddress, registrationDate: new Date().toISOString(), status: 'Pending' };
-      console.log('Registration data:', registrationData);
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      alert('DAO registration submitted successfully!');
+      const payload = {
+        name: formData.name,
+        symbol: formData.symbol,
+        description: formData.description,
+        chainId: formData.chainId,
+        contractAddress: formData.contractAddress,
+        tokenAddress: formData.tokenAddress,
+        treasuryAddress: formData.treasuryAddress,
+        governanceAddress: formData.governanceAddress,
+        governanceType: formData.governanceType,
+        votingPeriod: formData.votingPeriod,
+        quorum: formData.quorum,
+        proposalThreshold: formData.proposalThreshold,
+        logo: formData.logoPreview || undefined,
+        website: formData.website || undefined,
+        socialLinks: formData.socialLinks,
+        tags: formData.tags,
+        ensDomain: formData.ensDomain || undefined
+      };
+      const res = await axios.post('/api/daos', payload);
+      if (res.data?.success) {
+        alert('DAO registration submitted successfully!');
+      } else {
+        alert('Registration failed. Please review inputs.');
+      }
     } catch (error) {
       console.error('Registration error:', error);
       alert('Registration failed. Please try again.');
@@ -561,9 +470,20 @@ const DAORegistration = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Token Contract Address *
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Main DAO Contract Address *</label>
+          <input
+            type="text"
+            value={formData.contractAddress}
+            onChange={(e) => handleInputChange('contractAddress', e.target.value)}
+            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm ${
+              errors.contractAddress ? 'border-red-500' : 'border-gray-300'
+            }`}
+            placeholder="0x..."
+          />
+          {errors.contractAddress && <p className="text-red-500 text-sm mt-1">{errors.contractAddress}</p>}
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Token Contract Address *</label>
           <input
             type="text"
             value={formData.tokenAddress}
@@ -575,11 +495,11 @@ const DAORegistration = () => {
           />
           {errors.tokenAddress && <p className="text-red-500 text-sm mt-1">{errors.tokenAddress}</p>}
         </div>
+      </div>
 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Governance Contract Address *
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Governance Contract Address *</label>
           <input
             type="text"
             value={formData.governanceAddress}
@@ -591,13 +511,8 @@ const DAORegistration = () => {
           />
           {errors.governanceAddress && <p className="text-red-500 text-sm mt-1">{errors.governanceAddress}</p>}
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Treasury Contract Address *
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Treasury Contract Address *</label>
           <input
             type="text"
             value={formData.treasuryAddress}
@@ -608,19 +523,6 @@ const DAORegistration = () => {
             placeholder="0x..."
           />
           {errors.treasuryAddress && <p className="text-red-500 text-sm mt-1">{errors.treasuryAddress}</p>}
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Timelock Contract Address (Optional)
-          </label>
-          <input
-            type="text"
-            value={formData.timelockAddress}
-            onChange={(e) => handleInputChange('timelockAddress', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
-            placeholder="0x..."
-          />
         </div>
       </div>
 
@@ -643,16 +545,11 @@ const DAORegistration = () => {
           <Settings className="w-5 h-5 text-purple-600 mr-2" />
           <h3 className="font-medium text-purple-900">Governance Configuration</h3>
         </div>
-        <p className="text-purple-800 text-sm">
-          Configure your DAO's governance parameters. These settings will be used to verify your governance structure.
-        </p>
+        <p className="text-purple-800 text-sm">Configure your DAO's governance parameters.</p>
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Governance Type
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Governance Type</label>
           <select
             value={formData.governanceType}
             onChange={(e) => handleInputChange('governanceType', e.target.value)}
@@ -662,68 +559,47 @@ const DAORegistration = () => {
               <option key={type.id} value={type.id}>{type.name}</option>
             ))}
           </select>
-          <p className="text-xs text-gray-500 mt-1">
-            {governanceTypes.find(t => t.id === formData.governanceType)?.description}
-          </p>
         </div>
-
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Voting Period (Days)
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Voting Period (Days)</label>
           <input
             type="number"
             value={formData.votingPeriod}
             onChange={(e) => handleInputChange('votingPeriod', parseInt(e.target.value))}
-            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-              errors.votingPeriod ? 'border-red-500' : 'border-gray-300'
-            }`}
+            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.votingPeriod ? 'border-red-500' : 'border-gray-300'}`}
             min="1"
             max="30"
           />
           {errors.votingPeriod && <p className="text-red-500 text-sm mt-1">{errors.votingPeriod}</p>}
         </div>
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Quorum Percentage
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Quorum Percentage</label>
           <input
             type="number"
             value={formData.quorum}
             onChange={(e) => handleInputChange('quorum', parseFloat(e.target.value))}
-            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-              errors.quorum ? 'border-red-500' : 'border-gray-300'
-            }`}
+            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.quorum ? 'border-red-500' : 'border-gray-300'}`}
             min="0"
             max="100"
             step="0.1"
           />
           {errors.quorum && <p className="text-red-500 text-sm mt-1">{errors.quorum}</p>}
         </div>
-
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Proposal Threshold
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Proposal Threshold</label>
           <input
             type="number"
             value={formData.proposalThreshold}
             onChange={(e) => handleInputChange('proposalThreshold', parseInt(e.target.value))}
-            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-              errors.proposalThreshold ? 'border-red-500' : 'border-gray-300'
-            }`}
+            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.proposalThreshold ? 'border-red-500' : 'border-gray-300'}`}
             min="0"
           />
           {errors.proposalThreshold && <p className="text-red-500 text-sm mt-1">{errors.proposalThreshold}</p>}
         </div>
-
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Execution Delay (Hours)
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Execution Delay (Hours)</label>
           <input
             type="number"
             value={formData.executionDelay}
@@ -732,25 +608,6 @@ const DAORegistration = () => {
             min="0"
             max="168"
           />
-        </div>
-      </div>
-
-      <div className="bg-green-50 p-4 rounded-lg">
-        <h3 className="font-medium text-green-900 mb-2">Advanced Settings</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {Object.entries(formData.customSettings).map(([key, value]) => (
-            <label key={key} className="flex items-center">
-              <input
-                type="checkbox"
-                checked={value}
-                onChange={(e) => handleNestedChange('customSettings', key, e.target.checked)}
-                className="mr-2"
-              />
-              <span className="text-sm text-green-800 capitalize">
-                {key.replace(/([A-Z])/g, ' $1').trim()}
-              </span>
-            </label>
-          ))}
         </div>
       </div>
     </div>
