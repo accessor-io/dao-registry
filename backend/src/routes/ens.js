@@ -1,11 +1,10 @@
 const express = require('express');
 const { validateRequest } = require('../middleware/validation');
 const { ethers } = require('ethers');
+const { getEnsProvider } = require('../services/blockchain/provider');
 const router = express.Router();
 
-// Provider (mainnet by default, override via MAINNET_RPC_URL)
-const MAINNET_RPC_URL = process.env.MAINNET_RPC_URL || 'https://cloudflare-eth.com';
-const provider = new ethers.JsonRpcProvider(MAINNET_RPC_URL);
+const provider = getEnsProvider();
 
 function normalizeEnsDomain(input) {
   if (!input) return input;
@@ -13,7 +12,6 @@ function normalizeEnsDomain(input) {
 }
 
 function namehash(domain) {
-  // EIP-137 namehash implemented using ethers v6 helpers
   let node = '0x' + '00'.repeat(32);
   if (!domain) return node;
   const labels = domain.toLowerCase().split('.');
@@ -49,7 +47,6 @@ function mockResolvePayload(name) {
   };
 }
 
-// ENS Registry (mainnet)
 const ENS_REGISTRY_ADDRESS = '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e';
 const ENS_REGISTRY_ABI = [
   'function owner(bytes32 node) view returns (address)',
@@ -57,7 +54,6 @@ const ENS_REGISTRY_ABI = [
 ];
 const ensRegistry = new ethers.Contract(ENS_REGISTRY_ADDRESS, ENS_REGISTRY_ABI, provider);
 
-// Real ENS service using ethers with graceful fallback
 const ensService = {
   async resolve(rawName) {
     const name = normalizeEnsDomain(rawName);
@@ -69,15 +65,12 @@ const ensService = {
         return mockResolvePayload(name);
       }
 
-      // Address
       let address = null;
       try { address = await resolver.getAddress(); } catch {}
 
-      // Content hash
       let contentHash = '';
       try { contentHash = await resolver.getContentHash(); } catch {}
 
-      // Common text records
       const textKeys = [
         'description', 'url', 'avatar', 'email', 'notice', 'keywords',
         'com.discord', 'com.github', 'com.twitter', 'org.telegram'
@@ -87,7 +80,6 @@ const ensService = {
         try { textRecords[key] = await resolver.getText(key); } catch { textRecords[key] = ''; }
       }
 
-      // Owner and TTL from registry
       let owner = null; let ttl = 0;
       try {
         const node = namehash(name);
@@ -95,18 +87,8 @@ const ensService = {
         ttl = Number(await ensRegistry.ttl(node));
       } catch {}
 
-      return {
-        name,
-        address,
-        contentHash,
-        textRecords,
-        resolver: resolver.address,
-        owner,
-        ttl,
-        timestamp: new Date().toISOString()
-      };
+      return { name, address, contentHash, textRecords, resolver: resolver.address, owner, ttl, timestamp: new Date().toISOString() };
     } catch (err) {
-      // Fallback to mock payload on provider error
       return mockResolvePayload(name);
     }
   },
@@ -142,7 +124,6 @@ const reservedSubdomainsService = {
   }
 };
 
-// Resolve ENS name (GET by path param)
 router.get('/resolve/:name', async (req, res) => {
   try {
     const { name } = req.params;
@@ -157,7 +138,6 @@ router.get('/resolve/:name', async (req, res) => {
   }
 });
 
-// Resolve ENS name (GET: label + parent composed as label.parent)
 router.get('/resolve/:label/under/:parent', async (req, res) => {
   try {
     const { label, parent } = req.params;
@@ -173,7 +153,6 @@ router.get('/resolve/:label/under/:parent', async (req, res) => {
   }
 });
 
-// Resolve ENS name (POST with body, Ajv schema validation)
 router.post('/resolve', validateRequest(null, 'body', 'ENSResolveRequest'), async (req, res) => {
   try {
     const { domain } = req.body;
@@ -188,7 +167,6 @@ router.post('/resolve', validateRequest(null, 'body', 'ENSResolveRequest'), asyn
   }
 });
 
-// Get ENS records for a name
 router.get('/records/:name', async (req, res) => {
   try {
     const { name } = req.params;
@@ -200,7 +178,6 @@ router.get('/records/:name', async (req, res) => {
   }
 });
 
-// Check ENS name availability (for subdomains)
 router.get('/availability/:name', async (req, res) => {
   try {
     const { name } = req.params;
@@ -216,7 +193,6 @@ router.get('/availability/:name', async (req, res) => {
   }
 });
 
-// Get ENS subdomain suggestions
 router.get('/suggestions/:name', async (req, res) => {
   try {
     const { name } = req.params;
@@ -228,7 +204,6 @@ router.get('/suggestions/:name', async (req, res) => {
   }
 });
 
-// Ownership verification (POST with Ajv schema)
 router.post('/verify-ownership', validateRequest(null, 'body', 'ENSOwnershipVerificationRequest'), async (req, res) => {
   try {
     const { domain, address, signature } = req.body;
