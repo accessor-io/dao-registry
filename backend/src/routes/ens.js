@@ -60,15 +60,21 @@ const reservedSubdomainsService = {
   }
 };
 
+function normalizeEnsDomain(input) {
+  if (!input) return input;
+  return input.includes('.') ? input : `${input}.eth`;
+}
+
 // Resolve ENS name (GET by path param)
 router.get('/resolve/:name', async (req, res) => {
   try {
     const { name } = req.params;
-    const resolution = await ensService.resolve(name);
+    const domain = normalizeEnsDomain(name);
+    const resolution = await ensService.resolve(domain);
     if (!resolution) {
       return res.status(404).json({
         error: 'ENS name not found',
-        name: name
+        name: domain
       });
     }
     res.json(resolution);
@@ -81,13 +87,31 @@ router.get('/resolve/:name', async (req, res) => {
   }
 });
 
+// Resolve ENS name (GET: label + parent composed as label.parent)
+router.get('/resolve/:label/under/:parent', async (req, res) => {
+  try {
+    const { label, parent } = req.params;
+    const parentDomain = normalizeEnsDomain(parent);
+    const domain = `${label}.${parentDomain}`;
+    const resolution = await ensService.resolve(domain);
+    if (!resolution) {
+      return res.status(404).json({ error: 'ENS name not found', name: domain });
+    }
+    res.json(resolution);
+  } catch (error) {
+    console.error('Error resolving ENS subdomain:', error);
+    res.status(500).json({ error: 'Failed to resolve ENS subdomain', message: error.message });
+  }
+});
+
 // Resolve ENS name (POST with body, Ajv schema validation)
 router.post('/resolve', validateRequest(null, 'body', 'ENSResolveRequest'), async (req, res) => {
   try {
     const { domain } = req.body;
-    const resolution = await ensService.resolve(domain);
+    const normalized = normalizeEnsDomain(domain);
+    const resolution = await ensService.resolve(normalized);
     if (!resolution) {
-      return res.status(404).json({ error: 'ENS name not found', domain });
+      return res.status(404).json({ error: 'ENS name not found', domain: normalized });
     }
     res.json(resolution);
   } catch (error) {
