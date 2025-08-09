@@ -157,7 +157,7 @@ class DAOService {
    * Get DAO by contract address and chain ID
    * @param {string} contractAddress - Contract address
    * @param {number} chainId - Chain ID
-   * @returns {Object} DAO data
+   * @returns {Object} DAO data or null when not found
    */
   async getDAOByAddress(contractAddress, chainId) {
     try {
@@ -166,7 +166,7 @@ class DAOService {
         const dao = await this.blockchainService.getDAOByAddress(contractAddress, chainId);
         
         if (!dao) {
-          throw new Error('DAO not found');
+          return null;
         }
 
         logger.info(`Retrieved DAO from blockchain by address: ${contractAddress} on chain ${chainId}`);
@@ -180,7 +180,8 @@ class DAOService {
         );
 
         if (!dao) {
-          throw new Error('DAO not found');
+          logger.info(`DAO not found in mock/in-memory by address: ${contractAddress} on chain ${chainId}`);
+          return null;
         }
 
         logger.info(`Retrieved DAO from mock/in-memory data by address: ${contractAddress}`);
