@@ -14,7 +14,8 @@
           "type": "string"
         },
         "chainId": {
-          "type": "number"
+          "type": "integer",
+          "minimum": 1
         },
         "contractAddress": {
           "type": "string"
@@ -25,23 +26,24 @@
         "treasuryAddress": {
           "type": "string"
         },
+        "governanceAddress": {
+          "type": "string"
+        },
         "governanceType": {
-          "$ref": "#/definitions/GovernanceType"
+          "type": "string"
         },
         "votingPeriod": {
-          "type": "number"
+          "type": "integer",
+          "minimum": 1
         },
         "quorum": {
-          "type": "number"
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
         },
         "proposalThreshold": {
-          "type": "number"
-        },
-        "logo": {
-          "type": "string"
-        },
-        "website": {
-          "type": "string"
+          "type": "integer",
+          "minimum": 1
         },
         "socialLinks": {
           "$ref": "#/definitions/SocialLinks"
@@ -50,7 +52,8 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "maxItems": 10
         },
         "ensDomain": {
           "type": "string"
@@ -61,6 +64,7 @@
         "contractAddress",
         "description",
         "governanceType",
+        "governanceAddress",
         "name",
         "proposalThreshold",
         "quorum",
@@ -83,22 +87,28 @@
       "type": "object",
       "properties": {
         "twitter": {
-          "type": "string"
+          "type": "string",
+          "format": "uri"
         },
         "discord": {
-          "type": "string"
+          "type": "string",
+          "format": "uri"
         },
         "telegram": {
-          "type": "string"
+          "type": "string",
+          "format": "uri"
         },
         "github": {
-          "type": "string"
+          "type": "string",
+          "format": "uri"
         },
         "medium": {
-          "type": "string"
+          "type": "string",
+          "format": "uri"
         },
         "reddit": {
-          "type": "string"
+          "type": "string",
+          "format": "uri"
         }
       }
     }
