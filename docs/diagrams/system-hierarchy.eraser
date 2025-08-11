@@ -1,0 +1,442 @@
+# DAO Registry System Hierarchy
+
+## System Overview
+```mermaid
+graph TB
+    subgraph "DAO Registry System"
+        UI[User Interface Layer]
+        API[API Gateway Layer]
+        BL[Business Logic Layer]
+        DL[Data Layer]
+        BC[Blockchain Integration Layer]
+    end
+    
+    UI --> API
+    API --> BL
+    BL --> DL
+    BL --> BC
+    BC --> DL
+```
+
+## Core System Architecture
+```mermaid
+graph TB
+    subgraph "User Interface Layer"
+        Web[Web Application]
+        Mobile[Mobile Application]
+        CLI[CLI Tools]
+        API_Client[API Clients]
+    end
+    
+    subgraph "API Gateway Layer"
+        REST[REST API]
+        GraphQL[GraphQL API]
+        WebSocket[WebSocket API]
+        Rate_Limiter[Rate Limiter]
+        Auth[Authentication]
+    end
+    
+    subgraph "Business Logic Layer"
+        Registry_Engine[Registry Engine]
+        Analytics_Engine[Analytics Engine]
+        Governance_Engine[Governance Engine]
+        ENS_Engine[ENS Integration Engine]
+    end
+    
+    subgraph "Data Layer"
+        PostgreSQL[(PostgreSQL)]
+        Redis[(Redis Cache)]
+        MongoDB[(MongoDB)]
+        IPFS[IPFS Storage]
+    end
+    
+    subgraph "Blockchain Integration Layer"
+        Ethereum[Ethereum Network]
+        Polygon[Polygon Network]
+        Arbitrum[Arbitrum Network]
+        ENS[ENS Service]
+    end
+    
+    Web --> REST
+    Mobile --> REST
+    CLI --> REST
+    API_Client --> GraphQL
+    
+    REST --> Registry_Engine
+    GraphQL --> Analytics_Engine
+    WebSocket --> Governance_Engine
+    
+    Registry_Engine --> PostgreSQL
+    Analytics_Engine --> MongoDB
+    Governance_Engine --> Redis
+    ENS_Engine --> IPFS
+    
+    Registry_Engine --> Ethereum
+    Registry_Engine --> Polygon
+    Registry_Engine --> Arbitrum
+    ENS_Engine --> ENS
+```
+
+## Data Source Mapping Hierarchy
+```mermaid
+graph TB
+    subgraph "Data Sources"
+        SCE[Smart Contract Events]
+        MR[Manual Registration]
+        SSD[Static State Data]
+        API_Update[API Updates]
+        BI[Batch Import]
+    end
+    
+    subgraph "Mapping Layer"
+        EM[Event Mappings]
+        RM[Registration Mappings]
+        SDM[Static Data Mappings]
+    end
+    
+    subgraph "Processing Layer"
+        SEP[Smart Contract Event Processor]
+        MRP[Manual Registration Processor]
+        SDP[Static Data Processor]
+    end
+    
+    subgraph "Validation Layer"
+        EV[Event Validators]
+        RV[Registration Validators]
+        SV[Static Data Validators]
+    end
+    
+    subgraph "Transformation Layer"
+        ET[Event Transformers]
+        RT[Registration Transformers]
+        ST[Static Data Transformers]
+    end
+    
+    subgraph "Storage Layer"
+        DAO_Store[DAO Storage]
+        Proposal_Store[Proposal Storage]
+        Member_Store[Member Storage]
+        ENS_Store[ENS Storage]
+    end
+    
+    SCE --> EM
+    MR --> RM
+    SSD --> SDM
+    
+    EM --> SEP
+    RM --> MRP
+    SDM --> SDP
+    
+    SEP --> EV
+    MRP --> RV
+    SDP --> SV
+    
+    EV --> ET
+    RV --> RT
+    SV --> ST
+    
+    ET --> DAO_Store
+    RT --> Proposal_Store
+    ST --> Member_Store
+    ET --> ENS_Store
+```
+
+## Type Specification Hierarchy
+```mermaid
+graph TB
+    subgraph "Core Types"
+        DAO[DAO Entity]
+        Proposal[Proposal Entity]
+        Member[Member Entity]
+    end
+    
+    subgraph "Integration Types"
+        ENS[ENS Integration]
+        Analytics[Analytics Types]
+        API[API Types]
+    end
+    
+    subgraph "Blockchain Types"
+        Smart_Contracts[Smart Contract Interfaces]
+        Events[Event Types]
+        Transactions[Transaction Types]
+    end
+    
+    subgraph "Validation Types"
+        Validators[Validator Interfaces]
+        Classifiers[Classifier Interfaces]
+        Rules[Validation Rules]
+    end
+    
+    subgraph "Mapping Types"
+        Data_Sources[Data Source Types]
+        Event_Mappings[Event Mapping Types]
+        Registration_Mappings[Registration Mapping Types]
+        Processors[Processor Types]
+    end
+    
+    DAO --> ENS
+    Proposal --> Analytics
+    Member --> API
+    
+    ENS --> Smart_Contracts
+    Analytics --> Events
+    API --> Transactions
+    
+    Smart_Contracts --> Validators
+    Events --> Classifiers
+    Transactions --> Rules
+    
+    Validators --> Data_Sources
+    Classifiers --> Event_Mappings
+    Rules --> Registration_Mappings
+    Data_Sources --> Processors
+```
+
+## Event Processing Hierarchy
+```mermaid
+graph TB
+    subgraph "Event Sources"
+        DAO_Events[DAO Events]
+        ENS_Events[ENS Events]
+        Governance_Events[Governance Events]
+        Treasury_Events[Treasury Events]
+        Member_Events[Member Events]
+    end
+    
+    subgraph "Event Listeners"
+        DAO_Listener[DAO Event Listener]
+        ENS_Listener[ENS Event Listener]
+        Governance_Listener[Governance Event Listener]
+        Treasury_Listener[Treasury Event Listener]
+        Member_Listener[Member Event Listener]
+    end
+    
+    subgraph "Event Processors"
+        DAO_Processor[DAO Event Processor]
+        ENS_Processor[ENS Event Processor]
+        Governance_Processor[Governance Event Processor]
+        Treasury_Processor[Treasury Event Processor]
+        Member_Processor[Member Event Processor]
+    end
+    
+    subgraph "Event Mappings"
+        DAO_Mapping[DAO Event Mapping]
+        ENS_Mapping[ENS Event Mapping]
+        Governance_Mapping[Governance Event Mapping]
+        Treasury_Mapping[Treasury Event Mapping]
+        Member_Mapping[Member Event Mapping]
+    end
+    
+    subgraph "Data Storage"
+        DAO_Storage[DAO Storage]
+        ENS_Storage[ENS Storage]
+        Governance_Storage[Governance Storage]
+        Treasury_Storage[Treasury Storage]
+        Member_Storage[Member Storage]
+    end
+    
+    DAO_Events --> DAO_Listener
+    ENS_Events --> ENS_Listener
+    Governance_Events --> Governance_Listener
+    Treasury_Events --> Treasury_Listener
+    Member_Events --> Member_Listener
+    
+    DAO_Listener --> DAO_Processor
+    ENS_Listener --> ENS_Processor
+    Governance_Listener --> Governance_Processor
+    Treasury_Listener --> Treasury_Processor
+    Member_Listener --> Member_Processor
+    
+    DAO_Processor --> DAO_Mapping
+    ENS_Processor --> ENS_Mapping
+    Governance_Processor --> Governance_Mapping
+    Treasury_Processor --> Treasury_Mapping
+    Member_Processor --> Member_Mapping
+    
+    DAO_Mapping --> DAO_Storage
+    ENS_Mapping --> ENS_Storage
+    Governance_Mapping --> Governance_Storage
+    Treasury_Mapping --> Treasury_Storage
+    Member_Mapping --> Member_Storage
+```
+
+## Registration Processing Hierarchy
+```mermaid
+graph TB
+    subgraph "Registration Sources"
+        Web_Form[Web Form]
+        API_Endpoint[API Endpoint]
+        CLI_Tool[CLI Tool]
+        Batch_Upload[Batch Upload]
+    end
+    
+    subgraph "Registration Processors"
+        DAO_Reg_Processor[DAO Registration Processor]
+        Proposal_Reg_Processor[Proposal Registration Processor]
+        Member_Reg_Processor[Member Registration Processor]
+        ENS_Reg_Processor[ENS Registration Processor]
+    end
+    
+    subgraph "Validation Layer"
+        Input_Validation[Input Validation]
+        Business_Validation[Business Rule Validation]
+        Security_Validation[Security Validation]
+        Duplicate_Check[Duplicate Check]
+    end
+    
+    subgraph "Transformation Layer"
+        Data_Normalization[Data Normalization]
+        Format_Standardization[Format Standardization]
+        Type_Conversion[Type Conversion]
+        Metadata_Enrichment[Metadata Enrichment]
+    end
+    
+    subgraph "Storage Layer"
+        Pending_Storage[Pending Storage]
+        Approved_Storage[Approved Storage]
+        Rejected_Storage[Rejected Storage]
+    end
+    
+    Web_Form --> DAO_Reg_Processor
+    API_Endpoint --> Proposal_Reg_Processor
+    CLI_Tool --> Member_Reg_Processor
+    Batch_Upload --> ENS_Reg_Processor
+    
+    DAO_Reg_Processor --> Input_Validation
+    Proposal_Reg_Processor --> Business_Validation
+    Member_Reg_Processor --> Security_Validation
+    ENS_Reg_Processor --> Duplicate_Check
+    
+    Input_Validation --> Data_Normalization
+    Business_Validation --> Format_Standardization
+    Security_Validation --> Type_Conversion
+    Duplicate_Check --> Metadata_Enrichment
+    
+    Data_Normalization --> Pending_Storage
+    Format_Standardization --> Approved_Storage
+    Type_Conversion --> Rejected_Storage
+    Metadata_Enrichment --> Pending_Storage
+```
+
+## Analytics Hierarchy
+```mermaid
+graph TB
+    subgraph "Data Collection"
+        DAO_Data[DAO Data]
+        Proposal_Data[Proposal Data]
+        Member_Data[Member Data]
+        Treasury_Data[Treasury Data]
+        Governance_Data[Governance Data]
+    end
+    
+    subgraph "Analytics Processing"
+        DAO_Analytics[DAO Analytics]
+        Proposal_Analytics[Proposal Analytics]
+        Member_Analytics[Member Analytics]
+        Treasury_Analytics[Treasury Analytics]
+        Governance_Analytics[Governance Analytics]
+    end
+    
+    subgraph "Metrics Calculation"
+        Basic_Metrics[Basic Metrics]
+        Advanced_Metrics[Advanced Metrics]
+        Risk_Metrics[Risk Metrics]
+        Comparative_Metrics[Comparative Metrics]
+    end
+    
+    subgraph "Reporting Layer"
+        Real_Time_Reports[Real-time Reports]
+        Scheduled_Reports[Scheduled Reports]
+        Custom_Reports[Custom Reports]
+        Export_Reports[Export Reports]
+    end
+    
+    subgraph "Visualization"
+        Dashboards[Dashboards]
+        Charts[Charts]
+        Graphs[Graphs]
+        Tables[Tables]
+    end
+    
+    DAO_Data --> DAO_Analytics
+    Proposal_Data --> Proposal_Analytics
+    Member_Data --> Member_Analytics
+    Treasury_Data --> Treasury_Analytics
+    Governance_Data --> Governance_Analytics
+    
+    DAO_Analytics --> Basic_Metrics
+    Proposal_Analytics --> Advanced_Metrics
+    Member_Analytics --> Risk_Metrics
+    Treasury_Analytics --> Comparative_Metrics
+    Governance_Analytics --> Basic_Metrics
+    
+    Basic_Metrics --> Real_Time_Reports
+    Advanced_Metrics --> Scheduled_Reports
+    Risk_Metrics --> Custom_Reports
+    Comparative_Metrics --> Export_Reports
+    
+    Real_Time_Reports --> Dashboards
+    Scheduled_Reports --> Charts
+    Custom_Reports --> Graphs
+    Export_Reports --> Tables
+```
+
+## Security Hierarchy
+```mermaid
+graph TB
+    subgraph "Input Security"
+        XSS_Protection[XSS Protection]
+        SQL_Injection_Protection[SQL Injection Protection]
+        Path_Traversal_Protection[Path Traversal Protection]
+        Input_Validation[Input Validation]
+    end
+    
+    subgraph "API Security"
+        Rate_Limiting[Rate Limiting]
+        Authentication[Authentication]
+        Authorization[Authorization]
+        API_Key_Management[API Key Management]
+    end
+    
+    subgraph "Smart Contract Security"
+        Reentrancy_Protection[Reentrancy Protection]
+        Access_Control[Access Control]
+        Integer_Overflow_Protection[Integer Overflow Protection]
+        Gas_Optimization[Gas Optimization]
+    end
+    
+    subgraph "Data Security"
+        Encryption[Encryption]
+        Data_Minimization[Data Minimization]
+        Consent_Management[Consent Management]
+        Data_Retention[Data Retention]
+    end
+    
+    subgraph "Privacy Protection"
+        Address_Masking[Address Masking]
+        Zero_Knowledge_Proofs[Zero Knowledge Proofs]
+        Encrypted_Metadata[Encrypted Metadata]
+        GDPR_Compliance[GDPR Compliance]
+    end
+    
+    XSS_Protection --> Rate_Limiting
+    SQL_Injection_Protection --> Authentication
+    Path_Traversal_Protection --> Authorization
+    Input_Validation --> API_Key_Management
+    
+    Rate_Limiting --> Reentrancy_Protection
+    Authentication --> Access_Control
+    Authorization --> Integer_Overflow_Protection
+    API_Key_Management --> Gas_Optimization
+    
+    Reentrancy_Protection --> Encryption
+    Access_Control --> Data_Minimization
+    Integer_Overflow_Protection --> Consent_Management
+    Gas_Optimization --> Data_Retention
+    
+    Encryption --> Address_Masking
+    Data_Minimization --> Zero_Knowledge_Proofs
+    Consent_Management --> Encrypted_Metadata
+    Data_Retention --> GDPR_Compliance
+``` 

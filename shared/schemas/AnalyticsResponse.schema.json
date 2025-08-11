@@ -1,0 +1,547 @@
+{
+  "$ref": "#/definitions/AnalyticsResponse",
+  "definitions": {
+    "AnalyticsResponse": {
+      "type": "object",
+      "properties": {
+        "daoAnalytics": {
+          "$ref": "#/definitions/DAOAnalytics"
+        },
+        "proposalAnalytics": {
+          "$ref": "#/definitions/ProposalAnalytics"
+        },
+        "memberAnalytics": {
+          "$ref": "#/definitions/MemberAnalytics"
+        },
+        "treasuryAnalytics": {
+          "$ref": "#/definitions/TreasuryAnalytics"
+        },
+        "riskMetrics": {
+          "$ref": "#/definitions/RiskMetrics"
+        },
+        "comparativeAnalytics": {
+          "$ref": "#/definitions/ComparativeAnalytics"
+        }
+      },
+      "required": [
+        "daoAnalytics"
+      ]
+    },
+    "DAOAnalytics": {
+      "description": "Analytics Types\nRFC-001: DAO Registry Specification - Analytics Types",
+      "type": "object",
+      "properties": {
+        "totalMembers": {
+          "type": "number"
+        },
+        "totalProposals": {
+          "type": "number"
+        },
+        "treasuryValue": {
+          "type": "number"
+        },
+        "participationRate": {
+          "type": "number"
+        },
+        "averageVotingPower": {
+          "type": "number"
+        },
+        "activeProposals": {
+          "type": "number"
+        },
+        "executedProposals": {
+          "type": "number"
+        },
+        "totalVotingPower": {
+          "type": "number"
+        },
+        "quorumMet": {
+          "type": "number"
+        },
+        "proposalsThisMonth": {
+          "type": "number"
+        },
+        "proposalsThisYear": {
+          "type": "number"
+        },
+        "averageProposalDuration": {
+          "type": "number"
+        },
+        "treasuryGrowth": {
+          "type": "number"
+        },
+        "averageProposalValue": {
+          "type": "number"
+        },
+        "totalExecutedValue": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "activeProposals",
+        "averageProposalDuration",
+        "averageProposalValue",
+        "averageVotingPower",
+        "executedProposals",
+        "participationRate",
+        "proposalsThisMonth",
+        "proposalsThisYear",
+        "quorumMet",
+        "totalExecutedValue",
+        "totalMembers",
+        "totalProposals",
+        "totalVotingPower",
+        "treasuryGrowth",
+        "treasuryValue"
+      ]
+    },
+    "ProposalAnalytics": {
+      "type": "object",
+      "properties": {
+        "totalVotes": {
+          "type": "number"
+        },
+        "participationRate": {
+          "type": "number"
+        },
+        "quorumMet": {
+          "type": "boolean"
+        },
+        "timeRemaining": {
+          "type": "number"
+        },
+        "executionEligible": {
+          "type": "boolean"
+        },
+        "forVotesPercentage": {
+          "type": "number"
+        },
+        "againstVotesPercentage": {
+          "type": "number"
+        },
+        "abstainVotesPercentage": {
+          "type": "number"
+        },
+        "votingDuration": {
+          "type": "number"
+        },
+        "timeUntilExecution": {
+          "type": "number"
+        },
+        "averageVoteTime": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "abstainVotesPercentage",
+        "againstVotesPercentage",
+        "averageVoteTime",
+        "executionEligible",
+        "forVotesPercentage",
+        "participationRate",
+        "quorumMet",
+        "timeRemaining",
+        "timeUntilExecution",
+        "totalVotes",
+        "votingDuration"
+      ]
+    },
+    "MemberAnalytics": {
+      "type": "object",
+      "properties": {
+        "totalMembers": {
+          "type": "number"
+        },
+        "activeMembers": {
+          "type": "number"
+        },
+        "averageVotingPower": {
+          "type": "number"
+        },
+        "participationRate": {
+          "type": "number"
+        },
+        "topContributors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TopContributor"
+          }
+        },
+        "newMembersThisMonth": {
+          "type": "number"
+        },
+        "activeMembersThisMonth": {
+          "type": "number"
+        },
+        "averageActivityPerMember": {
+          "type": "number"
+        },
+        "votingParticipationRate": {
+          "type": "number"
+        },
+        "proposalCreationRate": {
+          "type": "number"
+        },
+        "averageMemberTenure": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "activeMembers",
+        "activeMembersThisMonth",
+        "averageActivityPerMember",
+        "averageMemberTenure",
+        "averageVotingPower",
+        "newMembersThisMonth",
+        "participationRate",
+        "proposalCreationRate",
+        "topContributors",
+        "totalMembers",
+        "votingParticipationRate"
+      ]
+    },
+    "TopContributor": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "votingPower": {
+          "type": "number"
+        },
+        "proposalsCreated": {
+          "type": "number"
+        },
+        "proposalsVoted": {
+          "type": "number"
+        },
+        "lastActivity": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "contributionScore": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "address",
+        "contributionScore",
+        "lastActivity",
+        "proposalsCreated",
+        "proposalsVoted",
+        "votingPower"
+      ]
+    },
+    "TreasuryAnalytics": {
+      "type": "object",
+      "properties": {
+        "totalValue": {
+          "type": "number"
+        },
+        "valueChange24h": {
+          "type": "number"
+        },
+        "valueChange7d": {
+          "type": "number"
+        },
+        "valueChange30d": {
+          "type": "number"
+        },
+        "assetBreakdown": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AssetBreakdown"
+          }
+        },
+        "topAssets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AssetInfo"
+          }
+        },
+        "totalTransactions": {
+          "type": "number"
+        },
+        "averageTransactionValue": {
+          "type": "number"
+        },
+        "largestTransaction": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "assetBreakdown",
+        "averageTransactionValue",
+        "largestTransaction",
+        "topAssets",
+        "totalTransactions",
+        "totalValue",
+        "valueChange24h",
+        "valueChange30d",
+        "valueChange7d"
+      ]
+    },
+    "AssetBreakdown": {
+      "type": "object",
+      "properties": {
+        "symbol": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "balance": {
+          "type": "number"
+        },
+        "value": {
+          "type": "number"
+        },
+        "percentage": {
+          "type": "number"
+        },
+        "price": {
+          "type": "number"
+        },
+        "priceChange24h": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "balance",
+        "name",
+        "percentage",
+        "price",
+        "priceChange24h",
+        "symbol",
+        "value"
+      ]
+    },
+    "AssetInfo": {
+      "type": "object",
+      "properties": {
+        "symbol": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "balance": {
+          "type": "number"
+        },
+        "price": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "balance",
+        "name",
+        "price",
+        "symbol",
+        "value"
+      ]
+    },
+    "RiskMetrics": {
+      "type": "object",
+      "properties": {
+        "governanceRisk": {
+          "type": "number"
+        },
+        "quorumRisk": {
+          "type": "number"
+        },
+        "participationRisk": {
+          "type": "number"
+        },
+        "treasuryRisk": {
+          "type": "number"
+        },
+        "concentrationRisk": {
+          "type": "number"
+        },
+        "volatilityRisk": {
+          "type": "number"
+        },
+        "executionRisk": {
+          "type": "number"
+        },
+        "proposalRisk": {
+          "type": "number"
+        },
+        "memberRisk": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "concentrationRisk",
+        "executionRisk",
+        "governanceRisk",
+        "memberRisk",
+        "participationRisk",
+        "proposalRisk",
+        "quorumRisk",
+        "treasuryRisk",
+        "volatilityRisk"
+      ]
+    },
+    "ComparativeAnalytics": {
+      "type": "object",
+      "properties": {
+        "peerComparison": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PeerComparison"
+          }
+        },
+        "industryBenchmarks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/IndustryBenchmark"
+          }
+        },
+        "historicalTrends": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/HistoricalTrend"
+          }
+        },
+        "performanceMetrics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PerformanceMetric"
+          }
+        }
+      },
+      "required": [
+        "historicalTrends",
+        "industryBenchmarks",
+        "peerComparison",
+        "performanceMetrics"
+      ]
+    },
+    "PeerComparison": {
+      "type": "object",
+      "properties": {
+        "daoId": {
+          "type": "string"
+        },
+        "daoName": {
+          "type": "string"
+        },
+        "metric": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "rank": {
+          "type": "number"
+        },
+        "percentile": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "daoId",
+        "daoName",
+        "metric",
+        "percentile",
+        "rank",
+        "value"
+      ]
+    },
+    "IndustryBenchmark": {
+      "type": "object",
+      "properties": {
+        "metric": {
+          "type": "string"
+        },
+        "average": {
+          "type": "number"
+        },
+        "median": {
+          "type": "number"
+        },
+        "top25": {
+          "type": "number"
+        },
+        "top10": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "average",
+        "median",
+        "metric",
+        "top10",
+        "top25"
+      ]
+    },
+    "HistoricalTrend": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "value": {
+          "type": "number"
+        },
+        "change": {
+          "type": "number"
+        },
+        "changePercentage": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "change",
+        "changePercentage",
+        "date",
+        "value"
+      ]
+    },
+    "PerformanceMetric": {
+      "type": "object",
+      "properties": {
+        "metric": {
+          "type": "string"
+        },
+        "currentValue": {
+          "type": "number"
+        },
+        "previousValue": {
+          "type": "number"
+        },
+        "change": {
+          "type": "number"
+        },
+        "changePercentage": {
+          "type": "number"
+        },
+        "trend": {
+          "$ref": "#/definitions/TrendDirection"
+        }
+      },
+      "required": [
+        "change",
+        "changePercentage",
+        "currentValue",
+        "metric",
+        "previousValue",
+        "trend"
+      ]
+    },
+    "TrendDirection": {
+      "type": "string",
+      "enum": [
+        "up",
+        "down",
+        "stable"
+      ]
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

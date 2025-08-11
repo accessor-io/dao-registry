@@ -3,101 +3,88 @@
 * [Introduction](README.md)
 * [Getting Started](getting-started/README.md)
   * [Quick Start](getting-started/quick-start.md)
-  * [Installation](getting-started/installation.md)
-  * [Configuration](getting-started/configuration.md)
-  * [First DAO Registration](getting-started/first-dao.md)
 
-* [Architecture](architecture/README.md)
-  * [System Overview](architecture/system-overview.md)
-  * [Multi-Chain Support](architecture/multi-chain.md)
-  * [Smart Contracts](architecture/smart-contracts.md)
-  * [Data Flow](architecture/data-flow.md)
-  * [Security Model](architecture/security.md)
+## User Documentation
 
-* [Core Features](features/README.md)
-  * [DAO Registration](features/dao-registration.md)
-  * [Governance Analytics](features/governance-analytics.md)
-  * [ENS Integration](features/ens-integration.md)
-  * [Metadata Standards](features/metadata-standards.md)
-  * [Multi-Chain Support](features/multi-chain.md)
+* [User Guide](user-guide.md)
+  * Getting Started
+  * Searching for DAOs
+  * Viewing DAO Details
+  * Understanding Registry Statistics
+  * Best Practices
+  * Troubleshooting
 
-* [Smart Contracts](contracts/README.md)
-  * [DAORegistry](contracts/dao-registry.md)
-  * [MockERC20](contracts/mock-erc20.md)
-  * [MockGovernance](contracts/mock-governance.md)
-  * [MockTreasury](contracts/mock-treasury.md)
-  * [Deployment](contracts/deployment.md)
+## Developer Documentation
 
-* [API Reference](api/README.md)
-  * [REST API](api/rest-api.md)
-  * [GraphQL API](api/graphql-api.md)
-  * [WebSocket API](api/websocket-api.md)
-  * [Authentication](api/authentication.md)
-  * [Rate Limiting](api/rate-limiting.md)
+* [Developer Manual](developer-manual.md)
+  * Architecture Overview
+  * Development Setup
+  * API Documentation
+  * Frontend Development
+  * Backend Development
+  * Smart Contract Development
+  * Testing
+  * Deployment
+  * Contributing
+  * Troubleshooting
 
-* [Metadata Standards](metadata/README.md)
-  * [ISO 23081-2:2021](metadata/iso-23081-2.md)
-  * [DAO Metadata Schema](metadata/dao-schema.md)
-  * [Governance Metadata](metadata/governance.md)
-  * [Blockchain Metadata](metadata/blockchain.md)
-  * [ENS Metadata](metadata/ens-metadata.md)
+## Technical Documentation
 
-* [Development](development/README.md)
-  * [Development Setup](development/setup.md)
-  * [Testing](development/testing.md)
-  * [Contributing](development/contributing.md)
-  * [Code Style](development/code-style.md)
-  * [Deployment](development/deployment.md)
+* [Architecture](architecture/system-overview.md)
+  * [System Architecture](architecture/system-architecture.md)
+  * [OSS Standards Architecture](architecture/oss-standards-architecture.md)
+  * [Research Enhanced Architecture](architecture/research-enhanced-architecture.md)
+  * [Schema Management Flow](architecture/schema-management-flow.md)
 
-* [Integration](integration/README.md)
-  * [ENS Integration](integration/ens.md)
-  * [Multi-Chain Integration](integration/multi-chain.md)
-  * [Third-Party Services](integration/third-party.md)
-  * [Webhooks](integration/webhooks.md)
+* [RFC Documents](rfc/README.md)
+  * [RFC-001: DAO Registry Specification](rfc/rfc-001-dao-registry-specification.md)
+  * [RFC-002: Data Point Classifiers](rfc/rfc-002-data-point-classifiers.md)
+  * [RFC-003: Nomenclature and Classification](rfc/rfc-003-nomenclature-classification.md)
+  * [RFC-004: ISO Metadata Standards](rfc/rfc-004-iso-metadata-standards.md)
 
-* [Analytics](analytics/README.md)
-  * [Governance Metrics](analytics/governance-metrics.md)
-  * [Treasury Analytics](analytics/treasury-analytics.md)
-  * [Member Analytics](analytics/member-analytics.md)
-  * [Performance Metrics](analytics/performance.md)
+* [Specifications](specification/README.md)
+  * [DAO Registry Specification](specification/dao-registry-spec.md)
+  * [Reserved Subdomains](specification/reserved-subdomains.md)
+  * [Reserved Subdomains Implementation](specification/reserved-subdomains-implementation.md)
+  * [URL Encoding Patterns](specification/url-encoding-patterns.md)
 
-* [Security](security/README.md)
-  * [Security Model](security/model.md)
-  * [Access Control](security/access-control.md)
-  * [Data Protection](security/data-protection.md)
-  * [Audit Logging](security/audit-logging.md)
-  * [Compliance](security/compliance.md)
+* [Integration Guides](integration/README.md)
+  * [Complete System Integration](integration/complete-system-integration.md)
+  * [ENS Integration](integration/ens-integration.md)
 
-* [Troubleshooting](troubleshooting/README.md)
-  * [Common Issues](troubleshooting/common-issues.md)
-  * [Error Codes](troubleshooting/error-codes.md)
-  * [Debugging](troubleshooting/debugging.md)
-  * [Performance](troubleshooting/performance.md)
-
-* [RFCs](rfcs/README.md)
-  * [RFC-001: DAO Registry Specification](rfcs/rfc-001-dao-registry-specification.md)
-  * [RFC-002: Data Point Classifiers](rfcs/rfc-002-data-point-classifiers.md)
-  * [RFC-003: Nomenclature Classification](rfcs/rfc-003-nomenclature-classification.md)
-  * [RFC-004: ISO Metadata Standards](rfcs/rfc-004-iso-metadata-standards.md)
+* [Features](features/README.md)
+  * [Research Driven Analytics](features/research-driven-analytics.md)
 
 * [Research](research/README.md)
+  * [Latest Blockchain Governance Research](research/latest-blockchain-governance-research.md)
   * [Latest Ethereum Research](research/latest-ethereum-research.md)
-  * [DAO Governance Patterns](research/governance-patterns.md)
-  * [Multi-Chain Strategies](research/multi-chain-strategies.md)
-  * [Metadata Standards](research/metadata-standards.md)
+  * [Open Source Standards Research](research/open-source-standards-research.md)
 
-* [Examples](examples/README.md)
-  * [Basic DAO Registration](examples/basic-registration.md)
-  * [Advanced Analytics](examples/advanced-analytics.md)
-  * [Custom Metadata](examples/custom-metadata.md)
-  * [Multi-Chain Setup](examples/multi-chain-setup.md)
+## Technical References
 
-* [FAQ](faq/README.md)
-  * [General Questions](faq/general.md)
-  * [Technical Questions](faq/technical.md)
-  * [Integration Questions](faq/integration.md)
-  * [Troubleshooting](faq/troubleshooting.md)
+* [On-Chain Calls Reference](on-chain-calls-reference.md)
+* [Contract Interactions Diagram](contract-interactions-diagram.md)
+* [Contract Schema Diagram](contract-schema-diagram.md)
+* [Workflow Diagram](workflow-diagram.md)
 
-* [Changelog](CHANGELOG.md)
-* [Contributing](CONTRIBUTING.md)
-* [License](LICENSE.md) 
+## Technical Documentation
+
+* [CLI Module](technical/cli-module.md)
+* [CLI DAO Function Graph](technical/cli-dao-function-graph.html)
+
+## Strategy and Adoption
+
+* [Adoption Strategy](adoption-strategy.md)
+
+## Appendices
+
+* [Contributing Guidelines](appendices/contributing.md)
+* [FAQ](appendices/faq.md)
+* [API Reference](appendices/api-reference.md)
+* [Deployment Guide](appendices/deployment.md)
+* [Security Guidelines](appendices/security.md)
+* [Performance Optimization](appendices/performance.md)
+* [Monitoring and Logging](appendices/monitoring.md)
+* [Backup and Recovery](appendices/backup-recovery.md)
+* [Disaster Recovery](appendices/disaster-recovery.md)
+* [Compliance and Legal](appendices/compliance.md) 

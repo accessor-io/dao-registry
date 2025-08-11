@@ -1,0 +1,81 @@
+{
+  "$ref": "#/definitions/Member",
+  "definitions": {
+    "Member": {
+      "description": "Member Entity Types\nRFC-001: DAO Registry Specification - Member Types",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "daoId": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "tokenBalance": {
+          "type": "number"
+        },
+        "votingPower": {
+          "type": "number"
+        },
+        "proposalsCreated": {
+          "type": "number"
+        },
+        "proposalsVoted": {
+          "type": "number"
+        },
+        "lastActivity": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MemberRole"
+          }
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Permission"
+          }
+        }
+      },
+      "required": [
+        "address",
+        "daoId",
+        "id",
+        "lastActivity",
+        "permissions",
+        "proposalsCreated",
+        "proposalsVoted",
+        "roles",
+        "tokenBalance",
+        "votingPower"
+      ]
+    },
+    "MemberRole": {
+      "type": "string",
+      "enum": [
+        "admin",
+        "moderator",
+        "member",
+        "guest"
+      ]
+    },
+    "Permission": {
+      "type": "string",
+      "enum": [
+        "create_proposal",
+        "vote",
+        "execute_proposal",
+        "manage_members",
+        "manage_settings",
+        "view_analytics"
+      ]
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

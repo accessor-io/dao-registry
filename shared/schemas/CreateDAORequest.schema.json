@@ -1,0 +1,107 @@
+{
+  "$ref": "#/definitions/CreateDAORequest",
+  "definitions": {
+    "CreateDAORequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "symbol": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "chainId": {
+          "type": "number"
+        },
+        "contractAddress": {
+          "type": "string"
+        },
+        "tokenAddress": {
+          "type": "string"
+        },
+        "treasuryAddress": {
+          "type": "string"
+        },
+        "governanceType": {
+          "$ref": "#/definitions/GovernanceType"
+        },
+        "votingPeriod": {
+          "type": "number"
+        },
+        "quorum": {
+          "type": "number"
+        },
+        "proposalThreshold": {
+          "type": "number"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "socialLinks": {
+          "$ref": "#/definitions/SocialLinks"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ensDomain": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "chainId",
+        "contractAddress",
+        "description",
+        "governanceType",
+        "name",
+        "proposalThreshold",
+        "quorum",
+        "symbol",
+        "tokenAddress",
+        "treasuryAddress",
+        "votingPeriod"
+      ]
+    },
+    "GovernanceType": {
+      "type": "string",
+      "enum": [
+        "token",
+        "nft",
+        "multisig",
+        "hybrid"
+      ]
+    },
+    "SocialLinks": {
+      "type": "object",
+      "properties": {
+        "twitter": {
+          "type": "string"
+        },
+        "discord": {
+          "type": "string"
+        },
+        "telegram": {
+          "type": "string"
+        },
+        "github": {
+          "type": "string"
+        },
+        "medium": {
+          "type": "string"
+        },
+        "reddit": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

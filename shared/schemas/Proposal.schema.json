@@ -1,0 +1,129 @@
+{
+  "$ref": "#/definitions/Proposal",
+  "definitions": {
+    "Proposal": {
+      "description": "Proposal Entity Types\nRFC-001: DAO Registry Specification - Proposal Types",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "daoId": {
+          "type": "string"
+        },
+        "proposer": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "quorum": {
+          "type": "number"
+        },
+        "forVotes": {
+          "type": "number"
+        },
+        "againstVotes": {
+          "type": "number"
+        },
+        "abstainVotes": {
+          "type": "number"
+        },
+        "executed": {
+          "type": "boolean"
+        },
+        "executedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "canceled": {
+          "type": "boolean"
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProposalAction"
+          }
+        },
+        "metadata": {
+          "$ref": "#/definitions/ProposalMetadata"
+        }
+      },
+      "required": [
+        "abstainVotes",
+        "actions",
+        "againstVotes",
+        "canceled",
+        "daoId",
+        "description",
+        "endTime",
+        "executed",
+        "forVotes",
+        "id",
+        "metadata",
+        "proposer",
+        "quorum",
+        "startTime",
+        "title"
+      ]
+    },
+    "ProposalAction": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "signature": {
+          "type": "string"
+        },
+        "calldata": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "calldata",
+        "signature",
+        "target",
+        "value"
+      ]
+    },
+    "ProposalMetadata": {
+      "type": "object",
+      "properties": {
+        "ipfsHash": {
+          "type": "string"
+        },
+        "discussionUrl": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

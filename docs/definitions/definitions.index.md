@@ -1,0 +1,974 @@
+# Semantic Definitions Index
+
+Generated: 2025-08-08T02:53:24.007Z
+
+## unknown (346)
+
+- DAO Registry - Main Entry Point
+
+Integrates all components:
+- UR — DAO Registry - Main Entry Point
+
+Integrates all components:
+- URL Encoding Service
+- Reserved Subdomains Service
+- ENS Integration
+- Metadata Services
+- ISO Standards 
+  - file: backend/src/index.ts
+- DAO Registry Application — DAO Registry Application 
+  - file: backend/src/index.ts
+- Setup middleware — Setup middleware 
+  - file: backend/src/index.ts
+- Setup API routes — Setup API routes 
+  - file: backend/src/index.ts
+- Setup error handling — Setup error handling 
+  - file: backend/src/index.ts
+- Start the application — Start the application 
+  - file: backend/src/index.ts
+- Get the Express app instance — Get the Express app instance 
+  - file: backend/src/index.ts
+- Get service instances for testing — Get service instances for testing 
+  - file: backend/src/index.ts
+- DAO Registry CLI - Admin Management Terminal
+
+  CLI for managing — DAO Registry CLI - Admin Management Terminal
+
+  CLI for managing the DAO Registry system
+Features: Governance, Analytics, Contracts, Services, Monitoring 
+  - file: backend/src/cli/index.js
+- Middleware to validate request data against a Joi schema and/or  — Middleware to validate request data against a Joi schema and/or JSON Schema (Ajv) 
+  - file: backend/src/middleware/validation.js
+  - tags: param, returns
+- Get all DAOs with filtering and pagination — Get all DAOs with filtering and pagination 
+  - file: backend/src/services/dao.js
+  - tags: param, returns
+- Get DAO by ID — Get DAO by ID 
+  - file: backend/src/services/dao.js
+  - tags: param, returns
+- Get DAO by contract address and chain ID — Get DAO by contract address and chain ID 
+  - file: backend/src/services/dao.js
+  - tags: param, returns
+- Create new DAO — Create new DAO 
+  - file: backend/src/services/dao.js
+  - tags: param, returns
+- Update DAO — Update DAO 
+  - file: backend/src/services/dao.js
+  - tags: param, returns
+- Delete DAO — Delete DAO 
+  - file: backend/src/services/dao.js
+  - tags: param, returns
+- Verify DAO — Verify DAO 
+  - file: backend/src/services/dao.js
+  - tags: param, returns
+- Change DAO status — Change DAO status 
+  - file: backend/src/services/dao.js
+  - tags: param, returns
+- Get registry statistics — Get registry statistics 
+  - file: backend/src/services/dao.js
+  - tags: returns
+- (no-id) —  
+  - file: backend/src/routes/reserved-subdomains.js
+  - tags: route, desc, access
+- (no-id) —  
+  - file: backend/src/routes/reserved-subdomains.js
+  - tags: route, desc, access
+- (no-id) —  
+  - file: backend/src/routes/reserved-subdomains.js
+  - tags: route, desc, access
+- (no-id) —  
+  - file: backend/src/routes/reserved-subdomains.js
+  - tags: route, desc, access
+- (no-id) —  
+  - file: backend/src/routes/reserved-subdomains.js
+  - tags: route, desc, access
+- (no-id) —  
+  - file: backend/src/routes/reserved-subdomains.js
+  - tags: route, desc, access
+- (no-id) —  
+  - file: backend/src/routes/reserved-subdomains.js
+  - tags: route, desc, access
+- (no-id) —  
+  - file: backend/src/routes/reserved-subdomains.js
+  - tags: route, desc, access
+- (no-id) —  
+  - file: backend/src/routes/reserved-subdomains.js
+  - tags: route, desc, access
+- (no-id) —  
+  - file: backend/src/routes/reserved-subdomains.js
+  - tags: route, desc, access
+- (no-id) —  
+  - file: backend/src/routes/reserved-subdomains.js
+  - tags: route, desc, access
+- Simple logger utility — Simple logger utility 
+  - file: backend/src/utils/logger.js
+- DAO Management CLI Module
+Manages DAO registry operations — DAO Management CLI Module
+Manages DAO registry operations 
+  - file: backend/src/cli/modules/dao.js
+- Metadata CLI Module
+Manages reserved subdomains, URL encoding, E — Metadata CLI Module
+Manages reserved subdomains, URL encoding, ENS resolution, and ISO metadata 
+  - file: backend/src/cli/modules/metadata.js
+- Initialize providers for different networks — Initialize providers for different networks 
+  - file: backend/src/services/blockchain/dao-contract-service.js
+- Load deployment addresses from deployment files — Load deployment addresses from deployment files 
+  - file: backend/src/services/blockchain/dao-contract-service.js
+- Get provider for a specific chain — Get provider for a specific chain 
+  - file: backend/src/services/blockchain/dao-contract-service.js
+- Get DAO Registry contract for a specific chain — Get DAO Registry contract for a specific chain 
+  - file: backend/src/services/blockchain/dao-contract-service.js
+- Get ERC20 token contract — Get ERC20 token contract 
+  - file: backend/src/services/blockchain/dao-contract-service.js
+- Get governance contract — Get governance contract 
+  - file: backend/src/services/blockchain/dao-contract-service.js
+- Get all DAOs from blockchain with filtering and pagination — Get all DAOs from blockchain with filtering and pagination 
+  - file: backend/src/services/blockchain/dao-contract-service.js
+- Get DAO by ID from blockchain — Get DAO by ID from blockchain 
+  - file: backend/src/services/blockchain/dao-contract-service.js
+- Get DAO by contract address — Get DAO by contract address 
+  - file: backend/src/services/blockchain/dao-contract-service.js
+- Get registry statistics from blockchain — Get registry statistics from blockchain 
+  - file: backend/src/services/blockchain/dao-contract-service.js
+- Helper: Convert governance type enum to string — Helper: Convert governance type enum to string 
+  - file: backend/src/services/blockchain/dao-contract-service.js
+- Helper: Convert status enum to string — Helper: Convert status enum to string 
+  - file: backend/src/services/blockchain/dao-contract-service.js
+- Get supported networks — Get supported networks 
+  - file: backend/src/services/blockchain/dao-contract-service.js
+- Check if network is supported — Check if network is supported 
+  - file: backend/src/services/blockchain/dao-contract-service.js
+- Check if a domain is available — Check if a domain is available 
+  - file: backend/src/services/metadata/ens/ens-resolver-service.js
+  - tags: param, returns
+- Check if a domain is registered — Check if a domain is registered 
+  - file: backend/src/services/metadata/ens/ens-resolver-service.js
+  - tags: param, returns
+- Get domain owner — Get domain owner 
+  - file: backend/src/services/metadata/ens/ens-resolver-service.js
+  - tags: param, returns
+- Get domain resolver — Get domain resolver 
+  - file: backend/src/services/metadata/ens/ens-resolver-service.js
+  - tags: param, returns
+- Get domain content hash — Get domain content hash 
+  - file: backend/src/services/metadata/ens/ens-resolver-service.js
+  - tags: param, returns
+- Get domain text record — Get domain text record 
+  - file: backend/src/services/metadata/ens/ens-resolver-service.js
+  - tags: param, returns
+- Resolve domain to address — Resolve domain to address 
+  - file: backend/src/services/metadata/ens/ens-resolver-service.js
+  - tags: param, returns
+- Reverse resolve address to domain — Reverse resolve address to domain 
+  - file: backend/src/services/metadata/ens/ens-resolver-service.js
+  - tags: param, returns
+- Get domain expiration — Get domain expiration 
+  - file: backend/src/services/metadata/ens/ens-resolver-service.js
+  - tags: param, returns
+- Check if domain is expired — Check if domain is expired 
+  - file: backend/src/services/metadata/ens/ens-resolver-service.js
+  - tags: param, returns
+- Metadata Registry Service
+Implements ISO 23081-2:2021 metadata r — Metadata Registry Service
+Implements ISO 23081-2:2021 metadata registry standards for DAO records 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- Register a new metadata schema — Register a new metadata schema 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- Retrieve a metadata schema by ID — Retrieve a metadata schema by ID 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- List all registered schemas — List all registered schemas 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- Update an existing schema — Update an existing schema 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- Delete a schema — Delete a schema 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- Register an encoding scheme — Register an encoding scheme 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- Get encoding scheme by ID — Get encoding scheme by ID 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- List all encoding schemes — List all encoding schemes 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- Register a controlled vocabulary — Register a controlled vocabulary 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- Get controlled vocabulary by ID — Get controlled vocabulary by ID 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- List all controlled vocabularies — List all controlled vocabularies 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- Design a metadata schema for managing records — Design a metadata schema for managing records 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- Validate a metadata schema — Validate a metadata schema 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- Generate machine-readable schema presentation — Generate machine-readable schema presentation 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- Generate human-readable schema documentation — Generate human-readable schema documentation 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- Generate implementation code for a schema — Generate implementation code for a schema 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- Generate validation code for a schema — Generate validation code for a schema 
+  - file: backend/src/services/metadata/registry/metadata-registry.ts
+- Record Entity - Individual DAO records, governance actions, tran — Record Entity - Individual DAO records, governance actions, transactions 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Agent Entity - DAO members, governance participants, smart contr — Agent Entity - DAO members, governance participants, smart contracts 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Business Entity - DAO activities, governance processes, treasury — Business Entity - DAO activities, governance processes, treasury operations 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Mandate Entity - Governance rules, smart contract logic, regulat — Mandate Entity - Governance rules, smart contract logic, regulatory requirements 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Identity Metadata - Unique identifiers and classification — Identity Metadata - Unique identifiers and classification 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Description Metadata - Content description and technical charact — Description Metadata - Content description and technical characteristics 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Use Metadata - Access, usage, and business context — Use Metadata - Access, usage, and business context 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Event History Metadata - Event tracking and change history — Event History Metadata - Event tracking and change history 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Relation Metadata - Entity relationships and hierarchies — Relation Metadata - Entity relationships and hierarchies 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- DAO Context Metadata - DAO identification and governance structu — DAO Context Metadata - DAO identification and governance structure 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Governance Context Metadata - Governance processes and rules — Governance Context Metadata - Governance processes and rules 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Blockchain Context Metadata - Blockchain and smart contract info — Blockchain Context Metadata - Blockchain and smart contract information 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- ENS Context Metadata - ENS domain and integration information — ENS Context Metadata - ENS domain and integration information 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Complete DAO Metadata Schema — Complete DAO Metadata Schema 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- ISO 23081-2:2021 Metadata Standards Service
+Implements metadata  — ISO 23081-2:2021 Metadata Standards Service
+Implements metadata management for DAO records according to ISO standards 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Metadata Schema Validation — Metadata Schema Validation 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Capture system-generated metadata — Capture system-generated metadata 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Capture user-provided metadata — Capture user-provided metadata 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Capture business context metadata — Capture business context metadata 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Store metadata in centralized repository — Store metadata in centralized repository 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Store metadata in decentralized storage (IPFS) — Store metadata in decentralized storage (IPFS) 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Store metadata in hybrid storage (both centralized and decentral — Store metadata in hybrid storage (both centralized and decentralized) 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Link entities through metadata relationships — Link entities through metadata relationships 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Track relationship history — Track relationship history 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Evaluate retention value of metadata — Evaluate retention value of metadata 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Evaluate archival value of metadata — Evaluate archival value of metadata 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Apply metadata security controls — Apply metadata security controls 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Validate compliance requirements — Validate compliance requirements 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Calculate metadata hash for integrity verification — Calculate metadata hash for integrity verification 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Generate unique link ID — Generate unique link ID 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Calculate quality metrics for metadata — Calculate quality metrics for metadata 
+  - file: backend/src/services/metadata/iso/iso-metadata-service.ts
+- Normalize a subdomain — Normalize a subdomain 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+  - tags: param, returns
+- Validate a subdomain — Validate a subdomain 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+  - tags: param, returns
+- Encode a URL — Encode a URL 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+  - tags: param, returns
+- Decode a URL — Decode a URL 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+  - tags: param, returns
+- Encode Unicode to punycode — Encode Unicode to punycode 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+  - tags: param, returns
+- Decode punycode to Unicode — Decode punycode to Unicode 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+  - tags: param, returns
+- Sanitize a URL — Sanitize a URL 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+  - tags: param, returns
+- Validate a URL — Validate a URL 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+  - tags: param, returns
+- Extract domain from URL — Extract domain from URL 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+  - tags: param, returns
+- Extract subdomain from domain — Extract subdomain from domain 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+  - tags: param, returns
+- Check if text contains Unicode characters — Check if text contains Unicode characters 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+  - tags: param, returns
+- Check if text is ASCII only — Check if text is ASCII only 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+  - tags: param, returns
+- Generate a safe subdomain from text — Generate a safe subdomain from text 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+  - tags: param, returns
+- URL Encoding Service for Subdomain Management
+
+Provides   URL en — URL Encoding Service for Subdomain Management
+
+Provides   URL encoding/decoding functionality with regex patterns
+for subdomain validation, sanitization, and proper handling of special characters. 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- URL encoding regex patterns for subdomain validation — URL encoding regex patterns for subdomain validation 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- URL encoding utilities — URL encoding utilities 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Encode string for URL usage — Encode string for URL usage 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Decode URL-encoded string — Decode URL-encoded string 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Encode string for DNS usage (subdomain-safe) — Encode string for DNS usage (subdomain-safe) 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Encode string for ENS usage — Encode string for ENS usage 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Sanitize subdomain for safe usage — Sanitize subdomain for safe usage 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Validate subdomain format — Validate subdomain format 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Validate full domain format — Validate full domain format 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Convert string to punycode (for internationalized domain names) — Convert string to punycode (for internationalized domain names) 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Convert punycode to Unicode — Convert punycode to Unicode 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Check if string contains Unicode characters — Check if string contains Unicode characters 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Check if string is punycode encoded — Check if string is punycode encoded 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Normalize domain name (handle Unicode, punycode, etc.) — Normalize domain name (handle Unicode, punycode, etc.) 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Generate safe subdomain from input — Generate safe subdomain from input 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Check if subdomain is safe for DNS — Check if subdomain is safe for DNS 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Check if subdomain is safe for ENS — Check if subdomain is safe for ENS 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Escape special characters for regex usage — Escape special characters for regex usage 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Create regex pattern for subdomain matching — Create regex pattern for subdomain matching 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Create regex pattern for domain matching — Create regex pattern for domain matching 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Extract subdomain from full domain — Extract subdomain from full domain 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Extract TLD from full domain — Extract TLD from full domain 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Build full domain from subdomain and TLD — Build full domain from subdomain and TLD 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Validate TLD format — Validate TLD format 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Get encoding statistics — Get encoding statistics 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- URL encoding validation interface — URL encoding validation interface 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Subdomain encoding utilities — Subdomain encoding utilities 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Validate and encode subdomain for DNS usage — Validate and encode subdomain for DNS usage 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Validate and encode subdomain for ENS usage — Validate and encode subdomain for ENS usage 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Generate multiple safe variations of a subdomain — Generate multiple safe variations of a subdomain 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Check if subdomain is available (not in reserved list) — Check if subdomain is available (not in reserved list) 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Find available subdomain from input — Find available subdomain from input 
+  - file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+- Reserved subdomain priority levels — Reserved subdomain priority levels 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Validation result for subdomain checks — Validation result for subdomain checks 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- ENS validation result — ENS validation result 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Reserved subdomain information — Reserved subdomain information 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Reserved Subdomains Service
+
+Manages reserved subdomains for the — Reserved Subdomains Service
+
+Manages reserved subdomains for the DAO Registry system,
+providing validation, priority management, and ENS integration. 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Initialize critical reserved subdomains (Priority 1) — Initialize critical reserved subdomains (Priority 1) 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Initialize high priority reserved subdomains (Priority 2) — Initialize high priority reserved subdomains (Priority 2) 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Initialize medium priority reserved subdomains (Priority 3) — Initialize medium priority reserved subdomains (Priority 3) 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Initialize reserved prefixes — Initialize reserved prefixes 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Initialize reserved suffixes — Initialize reserved suffixes 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Initialize all reserved words — Initialize all reserved words 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Check if a subdomain is reserved — Check if a subdomain is reserved 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Get priority level for a subdomain — Get priority level for a subdomain 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Get reserved subdomain information — Get reserved subdomain information 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Validate subdomain format and reserved word status with URL enco — Validate subdomain format and reserved word status with URL encoding 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Validate ENS subdomain with full domain context and URL encoding — Validate ENS subdomain with full domain context and URL encoding 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Get all reserved words by priority — Get all reserved words by priority 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Get all reserved words by category — Get all reserved words by category 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Get all reserved words — Get all reserved words 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Get reserved words summary — Get reserved words summary 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Check if user can register a reserved subdomain — Check if user can register a reserved subdomain 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Get available subdomains for a user role — Get available subdomains for a user role 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Generate safe subdomain variations — Generate safe subdomain variations 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Find available subdomain from input — Find available subdomain from input 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Check if subdomain is DNS safe — Check if subdomain is DNS safe 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Check if subdomain is ENS safe — Check if subdomain is ENS safe 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- Normalize subdomain for consistent handling — Normalize subdomain for consistent handling 
+  - file: backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+- A registry for managing Decentralized Autonomous Organizations (DAOs)
+across multiple blockchain networks with governance tracking and analytics support. —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: title, dev
+- Register a new DAO —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param
+- Update DAO information —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param
+- Verify a DAO (only owner) —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param
+- Change DAO status (only owner) —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param
+- Create a new proposal —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param
+- Vote on a proposal —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param
+- Execute a proposal —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param
+- Add a member to a DAO —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param
+- Remove a member from a DAO —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param
+- Update DAO analytics —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param
+- Get DAO information —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param, return
+- Get DAO by contract address —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param, return
+- Get proposal information —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param, return
+- Get member information —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param, return
+- Get DAO analytics —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param, return
+- Get total DAOs count —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, return
+- Get total proposals count —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, return
+- Get total members count —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, return
+- Check if address is a member of DAO —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param, return
+- Get voting power for address in DAO —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param, return
+- Update fee structure (only owner) —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param
+- Update limits (only owner) —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param
+- Pause contract (only owner) —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev
+- Unpause contract (only owner) —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev
+- Withdraw fees (only owner) —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev
+- Emergency function to recover stuck tokens —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param
+- Emergency function to recover stuck ETH —  
+  - file: backend/contracts/DAORegistry.sol
+  - tags: dev, param
+- Manages real-time data points that require constant monitoring and event emission
+
+This contract is specifically designed for data points that:
+- Change frequently (price feeds, market data, governance votes, etc.)
+- Require real-time event emission for off-chain monitoring
+- Need CCIP compatibility for cross-chain data access
+- Require high-frequency updates with minimal gas costs —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: title, dev
+- Data point types for real-time monitoring —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Update frequency for real-time data —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Real-time data point structure —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Event emission for real-time updates —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Events  —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- State variables —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Modifiers  —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Constructor  —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Register a new real-time data point —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Check if data point should be updated based on frequency —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Update a real-time data point —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Get real-time data point —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Get data point update history —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Get data points by type —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Get data points by frequency —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Deactivate a data point —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Add data provider —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Remove data provider —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Get statistics —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Check if address is data provider —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Get data providers for a specific data key —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Get data keys for a specific provider —  
+  - file: backend/contracts/DataRegistry.sol
+  - tags: dev
+- Mock ERC20 token for testing DAO Registry functionality —  
+  - file: backend/contracts/MockERC20.sol
+  - tags: title, dev
+- Mint tokens to a specific address (only owner) —  
+  - file: backend/contracts/MockERC20.sol
+  - tags: dev, param
+- Burn tokens from a specific address —  
+  - file: backend/contracts/MockERC20.sol
+  - tags: dev, param
+- Override decimals function —  
+  - file: backend/contracts/MockERC20.sol
+  - tags: dev
+- Transfer tokens with additional data —  
+  - file: backend/contracts/MockERC20.sol
+  - tags: dev, param
+- Batch transfer tokens to multiple addresses —  
+  - file: backend/contracts/MockERC20.sol
+  - tags: dev, param
+- Get token info —  
+  - file: backend/contracts/MockERC20.sol
+  - tags: dev, return
+- Check if address has sufficient balance —  
+  - file: backend/contracts/MockERC20.sol
+  - tags: dev, param, return
+- Get balance percentage of total supply —  
+  - file: backend/contracts/MockERC20.sol
+  - tags: dev, param, return
+- Emergency function to recover stuck tokens —  
+  - file: backend/contracts/MockERC20.sol
+  - tags: dev, param
+- Mock governance contract for testing DAO Registry functionality —  
+  - file: backend/contracts/MockGovernance.sol
+  - tags: title, dev
+- Create a new proposal —  
+  - file: backend/contracts/MockGovernance.sol
+  - tags: dev, param
+- Vote on a proposal —  
+  - file: backend/contracts/MockGovernance.sol
+  - tags: dev, param
+- Execute a proposal —  
+  - file: backend/contracts/MockGovernance.sol
+  - tags: dev, param
+- Cancel a proposal (only proposer or owner) —  
+  - file: backend/contracts/MockGovernance.sol
+  - tags: dev, param
+- Update proposal status based on voting results —  
+  - file: backend/contracts/MockGovernance.sol
+  - tags: dev, param
+- Get proposal information —  
+  - file: backend/contracts/MockGovernance.sol
+  - tags: dev, param, return
+- Get vote information —  
+  - file: backend/contracts/MockGovernance.sol
+  - tags: dev, param, return
+- Check if address has voted on proposal —  
+  - file: backend/contracts/MockGovernance.sol
+  - tags: dev, param, return
+- Get voting power for address —  
+  - file: backend/contracts/MockGovernance.sol
+  - tags: dev, param, return
+- Get total proposals count —  
+  - file: backend/contracts/MockGovernance.sol
+  - tags: dev, return
+- Update governance parameters (only owner) —  
+  - file: backend/contracts/MockGovernance.sol
+  - tags: dev, param
+- Get governance parameters —  
+  - file: backend/contracts/MockGovernance.sol
+  - tags: dev, return
+- Get proposal actions —  
+  - file: backend/contracts/MockGovernance.sol
+  - tags: dev, param, return
+- Get proposal state —  
+  - file: backend/contracts/MockGovernance.sol
+  - tags: dev, param, return
+- Mock treasury contract for testing DAO Registry functionality —  
+  - file: backend/contracts/MockTreasury.sol
+  - tags: title, dev
+- Deposit ETH to treasury —  
+  - file: backend/contracts/MockTreasury.sol
+  - tags: dev
+- Withdraw ETH from treasury (only owner) —  
+  - file: backend/contracts/MockTreasury.sol
+  - tags: dev, param
+- Deposit ERC20 tokens to treasury —  
+  - file: backend/contracts/MockTreasury.sol
+  - tags: dev, param
+- Withdraw ERC20 tokens from treasury (only owner) —  
+  - file: backend/contracts/MockTreasury.sol
+  - tags: dev, param
+- Deposit NFT to treasury —  
+  - file: backend/contracts/MockTreasury.sol
+  - tags: dev, param
+- Withdraw NFT from treasury (only owner) —  
+  - file: backend/contracts/MockTreasury.sol
+  - tags: dev, param
+- Get treasury balance for a specific address —  
+  - file: backend/contracts/MockTreasury.sol
+  - tags: dev, param, return
+- Get treasury statistics —  
+  - file: backend/contracts/MockTreasury.sol
+  - tags: dev, return
+- Check if treasury has sufficient balance —  
+  - file: backend/contracts/MockTreasury.sol
+  - tags: dev, param, return
+- Get treasury value in USD (mock implementation) —  
+  - file: backend/contracts/MockTreasury.sol
+  - tags: dev, return
+- Update treasury name and description (only owner) —  
+  - file: backend/contracts/MockTreasury.sol
+  - tags: dev, param
+- Emergency function to recover stuck tokens —  
+  - file: backend/contracts/MockTreasury.sol
+  - tags: dev, param
+- Emergency function to recover stuck NFTs —  
+  - file: backend/contracts/MockTreasury.sol
+  - tags: dev, param
+- Emergency function to recover stuck ETH —  
+  - file: backend/contracts/MockTreasury.sol
+  - tags: dev, param
+- Manages reserved subdomains for standardized data schemas
+
+This contract provides:
+- Reserved subdomain schemas for standardized data structures
+- CCIP-compatible data formats for cross-chain interoperability
+- API-queryable endpoints for on-chain data retrieval
+- Schema validation and metadata management
+
+Reserved subdomains are NOT blocked from registration but provide
+standardized schemas that can be queried via API and CCIP on-chain reads —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: title, dev
+- Schema priority levels for data standardization —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Data type definitions for CCIP compatibility —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Update trigger types for self-updating data —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Update frequency for time-based triggers —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Auto-update configuration —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Schema field definition —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Reserved subdomain schema information —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- CCIP-compatible data structure —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Events  —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- State variables —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Modifiers  —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Create default auto-update configuration —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Constructor  —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Initialize critical schemas (Core DAO Components) —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Create governance schema fields —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Create treasury schema fields —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Create token schema fields —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Create API schema fields —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Create allowed roles —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Create restrictions —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Initialize high priority schemas —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Initialize medium priority schemas —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Define a new schema —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Define a new schema (admin only) —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Store CCIP-compatible data —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Get schema information —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Get CCIP data for a subdomain —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Get all data hashes for a subdomain —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Check if subdomain has a schema —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Get schema priority —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Get statistics —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Add data provider —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Remove data provider —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Check if address is data provider —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Add administrator —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Remove administrator —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Add moderator —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Remove moderator —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Check if address is administrator —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Check if address is moderator —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Add a new schema —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Update an existing schema —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Remove a schema —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Internal function to remove a schema —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Get all schemas by category —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Get all schemas by priority —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Get schema field by name —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Check if schema has a specific field —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Get schema validation rules —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Emergency pause (only owner) —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Configure auto-update for a schema —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Calculate next update time based on frequency —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Check if schema needs auto-update —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Trigger auto-update for a schema —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Perform time-based update —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Perform event-based update —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Perform external call update —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Get auto-update configuration for a schema —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Emergency pause (only owner) —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- Emergency unpause (only owner) —  
+  - file: backend/contracts/ReservedSubdomains.sol
+  - tags: dev
+- DAO Registry Specifications Index
+Main export file for all speci — DAO Registry Specifications Index
+Main export file for all specification types 
+  - file: docs/specifications/index.ts
+- Analytics Types
+RFC-001: DAO Registry Specification - Analytics  — Analytics Types
+RFC-001: DAO Registry Specification - Analytics Types 
+  - file: docs/specifications/analytics/analytics.types.ts
+- API Types
+RFC-001: DAO Registry Specification - API Types — API Types
+RFC-001: DAO Registry Specification - API Types 
+  - file: docs/specifications/api/api.types.ts
+- Smart Contract Types
+RFC-001: DAO Registry Specification - Smart — Smart Contract Types
+RFC-001: DAO Registry Specification - Smart Contract Types 
+  - file: docs/specifications/blockchain/smart-contracts.types.ts
+- Classification Types
+RFC-002: Data Point Classifiers - Classific — Classification Types
+RFC-002: Data Point Classifiers - Classification Types 
+  - file: docs/specifications/classification/classifiers.types.ts
+- Core DAO Entity Types
+RFC-001: DAO Registry Specification - Core — Core DAO Entity Types
+RFC-001: DAO Registry Specification - Core DAO Types 
+  - file: docs/specifications/core/dao.types.ts
+- Member Entity Types
+RFC-001: DAO Registry Specification - Member — Member Entity Types
+RFC-001: DAO Registry Specification - Member Types 
+  - file: docs/specifications/core/member.types.ts
+- Proposal Entity Types
+RFC-001: DAO Registry Specification - Prop — Proposal Entity Types
+RFC-001: DAO Registry Specification - Proposal Types 
+  - file: docs/specifications/core/proposal.types.ts
+- ENS Integration Types
+RFC-001: DAO Registry Specification - ENS  — ENS Integration Types
+RFC-001: DAO Registry Specification - ENS Integration Types 
+  - file: docs/specifications/ens/ens-integration.types.ts
+- Data Source Mapping Types
+RFC-001: DAO Registry Specification -  — Data Source Mapping Types
+RFC-001: DAO Registry Specification - Data Source Mapping Types 
+  - file: docs/specifications/mapping/data-sources.types.ts
+- Event Mapping Types
+RFC-001: DAO Registry Specification - Event  — Event Mapping Types
+RFC-001: DAO Registry Specification - Event Mapping Types 
+  - file: docs/specifications/mapping/event-mappings.types.ts
+- DAO Registry Mapping Specifications Index
+Main export file for a — DAO Registry Mapping Specifications Index
+Main export file for all mapping specification types 
+  - file: docs/specifications/mapping/index.ts
+- Processor Types
+RFC-001: DAO Registry Specification - Processor  — Processor Types
+RFC-001: DAO Registry Specification - Processor Types 
+  - file: docs/specifications/mapping/processor.types.ts
+- Registration Mapping Types
+RFC-001: DAO Registry Specification - — Registration Mapping Types
+RFC-001: DAO Registry Specification - Registration Mapping Types 
+  - file: docs/specifications/mapping/registration-mappings.types.ts
+- Validation Types
+RFC-003: Nomenclature and Classification System — Validation Types
+RFC-003: Nomenclature and Classification System - Validation Types 
+  - file: docs/specifications/validation/validation.types.ts
+

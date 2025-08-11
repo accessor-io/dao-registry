@@ -1,234 +1,41 @@
 # Reserved Subdomains Specification
 
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Priority Levels](#priority-levels)
+3. [Reserved Subdomain Categories](#reserved-subdomain-categories)
+4. [Complete Reserved Words List](#complete-reserved-words-list)
+5. [Validation Rules](#validation-rules)
+6. [Implementation](#implementation)
+7. [API Reference](#api-reference)
+8. [Deployment](#deployment)
+9. [Security](#security)
+10. [Future Enhancements](#future-enhancements)
+
 ## Overview
 
 This specification defines the reserved subdomains for the DAO Registry system, ensuring consistent naming conventions, preventing conflicts, and maintaining system integrity across ENS domains.
 
-## Reserved Subdomain Categories
+### Purpose
 
-### 1. Core DAO Components
+- **Conflict Prevention**: Prevent naming conflicts between DAO components
+- **Security**: Protect critical system subdomains from unauthorized use
+- **Consistency**: Ensure standardized naming across all DAO registrations
+- **Scalability**: Support future expansion of reserved word categories
 
-#### 1.1 Governance Subdomains
-```
-governance.dao-name.eth     # Main governance contract
-voting.dao-name.eth         # Voting mechanism
-proposals.dao-name.eth      # Proposal management
-executive.dao-name.eth      # Executive functions
-council.dao-name.eth        # Council/committee
-```
+### Key Principles
 
-#### 1.2 Financial Subdomains
-```
-treasury.dao-name.eth       # Treasury contract
-vault.dao-name.eth          # Asset vault
-rewards.dao-name.eth        # Reward distribution
-staking.dao-name.eth        # Staking contract
-liquidity.dao-name.eth      # Liquidity management
-```
+1. **Hierarchical Priority System**: Three-tier priority system for reserved words
+2. **ENS Integration**: Seamless integration with Ethereum Name Service
+3. **Validation at Multiple Layers**: Client-side, server-side, and blockchain validation
+4. **Extensible Design**: Support for future reserved word additions
 
-#### 1.3 Token Subdomains
-```
-token.dao-name.eth          # Governance token
-erc20.dao-name.eth          # ERC-20 token
-nft.dao-name.eth            # NFT collection
-vesting.dao-name.eth        # Token vesting
-airdrop.dao-name.eth        # Airdrop distribution
-```
+## Priority Levels
 
-### 2. Documentation & Information
+### Priority 1: Critical (Never Available)
+These subdomains are permanently reserved and cannot be registered by any DAO.
 
-#### 2.1 Documentation Subdomains
-```
-docs.dao-name.eth           # Documentation
-wiki.dao-name.eth           # Wiki pages
-guide.dao-name.eth          # User guides
-api.dao-name.eth            # API documentation
-spec.dao-name.eth           # Technical specifications
-```
-
-#### 2.2 Information Subdomains
-```
-info.dao-name.eth           # General information
-about.dao-name.eth          # About page
-faq.dao-name.eth            # Frequently asked questions
-help.dao-name.eth           # Help center
-support.dao-name.eth        # Support portal
-```
-
-### 3. Community & Communication
-
-#### 3.1 Community Subdomains
-```
-forum.dao-name.eth          # Community forum
-chat.dao-name.eth           # Chat platform
-discord.dao-name.eth        # Discord server
-telegram.dao-name.eth       # Telegram group
-reddit.dao-name.eth         # Reddit community
-```
-
-#### 3.2 Communication Subdomains
-```
-blog.dao-name.eth           # Blog/news
-news.dao-name.eth           # News updates
-announcements.dao-name.eth  # Official announcements
-updates.dao-name.eth        # System updates
-```
-
-### 4. Analytics & Monitoring
-
-#### 4.1 Analytics Subdomains
-```
-analytics.dao-name.eth      # Analytics dashboard
-stats.dao-name.eth          # Statistics
-metrics.dao-name.eth        # Performance metrics
-dashboard.dao-name.eth      # Main dashboard
-reports.dao-name.eth        # Reports
-```
-
-#### 4.2 Monitoring Subdomains
-```
-monitor.dao-name.eth        # System monitoring
-status.dao-name.eth         # System status
-health.dao-name.eth         # Health checks
-alerts.dao-name.eth         # Alert system
-```
-
-### 5. Development & Technical
-
-#### 5.1 Development Subdomains
-```
-dev.dao-name.eth            # Development portal
-github.dao-name.eth         # GitHub integration
-code.dao-name.eth           # Code repository
-test.dao-name.eth           # Test environment
-staging.dao-name.eth        # Staging environment
-```
-
-#### 5.2 Technical Subdomains
-```
-tech.dao-name.eth           # Technical information
-protocol.dao-name.eth       # Protocol details
-contracts.dao-name.eth      # Smart contracts
-audit.dao-name.eth          # Audit reports
-security.dao-name.eth       # Security information
-```
-
-### 6. Governance & Legal
-
-#### 6.1 Governance Subdomains
-```
-gov.dao-name.eth            # Governance portal
-constitution.dao-name.eth   # DAO constitution
-bylaws.dao-name.eth         # Bylaws
-policies.dao-name.eth       # Policies
-legal.dao-name.eth          # Legal information
-```
-
-#### 6.2 Compliance Subdomains
-```
-compliance.dao-name.eth     # Compliance information
-regulatory.dao-name.eth     # Regulatory updates
-kyc.dao-name.eth            # KYC portal
-aml.dao-name.eth            # AML information
-```
-
-### 7. Marketing & Brand
-
-#### 7.1 Marketing Subdomains
-```
-marketing.dao-name.eth      # Marketing portal
-brand.dao-name.eth          # Brand information
-media.dao-name.eth          # Media resources
-press.dao-name.eth          # Press releases
-events.dao-name.eth         # Events
-```
-
-#### 7.2 Social Subdomains
-```
-social.dao-name.eth         # Social media hub
-twitter.dao-name.eth        # Twitter integration
-linkedin.dao-name.eth       # LinkedIn integration
-youtube.dao-name.eth        # YouTube channel
-```
-
-### 8. Administrative
-
-#### 8.1 Administrative Subdomains
-```
-admin.dao-name.eth          # Admin portal
-manage.dao-name.eth         # Management interface
-settings.dao-name.eth       # Settings
-config.dao-name.eth         # Configuration
-```
-
-#### 8.2 System Subdomains
-```
-system.dao-name.eth         # System information
-service.dao-name.eth        # Service status
-maintenance.dao-name.eth    # Maintenance updates
-backup.dao-name.eth         # Backup information
-```
-
-## Reserved Words List
-
-### Complete Reserved Subdomain List
-
-```typescript
-const RESERVED_SUBDOMAINS = {
-  // Core DAO Components
-  CORE: [
-    'governance', 'voting', 'proposals', 'executive', 'council',
-    'treasury', 'vault', 'rewards', 'staking', 'liquidity',
-    'token', 'erc20', 'nft', 'vesting', 'airdrop'
-  ],
-  
-  // Documentation & Information
-  DOCUMENTATION: [
-    'docs', 'wiki', 'guide', 'api', 'spec',
-    'info', 'about', 'faq', 'help', 'support'
-  ],
-  
-  // Community & Communication
-  COMMUNITY: [
-    'forum', 'chat', 'discord', 'telegram', 'reddit',
-    'blog', 'news', 'announcements', 'updates'
-  ],
-  
-  // Analytics & Monitoring
-  ANALYTICS: [
-    'analytics', 'stats', 'metrics', 'dashboard', 'reports',
-    'monitor', 'status', 'health', 'alerts'
-  ],
-  
-  // Development & Technical
-  DEVELOPMENT: [
-    'dev', 'github', 'code', 'test', 'staging',
-    'tech', 'protocol', 'contracts', 'audit', 'security'
-  ],
-  
-  // Governance & Legal
-  GOVERNANCE: [
-    'gov', 'constitution', 'bylaws', 'policies', 'legal',
-    'compliance', 'regulatory', 'kyc', 'aml'
-  ],
-  
-  // Marketing & Brand
-  MARKETING: [
-    'marketing', 'brand', 'media', 'press', 'events',
-    'social', 'twitter', 'linkedin', 'youtube'
-  ],
-  
-  // Administrative
-  ADMINISTRATIVE: [
-    'admin', 'manage', 'settings', 'config',
-    'system', 'service', 'maintenance', 'backup'
-  ]
-};
-```
-
-### Reserved Words by Priority
-
-#### Priority 1 (Critical - Never Available)
 ```typescript
 const CRITICAL_RESERVED = [
   'governance', 'treasury', 'token', 'docs', 'forum', 'analytics',
@@ -236,7 +43,9 @@ const CRITICAL_RESERVED = [
 ];
 ```
 
-#### Priority 2 (High - Requires Special Permission)
+### Priority 2: High (Requires Special Permission)
+These subdomains require administrative approval for registration.
+
 ```typescript
 const HIGH_PRIORITY_RESERVED = [
   'voting', 'proposals', 'executive', 'council',
@@ -251,7 +60,270 @@ const HIGH_PRIORITY_RESERVED = [
 ];
 ```
 
-#### Priority 3 (Medium - Available with Registration)
+### Priority 3: Medium (Available with Registration)
+These subdomains can be registered with proper documentation and approval.
+
+```typescript
+const MEDIUM_PRIORITY_RESERVED = [
+  'faq', 'help', 'support', 'news', 'announcements',
+  'monitor', 'status', 'health', 'alerts',
+  'tech', 'protocol', 'contracts', 'audit',
+  'legal', 'compliance', 'regulatory', 'kyc',
+  'events', 'social', 'twitter', 'linkedin',
+  'manage', 'settings', 'config', 'service'
+];
+```
+
+## Reserved Subdomain Categories
+
+### 1. Core DAO Components
+
+#### Governance Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `governance` | Main governance contract | Critical | `governance.dao-name.eth` |
+| `voting` | Voting mechanism | High | `voting.dao-name.eth` |
+| `proposals` | Proposal management | High | `proposals.dao-name.eth` |
+| `executive` | Executive functions | High | `executive.dao-name.eth` |
+| `council` | Council/committee | High | `council.dao-name.eth` |
+
+#### Financial Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `treasury` | Treasury contract | Critical | `treasury.dao-name.eth` |
+| `vault` | Asset vault | High | `vault.dao-name.eth` |
+| `rewards` | Reward distribution | High | `rewards.dao-name.eth` |
+| `staking` | Staking contract | High | `staking.dao-name.eth` |
+| `liquidity` | Liquidity management | High | `liquidity.dao-name.eth` |
+
+#### Token Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `token` | Governance token | Critical | `token.dao-name.eth` |
+| `erc20` | ERC-20 token | High | `erc20.dao-name.eth` |
+| `nft` | NFT collection | High | `nft.dao-name.eth` |
+| `vesting` | Token vesting | High | `vesting.dao-name.eth` |
+| `airdrop` | Airdrop distribution | High | `airdrop.dao-name.eth` |
+
+### 2. Documentation & Information
+
+#### Documentation Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `docs` | Documentation | Critical | `docs.dao-name.eth` |
+| `wiki` | Wiki pages | High | `wiki.dao-name.eth` |
+| `guide` | User guides | High | `guide.dao-name.eth` |
+| `api` | API documentation | Critical | `api.dao-name.eth` |
+| `spec` | Technical specifications | High | `spec.dao-name.eth` |
+
+#### Information Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `info` | General information | High | `info.dao-name.eth` |
+| `about` | About page | High | `about.dao-name.eth` |
+| `faq` | Frequently asked questions | Medium | `faq.dao-name.eth` |
+| `help` | Help center | Medium | `help.dao-name.eth` |
+| `support` | Support portal | Medium | `support.dao-name.eth` |
+
+### 3. Community & Communication
+
+#### Community Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `forum` | Community forum | Critical | `forum.dao-name.eth` |
+| `chat` | Chat platform | High | `chat.dao-name.eth` |
+| `discord` | Discord server | High | `discord.dao-name.eth` |
+| `telegram` | Telegram group | High | `telegram.dao-name.eth` |
+| `reddit` | Reddit community | High | `reddit.dao-name.eth` |
+
+#### Communication Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `blog` | Blog/news | High | `blog.dao-name.eth` |
+| `news` | News updates | Medium | `news.dao-name.eth` |
+| `announcements` | Official announcements | Medium | `announcements.dao-name.eth` |
+| `updates` | System updates | Medium | `updates.dao-name.eth` |
+
+### 4. Analytics & Monitoring
+
+#### Analytics Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `analytics` | Analytics dashboard | Critical | `analytics.dao-name.eth` |
+| `stats` | Statistics | High | `stats.dao-name.eth` |
+| `metrics` | Performance metrics | High | `metrics.dao-name.eth` |
+| `dashboard` | Main dashboard | High | `dashboard.dao-name.eth` |
+| `reports` | Reports | High | `reports.dao-name.eth` |
+
+#### Monitoring Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `monitor` | System monitoring | Medium | `monitor.dao-name.eth` |
+| `status` | System status | Medium | `status.dao-name.eth` |
+| `health` | Health checks | Medium | `health.dao-name.eth` |
+| `alerts` | Alert system | Medium | `alerts.dao-name.eth` |
+
+### 5. Development & Technical
+
+#### Development Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `dev` | Development portal | High | `dev.dao-name.eth` |
+| `github` | GitHub integration | High | `github.dao-name.eth` |
+| `code` | Code repository | High | `code.dao-name.eth` |
+| `test` | Test environment | High | `test.dao-name.eth` |
+| `staging` | Staging environment | High | `staging.dao-name.eth` |
+
+#### Technical Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `tech` | Technical information | Medium | `tech.dao-name.eth` |
+| `protocol` | Protocol details | Medium | `protocol.dao-name.eth` |
+| `contracts` | Smart contracts | Medium | `contracts.dao-name.eth` |
+| `audit` | Audit reports | Medium | `audit.dao-name.eth` |
+| `security` | Security information | High | `security.dao-name.eth` |
+
+### 6. Governance & Legal
+
+#### Governance Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `gov` | Governance portal | High | `gov.dao-name.eth` |
+| `constitution` | DAO constitution | High | `constitution.dao-name.eth` |
+| `bylaws` | Bylaws | High | `bylaws.dao-name.eth` |
+| `policies` | Policies | High | `policies.dao-name.eth` |
+| `legal` | Legal information | Medium | `legal.dao-name.eth` |
+
+#### Compliance Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `compliance` | Compliance information | Medium | `compliance.dao-name.eth` |
+| `regulatory` | Regulatory updates | Medium | `regulatory.dao-name.eth` |
+| `kyc` | KYC portal | Medium | `kyc.dao-name.eth` |
+| `aml` | AML information | Medium | `aml.dao-name.eth` |
+
+### 7. Marketing & Brand
+
+#### Marketing Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `marketing` | Marketing portal | High | `marketing.dao-name.eth` |
+| `brand` | Brand information | High | `brand.dao-name.eth` |
+| `media` | Media resources | High | `media.dao-name.eth` |
+| `press` | Press releases | High | `press.dao-name.eth` |
+| `events` | Events | Medium | `events.dao-name.eth` |
+
+#### Social Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `social` | Social media hub | Medium | `social.dao-name.eth` |
+| `twitter` | Twitter integration | Medium | `twitter.dao-name.eth` |
+| `linkedin` | LinkedIn integration | Medium | `linkedin.dao-name.eth` |
+| `youtube` | YouTube channel | Medium | `youtube.dao-name.eth` |
+
+### 8. Administrative
+
+#### Administrative Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `admin` | Admin portal | Critical | `admin.dao-name.eth` |
+| `manage` | Management interface | Medium | `manage.dao-name.eth` |
+| `settings` | Settings | Medium | `settings.dao-name.eth` |
+| `config` | Configuration | Medium | `config.dao-name.eth` |
+
+#### System Subdomains
+| Subdomain | Purpose | Priority | Example |
+|-----------|---------|----------|---------|
+| `system` | System information | Critical | `system.dao-name.eth` |
+| `service` | Service status | Medium | `service.dao-name.eth` |
+| `maintenance` | Maintenance updates | Medium | `maintenance.dao-name.eth` |
+| `backup` | Backup information | Medium | `backup.dao-name.eth` |
+
+## Complete Reserved Words List
+
+### Organized by Category and Priority
+
+```typescript
+const RESERVED_SUBDOMAINS = {
+  // Core DAO Components
+  CORE: {
+    CRITICAL: ['governance', 'treasury', 'token'],
+    HIGH: ['voting', 'proposals', 'executive', 'council', 'vault', 'rewards', 'staking', 'liquidity', 'erc20', 'nft', 'vesting', 'airdrop']
+  },
+  
+  // Documentation & Information
+  DOCUMENTATION: {
+    CRITICAL: ['docs', 'api'],
+    HIGH: ['wiki', 'guide', 'spec', 'info', 'about'],
+    MEDIUM: ['faq', 'help', 'support']
+  },
+  
+  // Community & Communication
+  COMMUNITY: {
+    CRITICAL: ['forum'],
+    HIGH: ['chat', 'discord', 'telegram', 'reddit', 'blog'],
+    MEDIUM: ['news', 'announcements', 'updates']
+  },
+  
+  // Analytics & Monitoring
+  ANALYTICS: {
+    CRITICAL: ['analytics'],
+    HIGH: ['stats', 'metrics', 'dashboard', 'reports'],
+    MEDIUM: ['monitor', 'status', 'health', 'alerts']
+  },
+  
+  // Development & Technical
+  DEVELOPMENT: {
+    HIGH: ['dev', 'github', 'code', 'test', 'staging', 'security'],
+    MEDIUM: ['tech', 'protocol', 'contracts', 'audit']
+  },
+  
+  // Governance & Legal
+  GOVERNANCE: {
+    HIGH: ['gov', 'constitution', 'bylaws', 'policies'],
+    MEDIUM: ['legal', 'compliance', 'regulatory', 'kyc', 'aml']
+  },
+  
+  // Marketing & Brand
+  MARKETING: {
+    HIGH: ['marketing', 'brand', 'media', 'press'],
+    MEDIUM: ['events', 'social', 'twitter', 'linkedin', 'youtube']
+  },
+  
+  // Administrative
+  ADMINISTRATIVE: {
+    CRITICAL: ['admin', 'system'],
+    MEDIUM: ['manage', 'settings', 'config', 'service', 'maintenance', 'backup']
+  }
+};
+```
+
+### Quick Reference by Priority
+
+#### Critical (Priority 1)
+```typescript
+const CRITICAL_RESERVED = [
+  'governance', 'treasury', 'token', 'docs', 'forum', 'analytics',
+  'admin', 'system', 'root', 'www', 'api', 'api-v1', 'api-v2'
+];
+```
+
+#### High Priority (Priority 2)
+```typescript
+const HIGH_PRIORITY_RESERVED = [
+  'voting', 'proposals', 'executive', 'council',
+  'vault', 'rewards', 'staking', 'liquidity',
+  'erc20', 'nft', 'vesting', 'airdrop',
+  'wiki', 'guide', 'spec', 'info', 'about',
+  'chat', 'discord', 'telegram', 'reddit',
+  'stats', 'metrics', 'dashboard', 'reports',
+  'dev', 'github', 'code', 'test', 'staging',
+  'gov', 'constitution', 'bylaws', 'policies',
+  'marketing', 'brand', 'media', 'press', 'security'
+];
+```
+
+#### Medium Priority (Priority 3)
 ```typescript
 const MEDIUM_PRIORITY_RESERVED = [
   'faq', 'help', 'support', 'news', 'announcements',
@@ -309,7 +381,7 @@ class ReservedWordValidator {
       'stats', 'metrics', 'dashboard', 'reports',
       'dev', 'github', 'code', 'test', 'staging',
       'gov', 'constitution', 'bylaws', 'policies',
-      'marketing', 'brand', 'media', 'press'
+      'marketing', 'brand', 'media', 'press', 'security'
     ]);
     
     this.reservedPrefixes = new Set([
@@ -441,7 +513,7 @@ class ENSSubdomainValidator {
 }
 ```
 
-## Implementation Guidelines
+## Implementation
 
 ### 1. Smart Contract Implementation
 
@@ -609,7 +681,7 @@ class ReservedSubdomainsService {
       'stats', 'metrics', 'dashboard', 'reports',
       'dev', 'github', 'code', 'test', 'staging',
       'gov', 'constitution', 'bylaws', 'policies',
-      'marketing', 'brand', 'media', 'press'
+      'marketing', 'brand', 'media', 'press', 'security'
     ];
     
     // Medium priority reserved words (Priority 3)
@@ -660,47 +732,71 @@ class ReservedSubdomainsService {
 }
 ```
 
-### 3. API Endpoints
+## API Reference
 
-```typescript
-// Reserved subdomains API endpoints
-app.get('/api/v1/reserved-subdomains', (req, res) => {
-  const priority = req.query.priority ? parseInt(req.query.priority as string) : null;
-  
-  if (priority) {
-    const words = reservedSubdomainsService.getReservedWordsByPriority(priority);
-    res.json({ priority, words });
-  } else {
-    const allWords = reservedSubdomainsService.getAllReservedWords();
-    res.json({ words: Object.fromEntries(allWords) });
-  }
-});
+### Endpoints
 
-app.post('/api/v1/reserved-subdomains/validate', async (req, res) => {
-  const { parentDomain, subdomain } = req.body;
-  
-  try {
-    const validation = await reservedSubdomainsService.validateSubdomain(parentDomain, subdomain);
-    res.json(validation);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
-
-app.get('/api/v1/reserved-subdomains/check/:subdomain', (req, res) => {
-  const { subdomain } = req.params;
-  const isReserved = reservedSubdomainsService.isReserved(subdomain);
-  const priority = reservedSubdomainsService.getPriority(subdomain);
-  
-  res.json({
-    subdomain,
-    isReserved,
-    priority: isReserved ? priority : 0
-  });
-});
+#### Get Reserved Subdomains
+```http
+GET /api/v1/reserved-subdomains?priority={priority}
 ```
 
-## Migration and Deployment
+**Parameters:**
+- `priority` (optional): Filter by priority level (1, 2, or 3)
+
+**Response:**
+```json
+{
+  "priority": 1,
+  "words": ["governance", "treasury", "token", "docs", "forum", "analytics"]
+}
+```
+
+#### Validate Subdomain
+```http
+POST /api/v1/reserved-subdomains/validate
+```
+
+**Request Body:**
+```json
+{
+  "parentDomain": "dao-name.eth",
+  "subdomain": "proposed-subdomain"
+}
+```
+
+**Response:**
+```json
+{
+  "isValid": false,
+  "errors": ["Subdomain \"proposed-subdomain\" is reserved"],
+  "domain": "proposed-subdomain.dao-name.eth"
+}
+```
+
+#### Check Subdomain Status
+```http
+GET /api/v1/reserved-subdomains/check/{subdomain}
+```
+
+**Response:**
+```json
+{
+  "subdomain": "governance",
+  "isReserved": true,
+  "priority": 1
+}
+```
+
+### Error Codes
+
+| Code | Description |
+|------|-------------|
+| 400 | Invalid subdomain format |
+| 409 | Subdomain already exists |
+| 422 | Reserved subdomain violation |
+
+## Deployment
 
 ### 1. Deployment Strategy
 
@@ -733,7 +829,7 @@ async function migrateReservedSubdomains() {
 }
 ```
 
-## Security Considerations
+## Security
 
 ### 1. Access Control
 

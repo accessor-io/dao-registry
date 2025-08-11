@@ -1,0 +1,203 @@
+{
+  "$ref": "#/definitions/DAO",
+  "definitions": {
+    "DAO": {
+      "description": "Core DAO Entity Types\nRFC-001: DAO Registry Specification - Core DAO Types",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "symbol": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "ensDomain": {
+          "type": "string"
+        },
+        "ensSubdomains": {
+          "$ref": "#/definitions/ENSSubdomains"
+        },
+        "ensMetadata": {
+          "$ref": "#/definitions/ENSMetadata"
+        },
+        "chainId": {
+          "type": "number"
+        },
+        "contractAddress": {
+          "type": "string"
+        },
+        "tokenAddress": {
+          "type": "string"
+        },
+        "treasuryAddress": {
+          "type": "string"
+        },
+        "governanceType": {
+          "$ref": "#/definitions/GovernanceType"
+        },
+        "votingPeriod": {
+          "type": "number"
+        },
+        "quorum": {
+          "type": "number"
+        },
+        "proposalThreshold": {
+          "type": "number"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "socialLinks": {
+          "$ref": "#/definitions/SocialLinks"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "$ref": "#/definitions/DAOStatus"
+        },
+        "verified": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "chainId",
+        "contractAddress",
+        "createdAt",
+        "description",
+        "ensDomain",
+        "ensMetadata",
+        "ensSubdomains",
+        "governanceType",
+        "id",
+        "logo",
+        "name",
+        "proposalThreshold",
+        "quorum",
+        "socialLinks",
+        "status",
+        "symbol",
+        "tags",
+        "tokenAddress",
+        "treasuryAddress",
+        "updatedAt",
+        "verified",
+        "votingPeriod",
+        "website"
+      ]
+    },
+    "ENSSubdomains": {
+      "type": "object",
+      "properties": {
+        "governance": {
+          "type": "string"
+        },
+        "treasury": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        },
+        "docs": {
+          "type": "string"
+        },
+        "forum": {
+          "type": "string"
+        },
+        "analytics": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "analytics",
+        "docs",
+        "forum",
+        "governance",
+        "token",
+        "treasury"
+      ]
+    },
+    "ENSMetadata": {
+      "type": "object",
+      "properties": {
+        "textRecords": {
+          "$ref": "#/definitions/Record<string,string>"
+        },
+        "contentHash": {
+          "type": "string"
+        },
+        "reverseRecord": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "textRecords"
+      ]
+    },
+    "Record<string,string>": {
+      "type": "object"
+    },
+    "GovernanceType": {
+      "type": "string",
+      "enum": [
+        "token",
+        "nft",
+        "multisig",
+        "hybrid"
+      ]
+    },
+    "SocialLinks": {
+      "type": "object",
+      "properties": {
+        "twitter": {
+          "type": "string"
+        },
+        "discord": {
+          "type": "string"
+        },
+        "telegram": {
+          "type": "string"
+        },
+        "github": {
+          "type": "string"
+        },
+        "medium": {
+          "type": "string"
+        },
+        "reddit": {
+          "type": "string"
+        }
+      }
+    },
+    "DAOStatus": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "suspended",
+        "pending"
+      ]
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

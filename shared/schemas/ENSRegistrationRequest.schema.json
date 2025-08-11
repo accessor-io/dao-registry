@@ -1,0 +1,94 @@
+{
+  "$ref": "#/definitions/ENSRegistrationRequest",
+  "definitions": {
+    "ENSRegistrationRequest": {
+      "type": "object",
+      "properties": {
+        "daoId": {
+          "type": "string"
+        },
+        "primaryDomain": {
+          "type": "string"
+        },
+        "subdomains": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ENSSubdomainRequest"
+          }
+        },
+        "metadata": {
+          "$ref": "#/definitions/ENSMetadata"
+        }
+      },
+      "required": [
+        "daoId",
+        "metadata",
+        "primaryDomain",
+        "subdomains"
+      ]
+    },
+    "ENSSubdomainRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/ENSSubdomainType"
+        }
+      },
+      "required": [
+        "name",
+        "target",
+        "type"
+      ]
+    },
+    "ENSSubdomainType": {
+      "type": "string",
+      "enum": [
+        "address",
+        "content_hash",
+        "text_record"
+      ]
+    },
+    "ENSMetadata": {
+      "type": "object",
+      "properties": {
+        "textRecords": {
+          "$ref": "#/definitions/Record<string,string>"
+        },
+        "contentHash": {
+          "type": "string"
+        },
+        "reverseRecord": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "textRecords"
+      ]
+    },
+    "Record<string,string>": {
+      "type": "object"
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

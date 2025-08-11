@@ -1,0 +1,2958 @@
+generatedAt: '2025-08-08T02:53:23.919Z'
+total: 346
+items:
+  - id: |-
+      DAO Registry - Main Entry Point
+
+      Integrates all components:
+      - UR
+    file: backend/src/index.ts
+    kind: ''
+    name: null
+    summary: |-
+      DAO Registry - Main Entry Point
+
+      Integrates all components:
+      - URL Encoding Service
+      - Reserved Subdomains Service
+      - ENS Integration
+      - Metadata Services
+      - ISO Standards
+    tags: {}
+    lang: ts
+  - id: DAO Registry Application
+    file: backend/src/index.ts
+    kind: ''
+    name: null
+    summary: DAO Registry Application
+    tags: {}
+    lang: ts
+  - id: Setup middleware
+    file: backend/src/index.ts
+    kind: ''
+    name: null
+    summary: Setup middleware
+    tags: {}
+    lang: ts
+  - id: Setup API routes
+    file: backend/src/index.ts
+    kind: ''
+    name: null
+    summary: Setup API routes
+    tags: {}
+    lang: ts
+  - id: Setup error handling
+    file: backend/src/index.ts
+    kind: ''
+    name: null
+    summary: Setup error handling
+    tags: {}
+    lang: ts
+  - id: Start the application
+    file: backend/src/index.ts
+    kind: ''
+    name: null
+    summary: Start the application
+    tags: {}
+    lang: ts
+  - id: Get the Express app instance
+    file: backend/src/index.ts
+    kind: ''
+    name: null
+    summary: Get the Express app instance
+    tags: {}
+    lang: ts
+  - id: Get service instances for testing
+    file: backend/src/index.ts
+    kind: ''
+    name: null
+    summary: Get service instances for testing
+    tags: {}
+    lang: ts
+  - id: |-
+      DAO Registry CLI - Admin Management Terminal
+
+        CLI for managing
+    file: backend/src/cli/index.js
+    kind: ''
+    name: null
+    summary: |-
+      DAO Registry CLI - Admin Management Terminal
+
+        CLI for managing the DAO Registry system
+      Features: Governance, Analytics, Contracts, Services, Monitoring
+    tags: {}
+    lang: js
+  - id: 'Middleware to validate request data against a Joi schema and/or '
+    file: backend/src/middleware/validation.js
+    kind: ''
+    name: null
+    summary: >-
+      Middleware to validate request data against a Joi schema and/or JSON
+      Schema (Ajv)
+    tags:
+      param: schemaName - Optional JSON Schema name to validate with Ajv
+      returns: Express middleware function
+    lang: js
+  - id: Get all DAOs with filtering and pagination
+    file: backend/src/services/dao.js
+    kind: ''
+    name: null
+    summary: Get all DAOs with filtering and pagination
+    tags:
+      param: options - Pagination and sorting options
+      returns: Paginated DAO results
+    lang: js
+  - id: Get DAO by ID
+    file: backend/src/services/dao.js
+    kind: ''
+    name: null
+    summary: Get DAO by ID
+    tags:
+      param: chainId - Chain ID (optional, defaults to 1)
+      returns: DAO data
+    lang: js
+  - id: Get DAO by contract address and chain ID
+    file: backend/src/services/dao.js
+    kind: ''
+    name: null
+    summary: Get DAO by contract address and chain ID
+    tags:
+      param: chainId - Chain ID
+      returns: DAO data
+    lang: js
+  - id: Create new DAO
+    file: backend/src/services/dao.js
+    kind: ''
+    name: null
+    summary: Create new DAO
+    tags:
+      param: userId - User ID
+      returns: Created DAO
+    lang: js
+  - id: Update DAO
+    file: backend/src/services/dao.js
+    kind: ''
+    name: null
+    summary: Update DAO
+    tags:
+      param: updateData - Update data
+      returns: Updated DAO
+    lang: js
+  - id: Delete DAO
+    file: backend/src/services/dao.js
+    kind: ''
+    name: null
+    summary: Delete DAO
+    tags:
+      param: id - DAO ID
+      returns: Success status
+    lang: js
+  - id: Verify DAO
+    file: backend/src/services/dao.js
+    kind: ''
+    name: null
+    summary: Verify DAO
+    tags:
+      param: verified - Verification status
+      returns: Updated DAO
+    lang: js
+  - id: Change DAO status
+    file: backend/src/services/dao.js
+    kind: ''
+    name: null
+    summary: Change DAO status
+    tags:
+      param: status - New status
+      returns: Updated DAO
+    lang: js
+  - id: Get registry statistics
+    file: backend/src/services/dao.js
+    kind: ''
+    name: null
+    summary: Get registry statistics
+    tags:
+      returns: Registry stats
+    lang: js
+  - id: ''
+    file: backend/src/routes/reserved-subdomains.js
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      route: GET /api/v1/reserved-subdomains
+      desc: Get all reserved subdomains or filter by priority
+      access: 'Public '
+    lang: js
+  - id: ''
+    file: backend/src/routes/reserved-subdomains.js
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      route: GET /api/v1/reserved-subdomains/check/:subdomain
+      desc: Check if a subdomain is reserved
+      access: 'Public '
+    lang: js
+  - id: ''
+    file: backend/src/routes/reserved-subdomains.js
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      route: POST /api/v1/reserved-subdomains/validate
+      desc: Validate a subdomain
+      access: 'Public '
+    lang: js
+  - id: ''
+    file: backend/src/routes/reserved-subdomains.js
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      route: GET /api/v1/reserved-subdomains/priority/:priority
+      desc: Get reserved subdomains by priority level
+      access: 'Public '
+    lang: js
+  - id: ''
+    file: backend/src/routes/reserved-subdomains.js
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      route: GET /api/v1/reserved-subdomains/category/:category
+      desc: Get reserved subdomains by category
+      access: 'Public '
+    lang: js
+  - id: ''
+    file: backend/src/routes/reserved-subdomains.js
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      route: GET /api/v1/reserved-subdomains/summary
+      desc: Get reserved subdomains summary statistics
+      access: 'Public '
+    lang: js
+  - id: ''
+    file: backend/src/routes/reserved-subdomains.js
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      route: GET /api/v1/reserved-subdomains/available/:role
+      desc: Get available subdomains for a specific user role
+      access: 'Public '
+    lang: js
+  - id: ''
+    file: backend/src/routes/reserved-subdomains.js
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      route: POST /api/v1/reserved-subdomains/can-register
+      desc: Check if a user can register a reserved subdomain
+      access: 'Public '
+    lang: js
+  - id: ''
+    file: backend/src/routes/reserved-subdomains.js
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      route: POST /api/v1/reserved-subdomains/batch-validate
+      desc: Validate multiple subdomains at once
+      access: 'Public '
+    lang: js
+  - id: ''
+    file: backend/src/routes/reserved-subdomains.js
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      route: GET /api/v1/reserved-subdomains/categories
+      desc: Get all available categories
+      access: 'Public '
+    lang: js
+  - id: ''
+    file: backend/src/routes/reserved-subdomains.js
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      route: GET /api/v1/reserved-subdomains/priorities
+      desc: Get all priority levels with counts
+      access: 'Public '
+    lang: js
+  - id: Simple logger utility
+    file: backend/src/utils/logger.js
+    kind: ''
+    name: null
+    summary: Simple logger utility
+    tags: {}
+    lang: js
+  - id: |-
+      DAO Management CLI Module
+      Manages DAO registry operations
+    file: backend/src/cli/modules/dao.js
+    kind: ''
+    name: null
+    summary: |-
+      DAO Management CLI Module
+      Manages DAO registry operations
+    tags: {}
+    lang: js
+  - id: |-
+      Metadata CLI Module
+      Manages reserved subdomains, URL encoding, E
+    file: backend/src/cli/modules/metadata.js
+    kind: ''
+    name: null
+    summary: >-
+      Metadata CLI Module
+
+      Manages reserved subdomains, URL encoding, ENS resolution, and ISO
+      metadata
+    tags: {}
+    lang: js
+  - id: Initialize providers for different networks
+    file: backend/src/services/blockchain/dao-contract-service.js
+    kind: ''
+    name: null
+    summary: Initialize providers for different networks
+    tags: {}
+    lang: js
+  - id: Load deployment addresses from deployment files
+    file: backend/src/services/blockchain/dao-contract-service.js
+    kind: ''
+    name: null
+    summary: Load deployment addresses from deployment files
+    tags: {}
+    lang: js
+  - id: Get provider for a specific chain
+    file: backend/src/services/blockchain/dao-contract-service.js
+    kind: ''
+    name: null
+    summary: Get provider for a specific chain
+    tags: {}
+    lang: js
+  - id: Get DAO Registry contract for a specific chain
+    file: backend/src/services/blockchain/dao-contract-service.js
+    kind: ''
+    name: null
+    summary: Get DAO Registry contract for a specific chain
+    tags: {}
+    lang: js
+  - id: Get ERC20 token contract
+    file: backend/src/services/blockchain/dao-contract-service.js
+    kind: ''
+    name: null
+    summary: Get ERC20 token contract
+    tags: {}
+    lang: js
+  - id: Get governance contract
+    file: backend/src/services/blockchain/dao-contract-service.js
+    kind: ''
+    name: null
+    summary: Get governance contract
+    tags: {}
+    lang: js
+  - id: Get all DAOs from blockchain with filtering and pagination
+    file: backend/src/services/blockchain/dao-contract-service.js
+    kind: ''
+    name: null
+    summary: Get all DAOs from blockchain with filtering and pagination
+    tags: {}
+    lang: js
+  - id: Get DAO by ID from blockchain
+    file: backend/src/services/blockchain/dao-contract-service.js
+    kind: ''
+    name: null
+    summary: Get DAO by ID from blockchain
+    tags: {}
+    lang: js
+  - id: Get DAO by contract address
+    file: backend/src/services/blockchain/dao-contract-service.js
+    kind: ''
+    name: null
+    summary: Get DAO by contract address
+    tags: {}
+    lang: js
+  - id: Get registry statistics from blockchain
+    file: backend/src/services/blockchain/dao-contract-service.js
+    kind: ''
+    name: null
+    summary: Get registry statistics from blockchain
+    tags: {}
+    lang: js
+  - id: 'Helper: Convert governance type enum to string'
+    file: backend/src/services/blockchain/dao-contract-service.js
+    kind: ''
+    name: null
+    summary: 'Helper: Convert governance type enum to string'
+    tags: {}
+    lang: js
+  - id: 'Helper: Convert status enum to string'
+    file: backend/src/services/blockchain/dao-contract-service.js
+    kind: ''
+    name: null
+    summary: 'Helper: Convert status enum to string'
+    tags: {}
+    lang: js
+  - id: Get supported networks
+    file: backend/src/services/blockchain/dao-contract-service.js
+    kind: ''
+    name: null
+    summary: Get supported networks
+    tags: {}
+    lang: js
+  - id: Check if network is supported
+    file: backend/src/services/blockchain/dao-contract-service.js
+    kind: ''
+    name: null
+    summary: Check if network is supported
+    tags: {}
+    lang: js
+  - id: Check if a domain is available
+    file: backend/src/services/metadata/ens/ens-resolver-service.js
+    kind: ''
+    name: null
+    summary: Check if a domain is available
+    tags:
+      param: domain - Domain to check
+      returns: True if available
+    lang: js
+  - id: Check if a domain is registered
+    file: backend/src/services/metadata/ens/ens-resolver-service.js
+    kind: ''
+    name: null
+    summary: Check if a domain is registered
+    tags:
+      param: domain - Domain to check
+      returns: True if registered
+    lang: js
+  - id: Get domain owner
+    file: backend/src/services/metadata/ens/ens-resolver-service.js
+    kind: ''
+    name: null
+    summary: Get domain owner
+    tags:
+      param: domain - Domain to check
+      returns: Owner address or null
+    lang: js
+  - id: Get domain resolver
+    file: backend/src/services/metadata/ens/ens-resolver-service.js
+    kind: ''
+    name: null
+    summary: Get domain resolver
+    tags:
+      param: domain - Domain to check
+      returns: Resolver address or null
+    lang: js
+  - id: Get domain content hash
+    file: backend/src/services/metadata/ens/ens-resolver-service.js
+    kind: ''
+    name: null
+    summary: Get domain content hash
+    tags:
+      param: domain - Domain to check
+      returns: Content hash or null
+    lang: js
+  - id: Get domain text record
+    file: backend/src/services/metadata/ens/ens-resolver-service.js
+    kind: ''
+    name: null
+    summary: Get domain text record
+    tags:
+      param: key - Text record key
+      returns: Text record value or null
+    lang: js
+  - id: Resolve domain to address
+    file: backend/src/services/metadata/ens/ens-resolver-service.js
+    kind: ''
+    name: null
+    summary: Resolve domain to address
+    tags:
+      param: domain - Domain to resolve
+      returns: Resolved address or null
+    lang: js
+  - id: Reverse resolve address to domain
+    file: backend/src/services/metadata/ens/ens-resolver-service.js
+    kind: ''
+    name: null
+    summary: Reverse resolve address to domain
+    tags:
+      param: address - Address to reverse resolve
+      returns: Resolved domain or null
+    lang: js
+  - id: Get domain expiration
+    file: backend/src/services/metadata/ens/ens-resolver-service.js
+    kind: ''
+    name: null
+    summary: Get domain expiration
+    tags:
+      param: domain - Domain to check
+      returns: Expiration date or null
+    lang: js
+  - id: Check if domain is expired
+    file: backend/src/services/metadata/ens/ens-resolver-service.js
+    kind: ''
+    name: null
+    summary: Check if domain is expired
+    tags:
+      param: domain - Domain to check
+      returns: True if expired
+    lang: js
+  - id: |-
+      Metadata Registry Service
+      Implements ISO 23081-2:2021 metadata r
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: |-
+      Metadata Registry Service
+      Implements ISO 23081-2:2021 metadata registry standards for DAO records
+    tags: {}
+    lang: ts
+  - id: Register a new metadata schema
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: Register a new metadata schema
+    tags: {}
+    lang: ts
+  - id: Retrieve a metadata schema by ID
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: Retrieve a metadata schema by ID
+    tags: {}
+    lang: ts
+  - id: List all registered schemas
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: List all registered schemas
+    tags: {}
+    lang: ts
+  - id: Update an existing schema
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: Update an existing schema
+    tags: {}
+    lang: ts
+  - id: Delete a schema
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: Delete a schema
+    tags: {}
+    lang: ts
+  - id: Register an encoding scheme
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: Register an encoding scheme
+    tags: {}
+    lang: ts
+  - id: Get encoding scheme by ID
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: Get encoding scheme by ID
+    tags: {}
+    lang: ts
+  - id: List all encoding schemes
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: List all encoding schemes
+    tags: {}
+    lang: ts
+  - id: Register a controlled vocabulary
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: Register a controlled vocabulary
+    tags: {}
+    lang: ts
+  - id: Get controlled vocabulary by ID
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: Get controlled vocabulary by ID
+    tags: {}
+    lang: ts
+  - id: List all controlled vocabularies
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: List all controlled vocabularies
+    tags: {}
+    lang: ts
+  - id: Design a metadata schema for managing records
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: Design a metadata schema for managing records
+    tags: {}
+    lang: ts
+  - id: Validate a metadata schema
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: Validate a metadata schema
+    tags: {}
+    lang: ts
+  - id: Generate machine-readable schema presentation
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: Generate machine-readable schema presentation
+    tags: {}
+    lang: ts
+  - id: Generate human-readable schema documentation
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: Generate human-readable schema documentation
+    tags: {}
+    lang: ts
+  - id: Generate implementation code for a schema
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: Generate implementation code for a schema
+    tags: {}
+    lang: ts
+  - id: Generate validation code for a schema
+    file: backend/src/services/metadata/registry/metadata-registry.ts
+    kind: ''
+    name: null
+    summary: Generate validation code for a schema
+    tags: {}
+    lang: ts
+  - id: Record Entity - Individual DAO records, governance actions, tran
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Record Entity - Individual DAO records, governance actions, transactions
+    tags: {}
+    lang: ts
+  - id: Agent Entity - DAO members, governance participants, smart contr
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Agent Entity - DAO members, governance participants, smart contracts
+    tags: {}
+    lang: ts
+  - id: Business Entity - DAO activities, governance processes, treasury
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: >-
+      Business Entity - DAO activities, governance processes, treasury
+      operations
+    tags: {}
+    lang: ts
+  - id: Mandate Entity - Governance rules, smart contract logic, regulat
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: >-
+      Mandate Entity - Governance rules, smart contract logic, regulatory
+      requirements
+    tags: {}
+    lang: ts
+  - id: Identity Metadata - Unique identifiers and classification
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Identity Metadata - Unique identifiers and classification
+    tags: {}
+    lang: ts
+  - id: Description Metadata - Content description and technical charact
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Description Metadata - Content description and technical characteristics
+    tags: {}
+    lang: ts
+  - id: Use Metadata - Access, usage, and business context
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Use Metadata - Access, usage, and business context
+    tags: {}
+    lang: ts
+  - id: Event History Metadata - Event tracking and change history
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Event History Metadata - Event tracking and change history
+    tags: {}
+    lang: ts
+  - id: Relation Metadata - Entity relationships and hierarchies
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Relation Metadata - Entity relationships and hierarchies
+    tags: {}
+    lang: ts
+  - id: DAO Context Metadata - DAO identification and governance structu
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: DAO Context Metadata - DAO identification and governance structure
+    tags: {}
+    lang: ts
+  - id: Governance Context Metadata - Governance processes and rules
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Governance Context Metadata - Governance processes and rules
+    tags: {}
+    lang: ts
+  - id: Blockchain Context Metadata - Blockchain and smart contract info
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Blockchain Context Metadata - Blockchain and smart contract information
+    tags: {}
+    lang: ts
+  - id: ENS Context Metadata - ENS domain and integration information
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: ENS Context Metadata - ENS domain and integration information
+    tags: {}
+    lang: ts
+  - id: Complete DAO Metadata Schema
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Complete DAO Metadata Schema
+    tags: {}
+    lang: ts
+  - id: |-
+      ISO 23081-2:2021 Metadata Standards Service
+      Implements metadata 
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: |-
+      ISO 23081-2:2021 Metadata Standards Service
+      Implements metadata management for DAO records according to ISO standards
+    tags: {}
+    lang: ts
+  - id: Metadata Schema Validation
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Metadata Schema Validation
+    tags: {}
+    lang: ts
+  - id: Capture system-generated metadata
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Capture system-generated metadata
+    tags: {}
+    lang: ts
+  - id: Capture user-provided metadata
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Capture user-provided metadata
+    tags: {}
+    lang: ts
+  - id: Capture business context metadata
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Capture business context metadata
+    tags: {}
+    lang: ts
+  - id: Store metadata in centralized repository
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Store metadata in centralized repository
+    tags: {}
+    lang: ts
+  - id: Store metadata in decentralized storage (IPFS)
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Store metadata in decentralized storage (IPFS)
+    tags: {}
+    lang: ts
+  - id: Store metadata in hybrid storage (both centralized and decentral
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Store metadata in hybrid storage (both centralized and decentralized)
+    tags: {}
+    lang: ts
+  - id: Link entities through metadata relationships
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Link entities through metadata relationships
+    tags: {}
+    lang: ts
+  - id: Track relationship history
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Track relationship history
+    tags: {}
+    lang: ts
+  - id: Evaluate retention value of metadata
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Evaluate retention value of metadata
+    tags: {}
+    lang: ts
+  - id: Evaluate archival value of metadata
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Evaluate archival value of metadata
+    tags: {}
+    lang: ts
+  - id: Apply metadata security controls
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Apply metadata security controls
+    tags: {}
+    lang: ts
+  - id: Validate compliance requirements
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Validate compliance requirements
+    tags: {}
+    lang: ts
+  - id: Calculate metadata hash for integrity verification
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Calculate metadata hash for integrity verification
+    tags: {}
+    lang: ts
+  - id: Generate unique link ID
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Generate unique link ID
+    tags: {}
+    lang: ts
+  - id: Calculate quality metrics for metadata
+    file: backend/src/services/metadata/iso/iso-metadata-service.ts
+    kind: ''
+    name: null
+    summary: Calculate quality metrics for metadata
+    tags: {}
+    lang: ts
+  - id: Normalize a subdomain
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+    kind: ''
+    name: null
+    summary: Normalize a subdomain
+    tags:
+      param: subdomain - Subdomain to normalize
+      returns: Normalized subdomain
+    lang: js
+  - id: Validate a subdomain
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+    kind: ''
+    name: null
+    summary: Validate a subdomain
+    tags:
+      param: subdomain - Subdomain to validate
+      returns: Validation result
+    lang: js
+  - id: Encode a URL
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+    kind: ''
+    name: null
+    summary: Encode a URL
+    tags:
+      param: url - URL to encode
+      returns: Encoded URL
+    lang: js
+  - id: Decode a URL
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+    kind: ''
+    name: null
+    summary: Decode a URL
+    tags:
+      param: url - URL to decode
+      returns: Decoded URL
+    lang: js
+  - id: Encode Unicode to punycode
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+    kind: ''
+    name: null
+    summary: Encode Unicode to punycode
+    tags:
+      param: text - Text to encode
+      returns: Punycode encoded text
+    lang: js
+  - id: Decode punycode to Unicode
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+    kind: ''
+    name: null
+    summary: Decode punycode to Unicode
+    tags:
+      param: text - Text to decode
+      returns: Unicode decoded text
+    lang: js
+  - id: Sanitize a URL
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+    kind: ''
+    name: null
+    summary: Sanitize a URL
+    tags:
+      param: url - URL to sanitize
+      returns: Sanitized URL
+    lang: js
+  - id: Validate a URL
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+    kind: ''
+    name: null
+    summary: Validate a URL
+    tags:
+      param: url - URL to validate
+      returns: Validation result
+    lang: js
+  - id: Extract domain from URL
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+    kind: ''
+    name: null
+    summary: Extract domain from URL
+    tags:
+      param: url - URL to extract domain from
+      returns: Extracted domain or null
+    lang: js
+  - id: Extract subdomain from domain
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+    kind: ''
+    name: null
+    summary: Extract subdomain from domain
+    tags:
+      param: domain - Domain to extract subdomain from
+      returns: Extracted subdomain or null
+    lang: js
+  - id: Check if text contains Unicode characters
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+    kind: ''
+    name: null
+    summary: Check if text contains Unicode characters
+    tags:
+      param: text - Text to check
+      returns: True if contains Unicode
+    lang: js
+  - id: Check if text is ASCII only
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+    kind: ''
+    name: null
+    summary: Check if text is ASCII only
+    tags:
+      param: text - Text to check
+      returns: True if ASCII only
+    lang: js
+  - id: Generate a safe subdomain from text
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.js
+    kind: ''
+    name: null
+    summary: Generate a safe subdomain from text
+    tags:
+      param: text - Text to convert to subdomain
+      returns: Safe subdomain
+    lang: js
+  - id: |-
+      URL Encoding Service for Subdomain Management
+
+      Provides   URL en
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: >-
+      URL Encoding Service for Subdomain Management
+
+
+      Provides   URL encoding/decoding functionality with regex patterns
+
+      for subdomain validation, sanitization, and proper handling of special
+      characters.
+    tags: {}
+    lang: ts
+  - id: URL encoding regex patterns for subdomain validation
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: URL encoding regex patterns for subdomain validation
+    tags: {}
+    lang: ts
+  - id: URL encoding utilities
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: URL encoding utilities
+    tags: {}
+    lang: ts
+  - id: Encode string for URL usage
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Encode string for URL usage
+    tags: {}
+    lang: ts
+  - id: Decode URL-encoded string
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Decode URL-encoded string
+    tags: {}
+    lang: ts
+  - id: Encode string for DNS usage (subdomain-safe)
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Encode string for DNS usage (subdomain-safe)
+    tags: {}
+    lang: ts
+  - id: Encode string for ENS usage
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Encode string for ENS usage
+    tags: {}
+    lang: ts
+  - id: Sanitize subdomain for safe usage
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Sanitize subdomain for safe usage
+    tags: {}
+    lang: ts
+  - id: Validate subdomain format
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Validate subdomain format
+    tags: {}
+    lang: ts
+  - id: Validate full domain format
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Validate full domain format
+    tags: {}
+    lang: ts
+  - id: Convert string to punycode (for internationalized domain names)
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Convert string to punycode (for internationalized domain names)
+    tags: {}
+    lang: ts
+  - id: Convert punycode to Unicode
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Convert punycode to Unicode
+    tags: {}
+    lang: ts
+  - id: Check if string contains Unicode characters
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Check if string contains Unicode characters
+    tags: {}
+    lang: ts
+  - id: Check if string is punycode encoded
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Check if string is punycode encoded
+    tags: {}
+    lang: ts
+  - id: Normalize domain name (handle Unicode, punycode, etc.)
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Normalize domain name (handle Unicode, punycode, etc.)
+    tags: {}
+    lang: ts
+  - id: Generate safe subdomain from input
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Generate safe subdomain from input
+    tags: {}
+    lang: ts
+  - id: Check if subdomain is safe for DNS
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Check if subdomain is safe for DNS
+    tags: {}
+    lang: ts
+  - id: Check if subdomain is safe for ENS
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Check if subdomain is safe for ENS
+    tags: {}
+    lang: ts
+  - id: Escape special characters for regex usage
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Escape special characters for regex usage
+    tags: {}
+    lang: ts
+  - id: Create regex pattern for subdomain matching
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Create regex pattern for subdomain matching
+    tags: {}
+    lang: ts
+  - id: Create regex pattern for domain matching
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Create regex pattern for domain matching
+    tags: {}
+    lang: ts
+  - id: Extract subdomain from full domain
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Extract subdomain from full domain
+    tags: {}
+    lang: ts
+  - id: Extract TLD from full domain
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Extract TLD from full domain
+    tags: {}
+    lang: ts
+  - id: Build full domain from subdomain and TLD
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Build full domain from subdomain and TLD
+    tags: {}
+    lang: ts
+  - id: Validate TLD format
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Validate TLD format
+    tags: {}
+    lang: ts
+  - id: Get encoding statistics
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Get encoding statistics
+    tags: {}
+    lang: ts
+  - id: URL encoding validation interface
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: URL encoding validation interface
+    tags: {}
+    lang: ts
+  - id: Subdomain encoding utilities
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Subdomain encoding utilities
+    tags: {}
+    lang: ts
+  - id: Validate and encode subdomain for DNS usage
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Validate and encode subdomain for DNS usage
+    tags: {}
+    lang: ts
+  - id: Validate and encode subdomain for ENS usage
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Validate and encode subdomain for ENS usage
+    tags: {}
+    lang: ts
+  - id: Generate multiple safe variations of a subdomain
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Generate multiple safe variations of a subdomain
+    tags: {}
+    lang: ts
+  - id: Check if subdomain is available (not in reserved list)
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Check if subdomain is available (not in reserved list)
+    tags: {}
+    lang: ts
+  - id: Find available subdomain from input
+    file: backend/src/services/metadata/reserved/encoding/url-encoding-service.ts
+    kind: ''
+    name: null
+    summary: Find available subdomain from input
+    tags: {}
+    lang: ts
+  - id: Reserved subdomain priority levels
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Reserved subdomain priority levels
+    tags: {}
+    lang: ts
+  - id: Validation result for subdomain checks
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Validation result for subdomain checks
+    tags: {}
+    lang: ts
+  - id: ENS validation result
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: ENS validation result
+    tags: {}
+    lang: ts
+  - id: Reserved subdomain information
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Reserved subdomain information
+    tags: {}
+    lang: ts
+  - id: |-
+      Reserved Subdomains Service
+
+      Manages reserved subdomains for the
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: |-
+      Reserved Subdomains Service
+
+      Manages reserved subdomains for the DAO Registry system,
+      providing validation, priority management, and ENS integration.
+    tags: {}
+    lang: ts
+  - id: Initialize critical reserved subdomains (Priority 1)
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Initialize critical reserved subdomains (Priority 1)
+    tags: {}
+    lang: ts
+  - id: Initialize high priority reserved subdomains (Priority 2)
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Initialize high priority reserved subdomains (Priority 2)
+    tags: {}
+    lang: ts
+  - id: Initialize medium priority reserved subdomains (Priority 3)
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Initialize medium priority reserved subdomains (Priority 3)
+    tags: {}
+    lang: ts
+  - id: Initialize reserved prefixes
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Initialize reserved prefixes
+    tags: {}
+    lang: ts
+  - id: Initialize reserved suffixes
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Initialize reserved suffixes
+    tags: {}
+    lang: ts
+  - id: Initialize all reserved words
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Initialize all reserved words
+    tags: {}
+    lang: ts
+  - id: Check if a subdomain is reserved
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Check if a subdomain is reserved
+    tags: {}
+    lang: ts
+  - id: Get priority level for a subdomain
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Get priority level for a subdomain
+    tags: {}
+    lang: ts
+  - id: Get reserved subdomain information
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Get reserved subdomain information
+    tags: {}
+    lang: ts
+  - id: Validate subdomain format and reserved word status with URL enco
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Validate subdomain format and reserved word status with URL encoding
+    tags: {}
+    lang: ts
+  - id: Validate ENS subdomain with full domain context and URL encoding
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Validate ENS subdomain with full domain context and URL encoding
+    tags: {}
+    lang: ts
+  - id: Get all reserved words by priority
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Get all reserved words by priority
+    tags: {}
+    lang: ts
+  - id: Get all reserved words by category
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Get all reserved words by category
+    tags: {}
+    lang: ts
+  - id: Get all reserved words
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Get all reserved words
+    tags: {}
+    lang: ts
+  - id: Get reserved words summary
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Get reserved words summary
+    tags: {}
+    lang: ts
+  - id: Check if user can register a reserved subdomain
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Check if user can register a reserved subdomain
+    tags: {}
+    lang: ts
+  - id: Get available subdomains for a user role
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Get available subdomains for a user role
+    tags: {}
+    lang: ts
+  - id: Generate safe subdomain variations
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Generate safe subdomain variations
+    tags: {}
+    lang: ts
+  - id: Find available subdomain from input
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Find available subdomain from input
+    tags: {}
+    lang: ts
+  - id: Check if subdomain is DNS safe
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Check if subdomain is DNS safe
+    tags: {}
+    lang: ts
+  - id: Check if subdomain is ENS safe
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Check if subdomain is ENS safe
+    tags: {}
+    lang: ts
+  - id: Normalize subdomain for consistent handling
+    file: >-
+      backend/src/services/metadata/reserved/subdomains/reserved-subdomains-service.ts
+    kind: ''
+    name: null
+    summary: Normalize subdomain for consistent handling
+    tags: {}
+    lang: ts
+  - id: >-
+      A registry for managing Decentralized Autonomous Organizations (DAOs)
+
+      across multiple blockchain networks with governance tracking and analytics
+      support.
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: DAO Registry
+    summary: ''
+    tags:
+      title: DAO Registry
+      dev: >-
+        A registry for managing Decentralized Autonomous Organizations (DAOs)
+
+        across multiple blockchain networks with governance tracking and
+        analytics support.
+    lang: solidity
+  - id: Register a new DAO
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Register a new DAO
+      param: socialLinks Social media links
+    lang: solidity
+  - id: Update DAO information
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Update DAO information
+      param: socialLinks New social links
+    lang: solidity
+  - id: Verify a DAO (only owner)
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Verify a DAO (only owner)
+      param: verified Verification status
+    lang: solidity
+  - id: Change DAO status (only owner)
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Change DAO status (only owner)
+      param: newStatus New status
+    lang: solidity
+  - id: Create a new proposal
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Create a new proposal
+      param: actions Proposed actions
+    lang: solidity
+  - id: Vote on a proposal
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Vote on a proposal
+      param: support Vote support (0 = against, 1 = for, 2 = abstain)
+    lang: solidity
+  - id: Execute a proposal
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Execute a proposal
+      param: proposalId Proposal ID
+    lang: solidity
+  - id: Add a member to a DAO
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Add a member to a DAO
+      param: memberAddress Member address
+    lang: solidity
+  - id: Remove a member from a DAO
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Remove a member from a DAO
+      param: memberAddress Member address
+    lang: solidity
+  - id: Update DAO analytics
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Update DAO analytics
+      param: averageVotingPower Average voting power
+    lang: solidity
+  - id: Get DAO information
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get DAO information
+      param: daoId DAO ID
+      return: DAO information
+    lang: solidity
+  - id: Get DAO by contract address
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get DAO by contract address
+      param: contractAddress Contract address
+      return: DAO ID
+    lang: solidity
+  - id: Get proposal information
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get proposal information
+      param: proposalId Proposal ID
+      return: Proposal information
+    lang: solidity
+  - id: Get member information
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get member information
+      param: memberId Member ID
+      return: Member information
+    lang: solidity
+  - id: Get DAO analytics
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get DAO analytics
+      param: daoId DAO ID
+      return: Analytics information
+    lang: solidity
+  - id: Get total DAOs count
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get total DAOs count
+      return: Total DAOs count
+    lang: solidity
+  - id: Get total proposals count
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get total proposals count
+      return: Total proposals count
+    lang: solidity
+  - id: Get total members count
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get total members count
+      return: Total members count
+    lang: solidity
+  - id: Check if address is a member of DAO
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Check if address is a member of DAO
+      param: memberAddress Member address
+      return: True if member
+    lang: solidity
+  - id: Get voting power for address in DAO
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get voting power for address in DAO
+      param: memberAddress Member address
+      return: Voting power
+    lang: solidity
+  - id: Update fee structure (only owner)
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Update fee structure (only owner)
+      param: newUpdateFee New update fee
+    lang: solidity
+  - id: Update limits (only owner)
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Update limits (only owner)
+      param: newMaxSymbolLength New max symbol length
+    lang: solidity
+  - id: Pause contract (only owner)
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Pause contract (only owner)
+    lang: solidity
+  - id: Unpause contract (only owner)
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Unpause contract (only owner)
+    lang: solidity
+  - id: Withdraw fees (only owner)
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Withdraw fees (only owner)
+    lang: solidity
+  - id: Emergency function to recover stuck tokens
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Emergency function to recover stuck tokens
+      param: amount Amount to transfer
+    lang: solidity
+  - id: Emergency function to recover stuck ETH
+    file: backend/contracts/DAORegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Emergency function to recover stuck ETH
+      param: amount Amount to transfer
+    lang: solidity
+  - id: >-
+      Manages real-time data points that require constant monitoring and event
+      emission
+
+
+      This contract is specifically designed for data points that:
+
+      - Change frequently (price feeds, market data, governance votes, etc.)
+
+      - Require real-time event emission for off-chain monitoring
+
+      - Need CCIP compatibility for cross-chain data access
+
+      - Require high-frequency updates with minimal gas costs
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: RealTimeDataRegistry
+    summary: ''
+    tags:
+      title: 'RealTimeDataRegistry '
+      dev: >-
+        Manages real-time data points that require constant monitoring and event
+        emission
+
+
+        This contract is specifically designed for data points that:
+
+        - Change frequently (price feeds, market data, governance votes, etc.)
+
+        - Require real-time event emission for off-chain monitoring
+
+        - Need CCIP compatibility for cross-chain data access
+
+        - Require high-frequency updates with minimal gas costs
+    lang: solidity
+  - id: Data point types for real-time monitoring
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Data point types for real-time monitoring
+    lang: solidity
+  - id: Update frequency for real-time data
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Update frequency for real-time data
+    lang: solidity
+  - id: Real-time data point structure
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Real-time data point structure
+    lang: solidity
+  - id: Event emission for real-time updates
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Event emission for real-time updates
+    lang: solidity
+  - id: 'Events '
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: 'Events '
+    lang: solidity
+  - id: State variables
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: State variables
+    lang: solidity
+  - id: 'Modifiers '
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: 'Modifiers '
+    lang: solidity
+  - id: 'Constructor '
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: 'Constructor '
+    lang: solidity
+  - id: Register a new real-time data point
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Register a new real-time data point
+    lang: solidity
+  - id: Check if data point should be updated based on frequency
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Check if data point should be updated based on frequency
+    lang: solidity
+  - id: Update a real-time data point
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Update a real-time data point
+    lang: solidity
+  - id: Get real-time data point
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get real-time data point
+    lang: solidity
+  - id: Get data point update history
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get data point update history
+    lang: solidity
+  - id: Get data points by type
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get data points by type
+    lang: solidity
+  - id: Get data points by frequency
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get data points by frequency
+    lang: solidity
+  - id: Deactivate a data point
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Deactivate a data point
+    lang: solidity
+  - id: Add data provider
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Add data provider
+    lang: solidity
+  - id: Remove data provider
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Remove data provider
+    lang: solidity
+  - id: Get statistics
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get statistics
+    lang: solidity
+  - id: Check if address is data provider
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Check if address is data provider
+    lang: solidity
+  - id: Get data providers for a specific data key
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get data providers for a specific data key
+    lang: solidity
+  - id: Get data keys for a specific provider
+    file: backend/contracts/DataRegistry.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get data keys for a specific provider
+    lang: solidity
+  - id: Mock ERC20 token for testing DAO Registry functionality
+    file: backend/contracts/MockERC20.sol
+    kind: ''
+    name: MockERC20
+    summary: ''
+    tags:
+      title: 'MockERC20 '
+      dev: Mock ERC20 token for testing DAO Registry functionality
+    lang: solidity
+  - id: Mint tokens to a specific address (only owner)
+    file: backend/contracts/MockERC20.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Mint tokens to a specific address (only owner)
+      param: amount Amount to mint
+    lang: solidity
+  - id: Burn tokens from a specific address
+    file: backend/contracts/MockERC20.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Burn tokens from a specific address
+      param: amount Amount to burn
+    lang: solidity
+  - id: Override decimals function
+    file: backend/contracts/MockERC20.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Override decimals function
+    lang: solidity
+  - id: Transfer tokens with additional data
+    file: backend/contracts/MockERC20.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Transfer tokens with additional data
+      param: data Additional data
+    lang: solidity
+  - id: Batch transfer tokens to multiple addresses
+    file: backend/contracts/MockERC20.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Batch transfer tokens to multiple addresses
+      param: amounts Array of amounts to transfer
+    lang: solidity
+  - id: Get token info
+    file: backend/contracts/MockERC20.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get token info
+      return: tokenDecimals Token decimals
+    lang: solidity
+  - id: Check if address has sufficient balance
+    file: backend/contracts/MockERC20.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Check if address has sufficient balance
+      param: amount Amount to check
+      return: True if sufficient balance
+    lang: solidity
+  - id: Get balance percentage of total supply
+    file: backend/contracts/MockERC20.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get balance percentage of total supply
+      param: account Address to check
+      return: percentage Balance percentage (basis points)
+    lang: solidity
+  - id: Emergency function to recover stuck tokens
+    file: backend/contracts/MockERC20.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Emergency function to recover stuck tokens
+      param: amount Amount to recover
+    lang: solidity
+  - id: Mock governance contract for testing DAO Registry functionality
+    file: backend/contracts/MockGovernance.sol
+    kind: ''
+    name: MockGovernance
+    summary: ''
+    tags:
+      title: 'MockGovernance '
+      dev: Mock governance contract for testing DAO Registry functionality
+    lang: solidity
+  - id: Create a new proposal
+    file: backend/contracts/MockGovernance.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Create a new proposal
+      param: actions Proposed actions
+    lang: solidity
+  - id: Vote on a proposal
+    file: backend/contracts/MockGovernance.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Vote on a proposal
+      param: reason Voting reason
+    lang: solidity
+  - id: Execute a proposal
+    file: backend/contracts/MockGovernance.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Execute a proposal
+      param: proposalId Proposal ID
+    lang: solidity
+  - id: Cancel a proposal (only proposer or owner)
+    file: backend/contracts/MockGovernance.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Cancel a proposal (only proposer or owner)
+      param: proposalId Proposal ID
+    lang: solidity
+  - id: Update proposal status based on voting results
+    file: backend/contracts/MockGovernance.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Update proposal status based on voting results
+      param: proposalId Proposal ID
+    lang: solidity
+  - id: Get proposal information
+    file: backend/contracts/MockGovernance.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get proposal information
+      param: proposalId Proposal ID
+      return: status Proposal status
+    lang: solidity
+  - id: Get vote information
+    file: backend/contracts/MockGovernance.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get vote information
+      param: voter Voter address
+      return: reason Reason for vote
+    lang: solidity
+  - id: Check if address has voted on proposal
+    file: backend/contracts/MockGovernance.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Check if address has voted on proposal
+      param: voter Voter address
+      return: True if has voted
+    lang: solidity
+  - id: Get voting power for address
+    file: backend/contracts/MockGovernance.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get voting power for address
+      param: account Address to check
+      return: Voting power
+    lang: solidity
+  - id: Get total proposals count
+    file: backend/contracts/MockGovernance.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get total proposals count
+      return: Total proposals
+    lang: solidity
+  - id: Update governance parameters (only owner)
+    file: backend/contracts/MockGovernance.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Update governance parameters (only owner)
+      param: newProposalThreshold New proposal threshold
+    lang: solidity
+  - id: Get governance parameters
+    file: backend/contracts/MockGovernance.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get governance parameters
+      return: proposalThreshold Current proposal threshold
+    lang: solidity
+  - id: Get proposal actions
+    file: backend/contracts/MockGovernance.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get proposal actions
+      param: proposalId Proposal ID
+      return: actions Array of proposal actions
+    lang: solidity
+  - id: Get proposal state
+    file: backend/contracts/MockGovernance.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get proposal state
+      param: proposalId Proposal ID
+      return: state Proposal state string
+    lang: solidity
+  - id: Mock treasury contract for testing DAO Registry functionality
+    file: backend/contracts/MockTreasury.sol
+    kind: ''
+    name: MockTreasury
+    summary: ''
+    tags:
+      title: 'MockTreasury '
+      dev: Mock treasury contract for testing DAO Registry functionality
+    lang: solidity
+  - id: Deposit ETH to treasury
+    file: backend/contracts/MockTreasury.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Deposit ETH to treasury
+    lang: solidity
+  - id: Withdraw ETH from treasury (only owner)
+    file: backend/contracts/MockTreasury.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Withdraw ETH from treasury (only owner)
+      param: amount Amount to withdraw
+    lang: solidity
+  - id: Deposit ERC20 tokens to treasury
+    file: backend/contracts/MockTreasury.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Deposit ERC20 tokens to treasury
+      param: amount Amount to deposit
+    lang: solidity
+  - id: Withdraw ERC20 tokens from treasury (only owner)
+    file: backend/contracts/MockTreasury.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Withdraw ERC20 tokens from treasury (only owner)
+      param: amount Amount to withdraw
+    lang: solidity
+  - id: Deposit NFT to treasury
+    file: backend/contracts/MockTreasury.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Deposit NFT to treasury
+      param: tokenId Token ID
+    lang: solidity
+  - id: Withdraw NFT from treasury (only owner)
+    file: backend/contracts/MockTreasury.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Withdraw NFT from treasury (only owner)
+      param: tokenId Token ID
+    lang: solidity
+  - id: Get treasury balance for a specific address
+    file: backend/contracts/MockTreasury.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get treasury balance for a specific address
+      param: account Address to check
+      return: nftCount Number of NFTs
+    lang: solidity
+  - id: Get treasury statistics
+    file: backend/contracts/MockTreasury.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get treasury statistics
+      return: lastUpdate Last update timestamp
+    lang: solidity
+  - id: Check if treasury has sufficient balance
+    file: backend/contracts/MockTreasury.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Check if treasury has sufficient balance
+      param: amount Amount to check
+      return: True if sufficient balance
+    lang: solidity
+  - id: Get treasury value in USD (mock implementation)
+    file: backend/contracts/MockTreasury.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get treasury value in USD (mock implementation)
+      return: value Treasury value in USD (scaled by 1e18)
+    lang: solidity
+  - id: Update treasury name and description (only owner)
+    file: backend/contracts/MockTreasury.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Update treasury name and description (only owner)
+      param: newDescription New treasury description
+    lang: solidity
+  - id: Emergency function to recover stuck tokens
+    file: backend/contracts/MockTreasury.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Emergency function to recover stuck tokens
+      param: amount Amount to recover
+    lang: solidity
+  - id: Emergency function to recover stuck NFTs
+    file: backend/contracts/MockTreasury.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Emergency function to recover stuck NFTs
+      param: tokenId Token ID to recover
+    lang: solidity
+  - id: Emergency function to recover stuck ETH
+    file: backend/contracts/MockTreasury.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Emergency function to recover stuck ETH
+      param: amount Amount to recover
+    lang: solidity
+  - id: |-
+      Manages reserved subdomains for standardized data schemas
+
+      This contract provides:
+      - Reserved subdomain schemas for standardized data structures
+      - CCIP-compatible data formats for cross-chain interoperability
+      - API-queryable endpoints for on-chain data retrieval
+      - Schema validation and metadata management
+
+      Reserved subdomains are NOT blocked from registration but provide
+      standardized schemas that can be queried via API and CCIP on-chain reads
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: ReservedSubdomains
+    summary: ''
+    tags:
+      title: 'ReservedSubdomains '
+      dev: |-
+        Manages reserved subdomains for standardized data schemas
+
+        This contract provides:
+        - Reserved subdomain schemas for standardized data structures
+        - CCIP-compatible data formats for cross-chain interoperability
+        - API-queryable endpoints for on-chain data retrieval
+        - Schema validation and metadata management
+
+        Reserved subdomains are NOT blocked from registration but provide
+        standardized schemas that can be queried via API and CCIP on-chain reads
+    lang: solidity
+  - id: Schema priority levels for data standardization
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Schema priority levels for data standardization
+    lang: solidity
+  - id: Data type definitions for CCIP compatibility
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Data type definitions for CCIP compatibility
+    lang: solidity
+  - id: Update trigger types for self-updating data
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Update trigger types for self-updating data
+    lang: solidity
+  - id: Update frequency for time-based triggers
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Update frequency for time-based triggers
+    lang: solidity
+  - id: Auto-update configuration
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Auto-update configuration
+    lang: solidity
+  - id: Schema field definition
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Schema field definition
+    lang: solidity
+  - id: Reserved subdomain schema information
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Reserved subdomain schema information
+    lang: solidity
+  - id: CCIP-compatible data structure
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: CCIP-compatible data structure
+    lang: solidity
+  - id: 'Events '
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: 'Events '
+    lang: solidity
+  - id: State variables
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: State variables
+    lang: solidity
+  - id: 'Modifiers '
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: 'Modifiers '
+    lang: solidity
+  - id: Create default auto-update configuration
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Create default auto-update configuration
+    lang: solidity
+  - id: 'Constructor '
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: 'Constructor '
+    lang: solidity
+  - id: Initialize critical schemas (Core DAO Components)
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Initialize critical schemas (Core DAO Components)
+    lang: solidity
+  - id: Create governance schema fields
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Create governance schema fields
+    lang: solidity
+  - id: Create treasury schema fields
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Create treasury schema fields
+    lang: solidity
+  - id: Create token schema fields
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Create token schema fields
+    lang: solidity
+  - id: Create API schema fields
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Create API schema fields
+    lang: solidity
+  - id: Create allowed roles
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Create allowed roles
+    lang: solidity
+  - id: Create restrictions
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Create restrictions
+    lang: solidity
+  - id: Initialize high priority schemas
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Initialize high priority schemas
+    lang: solidity
+  - id: Initialize medium priority schemas
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Initialize medium priority schemas
+    lang: solidity
+  - id: Define a new schema
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Define a new schema
+    lang: solidity
+  - id: Define a new schema (admin only)
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Define a new schema (admin only)
+    lang: solidity
+  - id: Store CCIP-compatible data
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Store CCIP-compatible data
+    lang: solidity
+  - id: Get schema information
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get schema information
+    lang: solidity
+  - id: Get CCIP data for a subdomain
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get CCIP data for a subdomain
+    lang: solidity
+  - id: Get all data hashes for a subdomain
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get all data hashes for a subdomain
+    lang: solidity
+  - id: Check if subdomain has a schema
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Check if subdomain has a schema
+    lang: solidity
+  - id: Get schema priority
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get schema priority
+    lang: solidity
+  - id: Get statistics
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get statistics
+    lang: solidity
+  - id: Add data provider
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Add data provider
+    lang: solidity
+  - id: Remove data provider
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Remove data provider
+    lang: solidity
+  - id: Check if address is data provider
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Check if address is data provider
+    lang: solidity
+  - id: Add administrator
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Add administrator
+    lang: solidity
+  - id: Remove administrator
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Remove administrator
+    lang: solidity
+  - id: Add moderator
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Add moderator
+    lang: solidity
+  - id: Remove moderator
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Remove moderator
+    lang: solidity
+  - id: Check if address is administrator
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Check if address is administrator
+    lang: solidity
+  - id: Check if address is moderator
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Check if address is moderator
+    lang: solidity
+  - id: Add a new schema
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Add a new schema
+    lang: solidity
+  - id: Update an existing schema
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Update an existing schema
+    lang: solidity
+  - id: Remove a schema
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Remove a schema
+    lang: solidity
+  - id: Internal function to remove a schema
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Internal function to remove a schema
+    lang: solidity
+  - id: Get all schemas by category
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get all schemas by category
+    lang: solidity
+  - id: Get all schemas by priority
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get all schemas by priority
+    lang: solidity
+  - id: Get schema field by name
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get schema field by name
+    lang: solidity
+  - id: Check if schema has a specific field
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Check if schema has a specific field
+    lang: solidity
+  - id: Get schema validation rules
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get schema validation rules
+    lang: solidity
+  - id: Emergency pause (only owner)
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Emergency pause (only owner)
+    lang: solidity
+  - id: Configure auto-update for a schema
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Configure auto-update for a schema
+    lang: solidity
+  - id: Calculate next update time based on frequency
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Calculate next update time based on frequency
+    lang: solidity
+  - id: Check if schema needs auto-update
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Check if schema needs auto-update
+    lang: solidity
+  - id: Trigger auto-update for a schema
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Trigger auto-update for a schema
+    lang: solidity
+  - id: Perform time-based update
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Perform time-based update
+    lang: solidity
+  - id: Perform event-based update
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Perform event-based update
+    lang: solidity
+  - id: Perform external call update
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Perform external call update
+    lang: solidity
+  - id: Get auto-update configuration for a schema
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Get auto-update configuration for a schema
+    lang: solidity
+  - id: Emergency pause (only owner)
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Emergency pause (only owner)
+    lang: solidity
+  - id: Emergency unpause (only owner)
+    file: backend/contracts/ReservedSubdomains.sol
+    kind: ''
+    name: null
+    summary: ''
+    tags:
+      dev: Emergency unpause (only owner)
+    lang: solidity
+  - id: |-
+      DAO Registry Specifications Index
+      Main export file for all speci
+    file: docs/specifications/index.ts
+    kind: ''
+    name: null
+    summary: |-
+      DAO Registry Specifications Index
+      Main export file for all specification types
+    tags: {}
+    lang: ts
+  - id: |-
+      Analytics Types
+      RFC-001: DAO Registry Specification - Analytics 
+    file: docs/specifications/analytics/analytics.types.ts
+    kind: ''
+    name: null
+    summary: |-
+      Analytics Types
+      RFC-001: DAO Registry Specification - Analytics Types
+    tags: {}
+    lang: ts
+  - id: |-
+      API Types
+      RFC-001: DAO Registry Specification - API Types
+    file: docs/specifications/api/api.types.ts
+    kind: ''
+    name: null
+    summary: |-
+      API Types
+      RFC-001: DAO Registry Specification - API Types
+    tags: {}
+    lang: ts
+  - id: |-
+      Smart Contract Types
+      RFC-001: DAO Registry Specification - Smart
+    file: docs/specifications/blockchain/smart-contracts.types.ts
+    kind: ''
+    name: null
+    summary: |-
+      Smart Contract Types
+      RFC-001: DAO Registry Specification - Smart Contract Types
+    tags: {}
+    lang: ts
+  - id: |-
+      Classification Types
+      RFC-002: Data Point Classifiers - Classific
+    file: docs/specifications/classification/classifiers.types.ts
+    kind: ''
+    name: null
+    summary: |-
+      Classification Types
+      RFC-002: Data Point Classifiers - Classification Types
+    tags: {}
+    lang: ts
+  - id: |-
+      Core DAO Entity Types
+      RFC-001: DAO Registry Specification - Core
+    file: docs/specifications/core/dao.types.ts
+    kind: ''
+    name: null
+    summary: |-
+      Core DAO Entity Types
+      RFC-001: DAO Registry Specification - Core DAO Types
+    tags: {}
+    lang: ts
+  - id: |-
+      Member Entity Types
+      RFC-001: DAO Registry Specification - Member
+    file: docs/specifications/core/member.types.ts
+    kind: ''
+    name: null
+    summary: |-
+      Member Entity Types
+      RFC-001: DAO Registry Specification - Member Types
+    tags: {}
+    lang: ts
+  - id: |-
+      Proposal Entity Types
+      RFC-001: DAO Registry Specification - Prop
+    file: docs/specifications/core/proposal.types.ts
+    kind: ''
+    name: null
+    summary: |-
+      Proposal Entity Types
+      RFC-001: DAO Registry Specification - Proposal Types
+    tags: {}
+    lang: ts
+  - id: |-
+      ENS Integration Types
+      RFC-001: DAO Registry Specification - ENS 
+    file: docs/specifications/ens/ens-integration.types.ts
+    kind: ''
+    name: null
+    summary: |-
+      ENS Integration Types
+      RFC-001: DAO Registry Specification - ENS Integration Types
+    tags: {}
+    lang: ts
+  - id: |-
+      Data Source Mapping Types
+      RFC-001: DAO Registry Specification - 
+    file: docs/specifications/mapping/data-sources.types.ts
+    kind: ''
+    name: null
+    summary: |-
+      Data Source Mapping Types
+      RFC-001: DAO Registry Specification - Data Source Mapping Types
+    tags: {}
+    lang: ts
+  - id: |-
+      Event Mapping Types
+      RFC-001: DAO Registry Specification - Event 
+    file: docs/specifications/mapping/event-mappings.types.ts
+    kind: ''
+    name: null
+    summary: |-
+      Event Mapping Types
+      RFC-001: DAO Registry Specification - Event Mapping Types
+    tags: {}
+    lang: ts
+  - id: |-
+      DAO Registry Mapping Specifications Index
+      Main export file for a
+    file: docs/specifications/mapping/index.ts
+    kind: ''
+    name: null
+    summary: |-
+      DAO Registry Mapping Specifications Index
+      Main export file for all mapping specification types
+    tags: {}
+    lang: ts
+  - id: |-
+      Processor Types
+      RFC-001: DAO Registry Specification - Processor 
+    file: docs/specifications/mapping/processor.types.ts
+    kind: ''
+    name: null
+    summary: |-
+      Processor Types
+      RFC-001: DAO Registry Specification - Processor Types
+    tags: {}
+    lang: ts
+  - id: |-
+      Registration Mapping Types
+      RFC-001: DAO Registry Specification -
+    file: docs/specifications/mapping/registration-mappings.types.ts
+    kind: ''
+    name: null
+    summary: |-
+      Registration Mapping Types
+      RFC-001: DAO Registry Specification - Registration Mapping Types
+    tags: {}
+    lang: ts
+  - id: |-
+      Validation Types
+      RFC-003: Nomenclature and Classification System
+    file: docs/specifications/validation/validation.types.ts
+    kind: ''
+    name: null
+    summary: |-
+      Validation Types
+      RFC-003: Nomenclature and Classification System - Validation Types
+    tags: {}
+    lang: ts

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, ExternalLink, Shield, Users, TrendingUp, Calendar, Vote } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Shield, Users, TrendingUp, Calendar, Vote, Globe, Database, Activity, Award } from 'lucide-react';
 import axios from 'axios';
 
 const DAODetail = () => {
@@ -40,18 +40,18 @@ const DAODetail = () => {
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      'Active': { color: 'bg-green-100 text-green-800', icon: Shield },
-      'Pending': { color: 'bg-yellow-100 text-yellow-800', icon: Shield },
-      'Suspended': { color: 'bg-red-100 text-red-800', icon: Shield },
-      'Inactive': { color: 'bg-gray-100 text-gray-800', icon: Shield }
+      'Active': { color: 'bg-green-100 text-green-800 border-green-200', icon: Shield },
+      'Pending': { color: 'bg-yellow-100 text-yellow-800 border-yellow-200', icon: Shield },
+      'Suspended': { color: 'bg-red-100 text-red-800 border-red-200', icon: Shield },
+      'Inactive': { color: 'bg-gray-100 text-gray-800 border-gray-200', icon: Shield }
     };
     
     const config = statusConfig[status] || statusConfig['Pending'];
     const Icon = config.icon;
     
     return (
-      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.color}`}>
-        <Icon className="w-3 h-3 mr-1" />
+      <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${config.color}`}>
+        <Icon className="w-4 h-4 mr-2" />
         {status}
       </span>
     );
@@ -59,10 +59,10 @@ const DAODetail = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-96">
+      <div className="flex justify-center items-center py-12">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-secondary-600">Loading DAO details...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading DAO details...</p>
         </div>
       </div>
     );
@@ -70,239 +70,235 @@ const DAODetail = () => {
 
   if (error || !dao) {
     return (
-      <div className="text-center py-12">
-        <div className="text-red-600 mb-4">
-          <Shield className="w-16 h-16 mx-auto" />
+      <div className="max-w-4xl mx-auto text-center py-12">
+        <div className="bg-red-50 border border-red-200 rounded-xl p-8">
+          <Shield className="w-16 h-16 text-red-400 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Error Loading DAO</h3>
+          <p className="text-gray-600 mb-6">{error || 'DAO not found'}</p>
+          <Link 
+            to="/" 
+            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Search
+          </Link>
         </div>
-        <h3 className="text-lg font-medium text-secondary-900 mb-2">Error Loading DAO</h3>
-        <p className="text-secondary-600">{error || 'DAO not found'}</p>
-        <Link to="/" className="btn-primary mt-4 inline-block">
-          Back to DAOs
-        </Link>
       </div>
     );
   }
 
   return (
-    <div>
-      {/* Back Button */}
-      <Link to="/" className="inline-flex items-center text-secondary-600 hover:text-primary-600 mb-6">
+    <div className="max-w-6xl mx-auto space-y-8">
+      {/* Enhanced Back Button */}
+      <Link 
+        to="/" 
+        className="inline-flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200"
+      >
         <ArrowLeft className="w-4 h-4 mr-2" />
-        Back to DAOs
+        Back to Search
       </Link>
 
-      {/* Header */}
-      <div className="card mb-8">
+      {/* Enhanced Header */}
+      <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-lg p-8">
         <div className="flex items-start justify-between mb-6">
           <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-3xl font-bold text-secondary-900">{dao.name}</h1>
-              {dao.verified && (
-                <Shield className="w-6 h-6 text-green-600" title="Verified DAO" />
-              )}
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                <Database className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  {dao.name}
+                </h1>
+                <p className="text-lg text-gray-600 mt-1">
+                  {dao.symbol && `${dao.symbol} • `}{getChainName(dao.chainId)}
+                </p>
+              </div>
             </div>
-            <p className="text-lg text-secondary-600 mb-4">{dao.symbol}</p>
-            <p className="text-secondary-700">{dao.description}</p>
+            
+            {dao.verified && (
+              <div className="flex items-center gap-2 mb-4">
+                <Award className="w-5 h-5 text-green-600" />
+                <span className="text-green-700 font-medium">Verified DAO</span>
+              </div>
+            )}
+            
+            {getStatusBadge(dao.status)}
           </div>
-          {dao.website && (
-            <a
-              href={dao.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-secondary flex items-center"
-            >
-              <ExternalLink className="w-4 h-4 mr-2" />
-              Visit Website
-            </a>
-          )}
+          
+          <div className="flex flex-col items-end gap-3">
+            {dao.website && (
+              <a
+                href={dao.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+              >
+                <Globe className="w-4 h-4 mr-2" />
+                Visit Website
+                <ExternalLink className="w-4 h-4 ml-2" />
+              </a>
+            )}
+          </div>
         </div>
 
-        {/* Quick Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-primary-600">{getChainName(dao.chainId)}</div>
-            <div className="text-sm text-secondary-500">Network</div>
+        {dao.description && (
+          <div className="prose max-w-none">
+            <p className="text-gray-700 text-lg leading-relaxed">
+              {dao.description}
+            </p>
           </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-primary-600">{dao.status}</div>
-            <div className="text-sm text-secondary-500">Status</div>
+        )}
+      </div>
+
+      {/* Enhanced Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-6 text-center">
+          <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+            <Users className="w-6 h-6 text-blue-600" />
           </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-primary-600">{dao.governanceType}</div>
-            <div className="text-sm text-secondary-500">Governance</div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-1">
+            {dao.analytics?.totalMembers || dao.memberCount || 0}
+          </h3>
+          <p className="text-gray-600">Total Members</p>
+        </div>
+
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-6 text-center">
+          <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+            <Vote className="w-6 h-6 text-green-600" />
           </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-primary-600">{dao.analytics?.totalMembers || 0}</div>
-            <div className="text-sm text-secondary-500">Members</div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-1">
+            {dao.analytics?.totalProposals || 0}
+          </h3>
+          <p className="text-gray-600">Total Proposals</p>
+        </div>
+
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-6 text-center">
+          <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+            <Activity className="w-6 h-6 text-purple-600" />
           </div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-1">
+            {dao.analytics?.activeProposals || 0}
+          </h3>
+          <p className="text-gray-600">Active Proposals</p>
+        </div>
+
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-6 text-center">
+          <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+            <TrendingUp className="w-6 h-6 text-yellow-600" />
+          </div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-1">
+            {dao.analytics?.participationRate || 0}%
+          </h3>
+          <p className="text-gray-600">Participation Rate</p>
         </div>
       </div>
 
-      {/* Details Grid */}
+      {/* Enhanced Details Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Governance Information */}
-        <div className="card">
-          <h2 className="text-xl font-semibold text-secondary-900 mb-4 flex items-center">
-            <Vote className="w-5 h-5 mr-2" />
-            Governance
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+            <Vote className="w-5 h-5 mr-2 text-blue-600" />
+            Governance Details
           </h2>
-          <div className="space-y-3">
-            <div className="flex justify-between">
-              <span className="text-secondary-600">Type:</span>
-              <span className="font-medium">{dao.governanceType}</span>
+          
+          <div className="space-y-4">
+            <div className="flex justify-between items-center py-3 border-b border-gray-100">
+              <span className="text-gray-600">Governance Type</span>
+              <span className="font-medium text-gray-900">{dao.governanceType || 'Unknown'}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-secondary-600">Voting Period:</span>
-              <span className="font-medium">{dao.votingPeriod} blocks</span>
+            
+            <div className="flex justify-between items-center py-3 border-b border-gray-100">
+              <span className="text-gray-600">Voting Power</span>
+              <span className="font-medium text-gray-900">{dao.votingPower || 'Token-based'}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-secondary-600">Quorum:</span>
-              <span className="font-medium">{dao.quorum} votes</span>
+            
+            <div className="flex justify-between items-center py-3 border-b border-gray-100">
+              <span className="text-gray-600">Quorum</span>
+              <span className="font-medium text-gray-900">{dao.quorum || 'Not specified'}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-secondary-600">Proposal Threshold:</span>
-              <span className="font-medium">{dao.proposalThreshold} tokens</span>
+            
+            <div className="flex justify-between items-center py-3">
+              <span className="text-gray-600">Execution Delay</span>
+              <span className="font-medium text-gray-900">{dao.executionDelay || 'None'}</span>
             </div>
           </div>
         </div>
 
-        {/* Analytics */}
-        <div className="card">
-          <h2 className="text-xl font-semibold text-secondary-900 mb-4 flex items-center">
-            <TrendingUp className="w-5 h-5 mr-2" />
-            Analytics
+        {/* Technical Information */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+            <Database className="w-5 h-5 mr-2 text-purple-600" />
+            Technical Details
           </h2>
-          {dao.analytics ? (
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <span className="text-secondary-600">Total Proposals:</span>
-                <span className="font-medium">{dao.analytics.totalProposals}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-secondary-600">Active Proposals:</span>
-                <span className="font-medium">{dao.analytics.activeProposals}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-secondary-600">Total Members:</span>
-                <span className="font-medium">{dao.analytics.totalMembers}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-secondary-600">Active Members:</span>
-                <span className="font-medium">{dao.analytics.activeMembers}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-secondary-600">Treasury Value:</span>
-                <span className="font-medium">{dao.analytics.treasuryValue} ETH</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-secondary-600">Total Voting Power:</span>
-                <span className="font-medium">{dao.analytics.totalVotingPower}</span>
-              </div>
+          
+          <div className="space-y-4">
+            <div className="flex justify-between items-center py-3 border-b border-gray-100">
+              <span className="text-gray-600">Contract Address</span>
+              <span className="font-mono text-sm text-gray-900 truncate max-w-xs">
+                {dao.contractAddress || 'Not available'}
+              </span>
             </div>
-          ) : (
-            <p className="text-secondary-500">No analytics data available</p>
-          )}
-        </div>
-
-        {/* Contract Addresses */}
-        <div className="card">
-          <h2 className="text-xl font-semibold text-secondary-900 mb-4">Contract Addresses</h2>
-          <div className="space-y-3">
-            <div>
-              <span className="text-secondary-600 text-sm">Main Contract:</span>
-              <div className="font-mono text-sm bg-secondary-100 p-2 rounded mt-1 break-all">
-                {dao.contractAddress}
-              </div>
+            
+            <div className="flex justify-between items-center py-3 border-b border-gray-100">
+              <span className="text-gray-600">Blockchain</span>
+              <span className="font-medium text-gray-900">{getChainName(dao.chainId)}</span>
             </div>
-            <div>
-              <span className="text-secondary-600 text-sm">Token Contract:</span>
-              <div className="font-mono text-sm bg-secondary-100 p-2 rounded mt-1 break-all">
-                {dao.tokenAddress}
-              </div>
+            
+            <div className="flex justify-between items-center py-3 border-b border-gray-100">
+              <span className="text-gray-600">Registration Date</span>
+              <span className="font-medium text-gray-900">
+                {dao.registrationDate ? new Date(dao.registrationDate).toLocaleDateString() : 'Unknown'}
+              </span>
             </div>
-            <div>
-              <span className="text-secondary-600 text-sm">Treasury Contract:</span>
-              <div className="font-mono text-sm bg-secondary-100 p-2 rounded mt-1 break-all">
-                {dao.treasuryAddress}
-              </div>
-            </div>
-            <div>
-              <span className="text-secondary-600 text-sm">Governance Contract:</span>
-              <div className="font-mono text-sm bg-secondary-100 p-2 rounded mt-1 break-all">
-                {dao.governanceAddress}
-              </div>
+            
+            <div className="flex justify-between items-center py-3">
+              <span className="text-gray-600">Last Updated</span>
+              <span className="font-medium text-gray-900">
+                {dao.lastUpdated ? new Date(dao.lastUpdated).toLocaleDateString() : 'Unknown'}
+              </span>
             </div>
           </div>
-        </div>
-
-        {/* Social Links */}
-        <div className="card">
-          <h2 className="text-xl font-semibold text-secondary-900 mb-4">Social Links</h2>
-          {dao.socialLinks ? (
-            <div className="space-y-3">
-              {dao.socialLinks.twitter && (
-                <a
-                  href={dao.socialLinks.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center text-secondary-600 hover:text-primary-600"
-                >
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  Twitter
-                </a>
-              )}
-              {dao.socialLinks.discord && (
-                <a
-                  href={dao.socialLinks.discord}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center text-secondary-600 hover:text-primary-600"
-                >
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  Discord
-                </a>
-              )}
-              {dao.socialLinks.telegram && (
-                <a
-                  href={dao.socialLinks.telegram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center text-secondary-600 hover:text-primary-600"
-                >
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  Telegram
-                </a>
-              )}
-              {dao.socialLinks.github && (
-                <a
-                  href={dao.socialLinks.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center text-secondary-600 hover:text-primary-600"
-                >
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  GitHub
-                </a>
-              )}
-            </div>
-          ) : (
-            <p className="text-secondary-500">No social links available</p>
-          )}
         </div>
       </div>
 
-      {/* Tags */}
+      {/* Enhanced Tags Section */}
       {dao.tags && dao.tags.length > 0 && (
-        <div className="card mt-8">
-          <h2 className="text-xl font-semibold text-secondary-900 mb-4">Tags</h2>
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Tags & Categories</h2>
           <div className="flex flex-wrap gap-2">
             {dao.tags.map((tag, index) => (
               <span
                 key={index}
-                className="px-3 py-1 bg-primary-100 text-primary-800 rounded-full text-sm"
+                className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200"
               >
                 {tag}
               </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Enhanced Recent Activity */}
+      {dao.recentActivity && dao.recentActivity.length > 0 && (
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+            <Activity className="w-5 h-5 mr-2 text-green-600" />
+            Recent Activity
+          </h2>
+          
+          <div className="space-y-4">
+            {dao.recentActivity.map((activity, index) => (
+              <div key={index} className="flex items-center py-3 border-b border-gray-100 last:border-b-0">
+                <div className="w-2 h-2 bg-blue-600 rounded-full mr-4"></div>
+                <div className="flex-1">
+                  <p className="text-gray-900">{activity.description}</p>
+                  <p className="text-sm text-gray-500">
+                    {new Date(activity.timestamp).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
             ))}
           </div>
         </div>
