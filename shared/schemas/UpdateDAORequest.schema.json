@@ -14,12 +14,10 @@
           "type": "string"
         },
         "logo": {
-          "type": "string",
-          "format": "uri"
+          "type": "string"
         },
         "website": {
-          "type": "string",
-          "format": "uri"
+          "type": "string"
         },
         "socialLinks": {
           "$ref": "#/definitions/SocialLinks"
@@ -28,18 +26,16 @@
           "type": "array",
           "items": {
             "type": "string"
-          },
-          "maxItems": 10
+          }
         },
         "status": {
-          "type": "string",
           "enum": [
-            "Pending",
-            "Active",
-            "Suspended",
-            "Inactive",
-            "Banned"
-          ]
+            "active",
+            "inactive",
+            "pending",
+            "suspended"
+          ],
+          "type": "string"
         }
       }
     },
@@ -47,28 +43,22 @@
       "type": "object",
       "properties": {
         "twitter": {
-          "type": "string",
-          "format": "uri"
+          "type": "string"
         },
         "discord": {
-          "type": "string",
-          "format": "uri"
+          "type": "string"
         },
         "telegram": {
-          "type": "string",
-          "format": "uri"
+          "type": "string"
         },
         "github": {
-          "type": "string",
-          "format": "uri"
+          "type": "string"
         },
         "medium": {
-          "type": "string",
-          "format": "uri"
+          "type": "string"
         },
         "reddit": {
-          "type": "string",
-          "format": "uri"
+          "type": "string"
         }
       }
     }
