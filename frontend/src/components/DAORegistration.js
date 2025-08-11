@@ -74,7 +74,7 @@ const DAORegistration = () => {
     treasuryAddress: '',
     timelockAddress: '',
     governanceType: 'token',
-    votingPeriod: 7 * 24 * 60 * 60,
+    votingPeriod: 7,
     quorum: 4,
     proposalThreshold: 1000,
     executionDelay: 0,
@@ -162,9 +162,34 @@ const DAORegistration = () => {
     setFormData(prev => ({ ...prev, [parent]: { ...prev[parent], [field]: value } }));
   };
 
+  const buildCreatePayload = () => {
+    const quorumValue = Number.isFinite(formData.quorum)
+      ? (Number.isInteger(formData.quorum) ? formData.quorum : Math.round(formData.quorum * 100))
+      : 0;
+
+    return {
+      name: formData.name,
+      symbol: formData.symbol,
+      description: formData.description,
+      chainId: parseInt(formData.chainId, 10),
+      contractAddress: formData.contractAddress,
+      tokenAddress: formData.tokenAddress,
+      treasuryAddress: formData.treasuryAddress,
+      governanceAddress: formData.governanceAddress,
+      governanceType: formData.governanceType,
+      votingPeriod: parseInt(formData.votingPeriod, 10),
+      quorum: quorumValue,
+      proposalThreshold: parseInt(formData.proposalThreshold, 10),
+      socialLinks: formData.socialLinks,
+      tags: formData.tags,
+      ensDomain: formData.ensDomain || undefined
+    };
+  };
+
   const runAjvValidation = () => {
     if (!ajvValidator) return true;
-    const valid = ajvValidator(formData);
+    const candidate = buildCreatePayload();
+    const valid = ajvValidator(candidate);
     if (valid) return true;
     const fieldErrors = {};
     (ajvValidator.errors || []).forEach(err => {
@@ -260,25 +285,7 @@ const DAORegistration = () => {
     if (step < 6) { setStep(step + 1); return; }
     setLoading(true);
     try {
-      const payload = {
-        name: formData.name,
-        symbol: formData.symbol,
-        description: formData.description,
-        chainId: formData.chainId,
-        contractAddress: formData.contractAddress,
-        tokenAddress: formData.tokenAddress,
-        treasuryAddress: formData.treasuryAddress,
-        governanceAddress: formData.governanceAddress,
-        governanceType: formData.governanceType,
-        votingPeriod: formData.votingPeriod,
-        quorum: formData.quorum,
-        proposalThreshold: formData.proposalThreshold,
-        logo: formData.logoPreview || undefined,
-        website: formData.website || undefined,
-        socialLinks: formData.socialLinks,
-        tags: formData.tags,
-        ensDomain: formData.ensDomain || undefined
-      };
+      const payload = buildCreatePayload();
       const res = await axios.post('/api/daos', payload);
       if (res.data?.success) {
         alert('DAO registration submitted successfully!');
