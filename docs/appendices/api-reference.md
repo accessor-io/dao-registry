@@ -2,8 +2,14 @@
 
 ## Base URL
 
+Production:
 ```
-https://api.dao-registry.com/v1
+https://api.dao-registry.com
+```
+
+Local development:
+```
+http://localhost:3100
 ```
 
 ## Authentication
@@ -29,7 +35,7 @@ curl -H "Authorization: Bearer YOUR_JWT_TOKEN" \
 #### Get All DAOs
 
 ```http
-GET /daos
+GET /api/daos
 ```
 
 **Query Parameters:**
@@ -74,7 +80,7 @@ GET /daos
 #### Get DAO by ID
 
 ```http
-GET /daos/{id}
+GET /api/daos/{id}
 ```
 
 **Response:**
@@ -128,33 +134,16 @@ GET /daos/{id}
 #### Create DAO
 
 ```http
-POST /daos
+POST /api/daos
 ```
 
-**Request Body:**
-```json
-{
-  "name": "New DAO",
-  "symbol": "NEWDAO",
-  "description": "A new decentralized autonomous organization",
-  "chainId": 1,
-  "contractAddress": "0x...",
-  "tokenAddress": "0x...",
-  "treasuryAddress": "0x...",
-  "governanceAddress": "0x...",
-  "website": "https://example.com",
-  "socialLinks": {
-    "twitter": "https://twitter.com/example",
-    "discord": "https://discord.gg/example"
-  },
-  "tags": ["DeFi", "Governance"]
-}
-```
+Request body conforms to `CreateDAORequest` schema (served at `/api/schemas/CreateDAORequest`). Required keys:
+`name`, `symbol`, `description`, `chainId` (integer), `contractAddress`, `tokenAddress`, `treasuryAddress`, `governanceAddress`, `governanceType` (string), `votingPeriod` (integer), `quorum` (integer 0-10000), `proposalThreshold` (integer ≥1). Optional: `socialLinks` (URIs), `tags` (≤10), `ensDomain`.
 
 #### Update DAO
 
 ```http
-PUT /daos/{id}
+PUT /api/daos/{id}
 ```
 
 **Request Body:**
@@ -173,15 +162,38 @@ PUT /daos/{id}
 #### Delete DAO
 
 ```http
-DELETE /daos/{id}
+DELETE /api/daos/{id}
 ```
+
+#### Verify DAO
+
+```http
+PATCH /api/daos/{id}/verify
+```
+
+Body:
+```json
+{ "verified": true }
+```
+
+#### Change DAO status
+
+```http
+PATCH /api/daos/{id}/status
+```
+
+Body:
+```json
+{ "status": "Active" }
+```
+Allowed: `Pending | Active | Suspended | Inactive | Banned`.
 
 ### Statistics
 
 #### Get Registry Statistics
 
 ```http
-GET /stats
+GET /api/daos/stats
 ```
 
 **Query Parameters:**
@@ -228,13 +240,11 @@ GET /stats
 }
 ```
 
-### Proposals
+### Proposals (planned)
 
 #### Get DAO Proposals
 
-```http
-GET /daos/{id}/proposals
-```
+Not yet implemented in the backend routes. Planned endpoints will follow `/api/daos/{id}/proposals`.
 
 **Query Parameters:**
 - `status` (string): Proposal status
@@ -334,7 +344,7 @@ GET /daos/{id}/proposals/{proposalId}/votes/{voter}
 #### Get ENS Resolution
 
 ```http
-GET /ens/resolve/{name}
+GET /api/ens/resolve/{name}
 ```
 
 **Response:**
@@ -354,8 +364,21 @@ GET /ens/resolve/{name}
 #### Set ENS Record
 
 ```http
-POST /ens/records
+GET /api/ens/records/{name}
 ```
+
+```http
+GET /api/ens/availability/{name}
+```
+
+```http
+GET /api/ens/suggestions/{name}
+```
+
+```http
+POST /api/ens/resolve
+```
+Body conforms to `ENSResolveRequest` schema.
 
 **Request Body:**
 ```json
@@ -487,4 +510,4 @@ const stats = await client.getStats({
 
 ---
 
-*Last updated: July 2024*
+*Last updated: August 2025*
