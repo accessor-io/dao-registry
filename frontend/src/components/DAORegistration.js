@@ -164,7 +164,7 @@ const DAORegistration = () => {
 
   const buildCreatePayload = () => {
     const quorumValue = Number.isFinite(formData.quorum)
-      ? (Number.isInteger(formData.quorum) ? formData.quorum : Math.round(formData.quorum * 100))
+      ? Math.round(formData.quorum)
       : 0;
 
     return {
@@ -179,7 +179,7 @@ const DAORegistration = () => {
       governanceType: formData.governanceType,
       votingPeriod: parseInt(formData.votingPeriod, 10),
       quorum: quorumValue,
-      proposalThreshold: parseInt(formData.proposalThreshold, 10),
+       proposalThreshold: Math.max(1, parseInt(formData.proposalThreshold, 10)),
       socialLinks: formData.socialLinks,
       tags: formData.tags,
       ensDomain: formData.ensDomain || undefined

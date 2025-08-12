@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Filter, ExternalLink, Shield, Users, TrendingUp } from 'lucide-react';
-import axios from 'axios';
+import { daoApi } from '../services/api';
 
 const DAOList = () => {
   const [daos, setDaos] = useState([]);
@@ -33,7 +33,7 @@ const DAOList = () => {
         ...filters
       };
       
-      const response = await axios.get('/api/v1/daos', { params });
+      const response = await daoApi.getAll(params);
       setDaos(response.data.data);
       setPagination(prev => ({
         ...prev,
