@@ -43,8 +43,10 @@ app.use(morgan('combined'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Serve static files from the React build
-app.use(express.static(path.join(__dirname, '../frontend/build')));
+// Serve static files from the React build (repo-level frontend/build)
+const REPO_ROOT = path.resolve(__dirname, '..', '..');
+const FRONTEND_BUILD = path.join(REPO_ROOT, 'frontend', 'build');
+app.use(express.static(FRONTEND_BUILD));
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -101,7 +103,11 @@ app.get('/api/docs', (req, res) => {
 
 // Serve React app for all other routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+  const indexPath = path.join(FRONTEND_BUILD, 'index.html');
+  if (!fs.existsSync(indexPath)) {
+    return res.status(500).json({ error: 'UI build not found', expectedPath: indexPath });
+  }
+  res.sendFile(indexPath);
 });
 
 // Error handling middleware
