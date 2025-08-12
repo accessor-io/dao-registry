@@ -35,6 +35,7 @@ import {
   Lock,
   Unlock
 } from 'lucide-react';
+import { daoApi } from '../services/api';
 
 const DAORegistry = () => {
   const [daos, setDaos] = useState([]);
@@ -55,154 +56,7 @@ const DAORegistry = () => {
     totalTreasury: 0
   });
 
-  // Mock data for demonstration
-  const mockDAOs = [
-    {
-      id: 1,
-      name: "Uniswap DAO",
-      symbol: "UNI",
-      description: "Decentralized exchange governance token",
-      logo: "https://cryptologos.cc/logos/uniswap-uni-logo.png",
-      website: "https://uniswap.org",
-      contractAddress: "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
-      tokenAddress: "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
-      treasuryAddress: "0x4750c43867EF5F8986914e3B9d4C19d9C8C1dF1a",
-      governanceAddress: "0x5e4be8Bc9637f0EAA1A755019e06A68dE081F58F",
-      chainId: 1,
-      verified: true,
-      active: true,
-      status: "Active",
-      governanceType: "TokenWeighted",
-      memberCount: 45000,
-      proposalCount: 156,
-      activeProposals: 3,
-      treasuryValue: 2500000,
-      participationRate: 78.5,
-      createdAt: "2020-09-17",
-      tags: ["DeFi", "DEX", "Governance"],
-      socialLinks: {
-        twitter: "https://twitter.com/Uniswap",
-        discord: "https://discord.gg/uniswap",
-        github: "https://github.com/Uniswap"
-      }
-    },
-    {
-      id: 2,
-      name: "Compound DAO",
-      symbol: "COMP",
-      description: "Decentralized lending protocol governance",
-      logo: "https://cryptologos.cc/logos/compound-comp-logo.png",
-      website: "https://compound.finance",
-      contractAddress: "0xc00e94Cb662C3520282E6f5717214004A7f26888",
-      tokenAddress: "0xc00e94Cb662C3520282E6f5717214004A7f26888",
-      treasuryAddress: "0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B",
-      governanceAddress: "0x6d903f6003cca6255D85CcA4D3B5E5146dC33925",
-      chainId: 1,
-      verified: true,
-      active: true,
-      status: "Active",
-      governanceType: "TokenWeighted",
-      memberCount: 32000,
-      proposalCount: 89,
-      activeProposals: 1,
-      treasuryValue: 1800000,
-      participationRate: 82.3,
-      createdAt: "2020-06-15",
-      tags: ["DeFi", "Lending", "Governance"],
-      socialLinks: {
-        twitter: "https://twitter.com/compoundfinance",
-        discord: "https://discord.gg/compound",
-        github: "https://github.com/compound-finance"
-      }
-    },
-    {
-      id: 3,
-      name: "Aave DAO",
-      symbol: "AAVE",
-      description: "Decentralized lending and borrowing protocol",
-      logo: "https://cryptologos.cc/logos/aave-aave-logo.png",
-      website: "https://aave.com",
-      contractAddress: "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
-      tokenAddress: "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
-      treasuryAddress: "0x464C71f6c2F760A0dE4F8E9B4Bc3B3c3c3c3c3c3c",
-      governanceAddress: "0xEC568fffba86c094cf6b6D9A1A8c9078C4C4C4C4C",
-      chainId: 1,
-      verified: true,
-      active: true,
-      status: "Active",
-      governanceType: "TokenWeighted",
-      memberCount: 28000,
-      proposalCount: 67,
-      activeProposals: 2,
-      treasuryValue: 3200000,
-      participationRate: 75.8,
-      createdAt: "2020-10-03",
-      tags: ["DeFi", "Lending", "Borrowing"],
-      socialLinks: {
-        twitter: "https://twitter.com/AaveAave",
-        discord: "https://discord.gg/aave",
-        github: "https://github.com/aave"
-      }
-    },
-    {
-      id: 4,
-      name: "Maker DAO",
-      symbol: "MKR",
-      description: "Decentralized autonomous organization for DAI stablecoin",
-      logo: "https://cryptologos.cc/logos/maker-mkr-logo.png",
-      website: "https://makerdao.com",
-      contractAddress: "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
-      tokenAddress: "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
-      treasuryAddress: "0x3A3A3A3A3A3A3A3A3A3A3A3A3A3A3A3A3A3A3A3A",
-      governanceAddress: "0x4A4A4A4A4A4A4A4A4A4A4A4A4A4A4A4A4A4A4A4A",
-      chainId: 1,
-      verified: true,
-      active: true,
-      status: "Active",
-      governanceType: "TokenWeighted",
-      memberCount: 15000,
-      proposalCount: 234,
-      activeProposals: 5,
-      treasuryValue: 8500000,
-      participationRate: 88.2,
-      createdAt: "2017-12-18",
-      tags: ["DeFi", "Stablecoin", "Governance"],
-      socialLinks: {
-        twitter: "https://twitter.com/MakerDAO",
-        discord: "https://discord.gg/makerdao",
-        github: "https://github.com/makerdao"
-      }
-    },
-    {
-      id: 5,
-      name: "Curve DAO",
-      symbol: "CRV",
-      description: "Decentralized exchange for stablecoins",
-      logo: "https://cryptologos.cc/logos/curve-dao-token-crv-logo.png",
-      website: "https://curve.fi",
-      contractAddress: "0xD533a949740bb3306d119CC777fa900bA034cd52",
-      tokenAddress: "0xD533a949740bb3306d119CC777fa900bA034cd52",
-      treasuryAddress: "0x5B5B5B5B5B5B5B5B5B5B5B5B5B5B5B5B5B5B5B5B5B",
-      governanceAddress: "0x6B6B6B6B6B6B6B6B6B6B6B6B6B6B6B6B6B6B6B6B6B",
-      chainId: 1,
-      verified: true,
-      active: true,
-      status: "Active",
-      governanceType: "TokenWeighted",
-      memberCount: 22000,
-      proposalCount: 123,
-      activeProposals: 1,
-      treasuryValue: 4100000,
-      participationRate: 71.4,
-      createdAt: "2020-08-14",
-      tags: ["DeFi", "DEX", "Stablecoins"],
-      socialLinks: {
-        twitter: "https://twitter.com/curvefinance",
-        discord: "https://discord.gg/curve",
-        github: "https://github.com/curvefi"
-      }
-    }
-  ];
+  // Live data will be loaded from backend
 
   const chains = [
     { id: 'all', name: 'All Chains', icon: Globe },
@@ -231,19 +85,25 @@ const DAORegistry = () => {
   ];
 
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setDaos(mockDAOs);
-      setFilteredDaos(mockDAOs);
-      setStats({
-        totalDAOs: mockDAOs.length,
-        activeDAOs: mockDAOs.filter(dao => dao.active).length,
-        totalMembers: mockDAOs.reduce((sum, dao) => sum + dao.memberCount, 0),
-        totalProposals: mockDAOs.reduce((sum, dao) => sum + dao.proposalCount, 0),
-        totalTreasury: mockDAOs.reduce((sum, dao) => sum + dao.treasuryValue, 0)
-      });
-      setLoading(false);
-    }, 1000);
+    const load = async () => {
+      try {
+        const { data } = await daoApi.getAll({ page: 1, limit: 50, sortBy: 'createdAt', sortOrder: 'desc' });
+        const list = data?.data || [];
+        setDaos(list);
+        setFilteredDaos(list);
+        setStats(prev => ({
+          ...prev,
+          totalDAOs: list.length,
+          activeDAOs: list.filter(d => d.status === 'Active').length,
+        }));
+      } catch (e) {
+        setDaos([]);
+        setFilteredDaos([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
   }, []);
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // API base configuration
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+const API_BASE_URL = process.env.REACT_APP_API_URL || '';
 
 // Create axios instance with default config
 const api = axios.create({
@@ -55,8 +55,8 @@ export const daoApi = {
   // Delete DAO
   delete: (id) => api.delete(`/api/daos/${id}`),
   
-  // Search DAOs
-  search: (query) => api.get('/api/daos/search', { params: { q: query } }),
+// Search DAOs
+  search: (query) => api.get('/api/daos', { params: { search: query } }),
   
   // Get DAO statistics
   getStats: () => api.get('/api/daos/stats'),
