@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
 const morgan = require('morgan');
+const { requestLogger } = require('./middleware/request-logger');
 const dotenv = require('dotenv');
 const path = require('path');
 const fs = require('fs');
@@ -38,6 +39,8 @@ app.use(cors({
   credentials: true
 }));
 
+// Robust HTTP request logging (structured) + standard combined log
+app.use(requestLogger());
 app.use(morgan('combined'));
 
 app.use(express.json({ limit: '10mb' }));
