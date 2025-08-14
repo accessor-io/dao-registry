@@ -38,7 +38,7 @@ api.interceptors.response.use(
   }
 );
 
-// DAO Registry API endpoints
+// DAO Registry API endpoints (standardized to backend params)
 export const daoApi = {
   // Get all DAOs
   getAll: (params = {}) => api.get('/api/daos', { params }),
@@ -55,7 +55,7 @@ export const daoApi = {
   // Delete DAO
   delete: (id) => api.delete(`/api/daos/${id}`),
   
-// Search DAOs
+  // Search DAOs (maps to GET /api/daos?search=...)
   search: (query) => api.get('/api/daos', { params: { search: query } }),
   
   // Get DAO statistics

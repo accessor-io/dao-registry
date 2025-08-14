@@ -49,7 +49,8 @@ const validateRequest = (schema, property = 'body', schemaName = null) => {
         return res.status(400).json({
           success: false,
           error: 'Schema validation failed',
-          details: errors.map(e => `${e.instancePath || e.schemaPath} ${e.message}`).join(', ')
+          details: errors.map(e => `${e.instancePath || e.schemaPath} ${e.message}`).join(', '),
+          schema: schemaName
         });
       }
     }

@@ -69,11 +69,10 @@ const DAORegistry = () => {
 
   const governanceTypes = [
     { id: 'all', name: 'All Types' },
-    { id: 'TokenWeighted', name: 'Token Weighted' },
-    { id: 'Quadratic', name: 'Quadratic' },
-    { id: 'Reputation', name: 'Reputation Based' },
-    { id: 'Liquid', name: 'Liquid Democracy' },
-    { id: 'Hybrid', name: 'Hybrid' }
+    { id: 'token', name: 'Token-based' },
+    { id: 'nft', name: 'NFT-based' },
+    { id: 'multisig', name: 'Multisig' },
+    { id: 'hybrid', name: 'Hybrid' }
   ];
 
   const statuses = [
@@ -81,7 +80,8 @@ const DAORegistry = () => {
     { id: 'Active', name: 'Active' },
     { id: 'Pending', name: 'Pending' },
     { id: 'Suspended', name: 'Suspended' },
-    { id: 'Inactive', name: 'Inactive' }
+    { id: 'Inactive', name: 'Inactive' },
+    { id: 'Banned', name: 'Banned' }
   ];
 
   useEffect(() => {
