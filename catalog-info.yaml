@@ -1,0 +1,19 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: Amplication-dao-registry
+  description: 
+  labels:
+    vendor: "amplication"
+  annotations:
+    github.com/team-slug: "backstage/maintainers"
+    github.com/project-slug: "backstage/backstage"
+  tags:
+    - "Node.js"
+  links:
+    - url: https://server.amplication.com/cme94z60m39za6zgmxfsum61k
+      title: Amplication Platform
+spec:
+  type: service
+  lifecycle: production
+  owner: development
