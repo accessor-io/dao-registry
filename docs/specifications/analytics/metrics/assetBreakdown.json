@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "assetBreakdown",
+  "description": "List of per-asset treasury balances, values, and prices.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "assetBreakdown" },
+    "label": { "type": "string", "const": "Asset Breakdown" },
+    "unit": { "type": "string", "const": "array" },
+    "category": { "type": "string", "const": "treasury" },
+    "source": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["derived"] },
+        "onChain": { "type": "object", "properties": { "balancesFrom": { "type": "string" } } },
+        "offChain": { "type": "object", "properties": { "priceFeeds": { "type": "array", "items": { "type": "string" } } } }
+      },
+      "required": ["type"]
+    },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "map(tokens, {balance, price, value, percentage})" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "totalTransactions",
+  "description": "Total number of treasury transactions over a time range.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "totalTransactions" },
+    "label": { "type": "string", "const": "Total Transactions" },
+    "unit": { "type": "string", "const": "count" },
+    "category": { "type": "string", "const": "treasury" },
+    "timeRange": { "type": "string", "enum": ["1d", "7d", "30d", "90d", "365d", "all"], "default": "30d" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["on-chain", "derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "count(FundsReceived|FundsWithdrawn in timeRange)" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

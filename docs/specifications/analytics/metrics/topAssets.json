@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "topAssets",
+  "description": "Top N treasury assets by value.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "topAssets" },
+    "label": { "type": "string", "const": "Top Assets" },
+    "unit": { "type": "string", "const": "array" },
+    "category": { "type": "string", "const": "treasury" },
+    "params": { "type": "object", "properties": { "limit": { "type": "number", "default": 5 } } },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "take(sortBy(assetBreakdown, value desc), limit)" }, "dependencies": { "type": "array", "items": { "type": "string" }, "default": ["assetBreakdown"] } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

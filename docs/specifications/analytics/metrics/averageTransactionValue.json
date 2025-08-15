@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "averageTransactionValue",
+  "description": "Average value of treasury transactions in reference currency over a time range.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "averageTransactionValue" },
+    "label": { "type": "string", "const": "Average Transaction Value" },
+    "unit": { "type": "string", "const": "currency" },
+    "currency": { "type": "string", "default": "USD" },
+    "category": { "type": "string", "const": "treasury" },
+    "timeRange": { "type": "string", "enum": ["1d", "7d", "30d", "90d", "365d", "all"], "default": "30d" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "avg(transaction.valueInCurrency) over timeRange" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "participationRisk",
+  "description": "Risk from low member participation in governance (0-100).",
+  "type": "object",
+  "properties": {
+    "key": { "const": "participationRisk" },
+    "label": { "type": "string", "const": "Participation Risk" },
+    "unit": { "type": "string", "const": "score" },
+    "category": { "type": "string", "const": "risk" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "scaled(100 - participationRate)" }, "dependencies": { "type": "array", "items": { "type": "string" }, "default": ["participationRate"] } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

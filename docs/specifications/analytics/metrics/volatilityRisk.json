@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "volatilityRisk",
+  "description": "Risk due to price volatility of treasury assets (0-100).",
+  "type": "object",
+  "properties": {
+    "key": { "const": "volatilityRisk" },
+    "label": { "type": "string", "const": "Volatility Risk" },
+    "unit": { "type": "string", "const": "score" },
+    "category": { "type": "string", "const": "risk" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "weighted(avg(historical_volatility(asset) * weight(asset)))" }, "dependencies": { "type": "array", "items": { "type": "string" }, "default": ["assetBreakdown"] } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "valueChange7d",
+  "description": "Treasury value change over the last 7 days (percentage).",
+  "type": "object",
+  "properties": {
+    "key": { "const": "valueChange7d" },
+    "label": { "type": "string", "const": "Value Change 7d" },
+    "unit": { "type": "string", "const": "percentage" },
+    "category": { "type": "string", "const": "treasury" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "pct_change(treasuryValue, 7d)" }, "dependencies": { "type": "array", "items": { "type": "string" }, "default": ["treasuryValue"] } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+
