@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "activeMembersThisMonth",
+  "description": "Number of members with activity in the current calendar month.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "activeMembersThisMonth" },
+    "label": { "type": "string", "const": "Active Members This Month" },
+    "unit": { "type": "string", "const": "count" },
+    "category": { "type": "string", "const": "member" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "count(distinct memberAddress) from events(this month)" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "activeMembers",
+  "description": "Number of members active within a time range (e.g., voted or proposed).",
+  "type": "object",
+  "properties": {
+    "key": { "const": "activeMembers" },
+    "label": { "type": "string", "const": "Active Members" },
+    "unit": { "type": "string", "const": "count" },
+    "category": { "type": "string", "const": "member" },
+    "timeRange": { "type": "string", "enum": ["1d", "7d", "30d", "90d", "365d", "all"], "default": "30d" },
+    "source": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["derived"] },
+        "onChain": {
+          "type": "object",
+          "properties": {
+            "events": { "type": "array", "items": { "type": "string" }, "default": ["VoteCast", "ProposalCreated"] }
+          }
+        }
+      },
+      "required": ["type"]
+    },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "count(distinct memberAddress) from events(timeRange)" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

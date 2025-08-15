@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "votingParticipationRate",
+  "description": "Percentage of members who cast at least one vote in the time range.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "votingParticipationRate" },
+    "label": { "type": "string", "const": "Voting Participation Rate" },
+    "unit": { "type": "string", "const": "percentage" },
+    "category": { "type": "string", "const": "member" },
+    "timeRange": { "type": "string", "enum": ["1d", "7d", "30d", "90d", "365d", "all"], "default": "90d" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "(uniqueVoters(timeRange) / totalMembers) * 100" }, "dependencies": { "type": "array", "items": { "type": "string" }, "default": ["totalMembers"] } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

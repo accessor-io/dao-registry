@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "averageMemberTenure",
+  "description": "Average tenure (time since first activity or join) across current members.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "averageMemberTenure" },
+    "label": { "type": "string", "const": "Average Member Tenure" },
+    "unit": { "type": "string", "const": "days" },
+    "category": { "type": "string", "const": "member" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "avg(now() - firstActivityDate[address]) in days" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

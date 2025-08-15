@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "averageActivityPerMember",
+  "description": "Average number of governance actions (votes, proposals) per member over a time range.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "averageActivityPerMember" },
+    "label": { "type": "string", "const": "Average Activity Per Member" },
+    "unit": { "type": "string", "const": "count_per_member" },
+    "category": { "type": "string", "const": "member" },
+    "timeRange": { "type": "string", "enum": ["1d", "7d", "30d", "90d", "365d", "all"], "default": "30d" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "(totalVotes + totalProposalsCreated) / totalMembers" }, "dependencies": { "type": "array", "items": { "type": "string" }, "default": ["totalMembers"] } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+
