@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "topContributors",
+  "description": "Top contributing members ranked by contribution score.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "topContributors" },
+    "label": { "type": "string", "const": "Top Contributors" },
+    "unit": { "type": "string", "const": "array" },
+    "category": { "type": "string", "const": "member" },
+    "params": { "type": "object", "properties": { "limit": { "type": "number", "default": 10 } } },
+    "source": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["derived"] },
+        "onChain": { "type": "object", "properties": { "events": { "type": "array", "items": { "type": "string" }, "default": ["VoteCast", "ProposalCreated"] } } }
+      },
+      "required": ["type"]
+    },
+    "computation": {
+      "type": "object",
+      "properties": {
+        "method": { "type": "string", "const": "rank_by(contributionScore(address)) -> take(limit)" },
+        "definition": { "type": "string", "default": "contributionScore = w1*votes + w2*proposals + w3*recency" }
+      }
+    }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+
