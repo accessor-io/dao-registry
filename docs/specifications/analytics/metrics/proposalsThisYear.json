@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "proposalsThisYear",
+  "description": "Number of proposals created in the current calendar year.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "proposalsThisYear" },
+    "label": { "type": "string", "const": "Proposals This Year" },
+    "unit": { "type": "string", "const": "count" },
+    "category": { "type": "string", "const": "dao" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "count(ProposalCreated within year)" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

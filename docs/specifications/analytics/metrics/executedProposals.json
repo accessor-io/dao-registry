@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "executedProposals",
+  "description": "Number of proposals executed successfully.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "executedProposals" },
+    "label": { "type": "string", "const": "Executed Proposals" },
+    "unit": { "type": "string", "const": "count" },
+    "category": { "type": "string", "const": "dao" },
+    "source": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["on-chain", "derived"] },
+        "events": { "type": "array", "items": { "type": "string" }, "default": ["ProposalExecuted"] }
+      },
+      "required": ["type"]
+    },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "count(ProposalExecuted)" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

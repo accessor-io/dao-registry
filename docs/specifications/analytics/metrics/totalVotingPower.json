@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "totalVotingPower",
+  "description": "Aggregate voting power across all members.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "totalVotingPower" },
+    "label": { "type": "string", "const": "Total Voting Power" },
+    "unit": { "type": "string", "const": "token_units" },
+    "category": { "type": "string", "const": "governance" },
+    "source": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["derived"] },
+        "onChain": { "type": "object", "properties": { "snapshotBalances": { "type": "string" } } }
+      },
+      "required": ["type"]
+    },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "sum(votingPower[address])" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

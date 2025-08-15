@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "averageProposalDuration",
+  "description": "Average time between proposal start and end across proposals in a time range.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "averageProposalDuration" },
+    "label": { "type": "string", "const": "Average Proposal Duration" },
+    "unit": { "type": "string", "const": "seconds" },
+    "category": { "type": "string", "const": "governance" },
+    "timeRange": { "type": "string", "enum": ["1d", "7d", "30d", "90d", "365d", "all"], "default": "90d" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": {
+      "type": "object",
+      "properties": { "method": { "type": "string", "const": "avg(endTime - startTime) over proposals(timeRange)" } }
+    }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

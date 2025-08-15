@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "treasuryGrowth",
+  "description": "Change in treasury value over a time range, as percentage.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "treasuryGrowth" },
+    "label": { "type": "string", "const": "Treasury Growth" },
+    "unit": { "type": "string", "const": "percentage" },
+    "category": { "type": "string", "const": "treasury" },
+    "timeRange": { "type": "string", "enum": ["1d", "7d", "30d", "90d", "365d", "all"], "default": "30d" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": {
+      "type": "object",
+      "properties": { "method": { "type": "string", "const": "pct_change(treasuryValue, timeRange)" }, "dependencies": { "type": "array", "items": { "type": "string" }, "default": ["treasuryValue"] } }
+    }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

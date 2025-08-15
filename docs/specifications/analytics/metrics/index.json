@@ -11,7 +11,17 @@
         "totalProposals",
         "treasuryValue",
         "participationRate",
-        "averageVotingPower"
+        "averageVotingPower",
+        "activeProposals",
+        "executedProposals",
+        "totalVotingPower",
+        "quorumMet",
+        "proposalsThisMonth",
+        "proposalsThisYear",
+        "averageProposalDuration",
+        "treasuryGrowth",
+        "averageProposalValue",
+        "totalExecutedValue"
       ]
     }
   },

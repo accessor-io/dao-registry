@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "activeProposals",
+  "description": "Number of active proposals currently in voting period.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "activeProposals" },
+    "label": { "type": "string", "const": "Active Proposals" },
+    "unit": { "type": "string", "const": "count" },
+    "category": { "type": "string", "const": "dao" },
+    "source": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["derived"] },
+        "onChain": { "type": "object", "properties": { "proposalStateFn": { "type": "string" } } }
+      },
+      "required": ["type"]
+    },
+    "computation": {
+      "type": "object",
+      "properties": {
+        "method": { "type": "string", "const": "count(proposals where state == ACTIVE)" }
+      }
+    }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

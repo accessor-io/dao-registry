@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "quorumMet",
+  "description": "Number of proposals that met quorum within a time range.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "quorumMet" },
+    "label": { "type": "string", "const": "Quorum Met (Count)" },
+    "unit": { "type": "string", "const": "count" },
+    "category": { "type": "string", "const": "governance" },
+    "timeRange": { "type": "string", "enum": ["1d", "7d", "30d", "90d", "365d", "all"], "default": "30d" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "count(proposals where votes >= quorum)" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

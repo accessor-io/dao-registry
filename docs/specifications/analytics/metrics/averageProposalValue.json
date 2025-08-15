@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "averageProposalValue",
+  "description": "Average value of proposal actions (sum of 'values') over a time range in reference currency.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "averageProposalValue" },
+    "label": { "type": "string", "const": "Average Proposal Value" },
+    "unit": { "type": "string", "const": "currency" },
+    "currency": { "type": "string", "default": "ETH" },
+    "category": { "type": "string", "const": "governance" },
+    "timeRange": { "type": "string", "enum": ["1d", "7d", "30d", "90d", "365d", "all"], "default": "90d" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "avg(sum(values) per proposal over timeRange)" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+
