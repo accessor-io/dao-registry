@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "proposalExecutionEligible",
+  "description": "Whether the proposal is eligible for execution (e.g., succeeded and not yet executed).",
+  "type": "object",
+  "properties": {
+    "key": { "const": "proposalExecutionEligible" },
+    "label": { "type": "string", "const": "Proposal Execution Eligible" },
+    "unit": { "type": "string", "const": "boolean" },
+    "category": { "type": "string", "const": "proposal" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "(state == SUCCEEDED) && !executed" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

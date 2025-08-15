@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "proposalTimeRemaining",
+  "description": "Seconds until the proposal's voting period ends.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "proposalTimeRemaining" },
+    "label": { "type": "string", "const": "Proposal Time Remaining" },
+    "unit": { "type": "string", "const": "seconds" },
+    "category": { "type": "string", "const": "proposal" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "max(0, endTime - now())" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

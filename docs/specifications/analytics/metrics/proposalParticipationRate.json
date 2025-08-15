@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "proposalParticipationRate",
+  "description": "Participation rate for a single proposal (voters / total members).",
+  "type": "object",
+  "properties": {
+    "key": { "const": "proposalParticipationRate" },
+    "label": { "type": "string", "const": "Proposal Participation Rate" },
+    "unit": { "type": "string", "const": "percentage" },
+    "category": { "type": "string", "const": "proposal" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "uniqueVoters / totalMembers" }, "dependencies": { "type": "array", "items": { "type": "string" }, "default": ["totalMembers"] } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

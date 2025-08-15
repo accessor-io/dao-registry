@@ -21,7 +21,18 @@
         "averageProposalDuration",
         "treasuryGrowth",
         "averageProposalValue",
-        "totalExecutedValue"
+        "totalExecutedValue",
+        "proposalTotalVotes",
+        "proposalParticipationRate",
+        "proposalQuorumMet",
+        "proposalTimeRemaining",
+        "proposalExecutionEligible",
+        "proposalForVotesPercentage",
+        "proposalAgainstVotesPercentage",
+        "proposalAbstainVotesPercentage",
+        "proposalVotingDuration",
+        "proposalTimeUntilExecution",
+        "proposalAverageVoteTime"
       ]
     }
   },

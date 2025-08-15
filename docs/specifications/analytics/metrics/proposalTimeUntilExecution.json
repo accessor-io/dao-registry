@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "proposalTimeUntilExecution",
+  "description": "Estimated time until the proposal becomes executable (post-vote delays).",
+  "type": "object",
+  "properties": {
+    "key": { "const": "proposalTimeUntilExecution" },
+    "label": { "type": "string", "const": "Time Until Execution" },
+    "unit": { "type": "string", "const": "seconds" },
+    "category": { "type": "string", "const": "proposal" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "max(0, executionETA - now())" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

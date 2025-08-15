@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "proposalAbstainVotesPercentage",
+  "description": "Percentage of abstain votes for a proposal.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "proposalAbstainVotesPercentage" },
+    "label": { "type": "string", "const": "Abstain Votes %" },
+    "unit": { "type": "string", "const": "percentage" },
+    "category": { "type": "string", "const": "proposal" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "(abstainVotes / totalVotes) * 100" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

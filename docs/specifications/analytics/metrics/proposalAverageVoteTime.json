@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "proposalAverageVoteTime",
+  "description": "Average time from proposal start to when votes are cast.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "proposalAverageVoteTime" },
+    "label": { "type": "string", "const": "Average Vote Time" },
+    "unit": { "type": "string", "const": "seconds" },
+    "category": { "type": "string", "const": "proposal" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "avg(vote.timestamp - startTime) over votes" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "proposalVotingDuration",
+  "description": "Total voting duration for a specific proposal.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "proposalVotingDuration" },
+    "label": { "type": "string", "const": "Proposal Voting Duration" },
+    "unit": { "type": "string", "const": "seconds" },
+    "category": { "type": "string", "const": "proposal" },
+    "source": { "type": "object", "properties": { "type": { "enum": ["derived"] } }, "required": ["type"] },
+    "computation": { "type": "object", "properties": { "method": { "type": "string", "const": "endTime - startTime" } } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+
