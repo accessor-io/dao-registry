@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Metrics Index",
+  "type": "object",
+  "properties": {
+    "metrics": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": [
+        "totalMembers",
+        "totalProposals",
+        "treasuryValue",
+        "participationRate",
+        "averageVotingPower"
+      ]
+    }
+  },
+  "required": ["metrics"]
+}
+

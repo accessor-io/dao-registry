@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "treasuryValue",
+  "description": "Total treasury valuation for a DAO in a reference currency (e.g., USD).",
+  "type": "object",
+  "properties": {
+    "key": { "const": "treasuryValue" },
+    "label": { "type": "string", "const": "Treasury Value" },
+    "unit": { "type": "string", "const": "currency" },
+    "currency": { "type": "string", "default": "USD" },
+    "category": { "type": "string", "const": "treasury" },
+    "source": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["derived"] },
+        "onChain": {
+          "type": "object",
+          "properties": {
+            "balancesFrom": { "type": "string", "description": "Treasury contract address" },
+            "tokens": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "offChain": {
+          "type": "object",
+          "properties": {
+            "priceFeeds": { "type": "array", "items": { "type": "string" } },
+            "provider": { "type": "string", "enum": ["chainlink", "coingecko", "custom"] }
+          }
+        }
+      },
+      "required": ["type"]
+    },
+    "computation": {
+      "type": "object",
+      "properties": {
+        "method": { "type": "string", "const": "sum(balances[token] * price[token])" },
+        "dependencies": { "type": "array", "items": { "type": "string" }, "default": ["assetBreakdown"] }
+      }
+    },
+    "examples": { "type": "array", "items": { "type": "number" } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+

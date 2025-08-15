@@ -1,0 +1,26 @@
+[dotenv@17.2.1] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[INFO] 2025-08-12T03:07:45.736Z - Provider initialized for chain 1 {}
+[INFO] 2025-08-12T03:07:45.737Z - Provider initialized for chain 10 {}
+[INFO] 2025-08-12T03:07:45.737Z - Provider initialized for chain 137 {}
+[INFO] 2025-08-12T03:07:45.738Z - Provider initialized for chain 1337 {}
+[INFO] 2025-08-12T03:07:45.739Z - Provider initialized for chain 8453 {}
+[INFO] 2025-08-12T03:07:45.739Z - Provider initialized for chain 31337 {}
+[INFO] 2025-08-12T03:07:45.739Z - Provider initialized for chain 42161 {}
+[INFO] 2025-08-12T03:07:45.739Z - Provider initialized for chain 80001 {}
+[INFO] 2025-08-12T03:07:45.740Z - Provider initialized for chain 11155111 {}
+[INFO] 2025-08-12T03:07:45.741Z - Loaded deployment addresses for chain 1337 {}
+[INFO] 2025-08-12T03:07:45.782Z - Initialized provider for chain 1 { urlUsed: 'https' }
+Server running on port 3100
+Environment: development
+Available API URLs:
+- Health check:           http://localhost:3100/health
+- DAOs API:               http://localhost:3100/api/daos
+- Metadata API:           http://localhost:3100/api/metadata
+- ENS API:                http://localhost:3100/api/ens
+- Data Points API:        http://localhost:3100/api/data-points
+- Reserved Subdomains API: http://localhost:3100/api/reserved-subdomains
+- Schemas:                http://localhost:3100/api/schemas/CreateDAORequest
+- Documentation API:      http://localhost:3100/api/docs
+User Interface:
+- UI:                     http://localhost:3100/
+::ffff:127.0.0.1 - - [12/Aug/2025:03:07:51 +0000] "GET / HTTP/1.1" 200 742 "-" "curl/8.1.2"

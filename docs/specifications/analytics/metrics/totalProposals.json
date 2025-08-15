@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "totalProposals",
+  "description": "Total number of proposals created for a DAO.",
+  "type": "object",
+  "properties": {
+    "key": { "const": "totalProposals" },
+    "label": { "type": "string", "const": "Total Proposals" },
+    "unit": { "type": "string", "const": "count" },
+    "category": { "type": "string", "const": "dao" },
+    "source": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["on-chain", "off-chain", "derived"] },
+        "contracts": { "type": "array", "items": { "type": "string" } },
+        "events": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["type"]
+    },
+    "computation": {
+      "type": "object",
+      "properties": {
+        "method": { "type": "string" },
+        "formula": { "type": "string" },
+        "dependencies": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "examples": { "type": "array", "items": { "type": "number" } }
+  },
+  "required": ["key", "label", "unit", "category", "source"]
+}
+
