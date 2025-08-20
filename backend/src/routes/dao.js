@@ -4,9 +4,13 @@ const Joi = require('joi');
 const { DAOService } = require('../services/dao');
 const { validateRequest } = require('../middleware/validation');
 const { logger } = require('../utils/logger');
+const jsonldMiddleware = require('../middleware/json-ld');
 
 // Initialize DAO service
 const daoService = new DAOService();
+
+// Apply JSON-LD middleware to all routes
+router.use(jsonldMiddleware.jsonld());
 
 // Validation schemas
 const createDAOSchema = Joi.object({
@@ -333,6 +337,26 @@ router.patch('/:id/status', async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+  }
+});
+
+// Get JSON-LD context
+router.get('/contexts/dao.jsonld', (req, res) => {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const contextPath = path.join(__dirname, '../../../shared/schemas/json-ld-context.json');
+    const contextData = fs.readFileSync(contextPath, 'utf8');
+    const context = JSON.parse(contextData);
+    
+    res.setHeader('Content-Type', 'application/ld+json');
+    res.json(context);
+  } catch (error) {
+    logger.error('Error serving JSON-LD context:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to load JSON-LD context'
+    });
   }
 });
 

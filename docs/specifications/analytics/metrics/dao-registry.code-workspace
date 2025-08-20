@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../../.."
+		},
+		{
+			"path": "../../../../../by-laws"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "by-laws"
+	}
+}

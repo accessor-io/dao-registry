@@ -87,6 +87,29 @@ app.get('/api/schemas/:name', (req, res) => {
   fs.createReadStream(filePath).pipe(res);
 });
 
+// JSON-LD context endpoint
+app.get('/api/contexts/dao.jsonld', (req, res) => {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const contextPath = path.join(__dirname, '../shared/schemas/json-ld-context.json');
+    const contextData = fs.readFileSync(contextPath, 'utf8');
+    const context = JSON.parse(contextData);
+    
+    res.setHeader('Content-Type', 'application/ld+json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.json(context);
+  } catch (error) {
+    console.error('Error serving JSON-LD context:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to load JSON-LD context'
+    });
+  }
+});
+
 // Add basic documentation endpoint
 app.get('/api/docs', (req, res) => {
   res.json({

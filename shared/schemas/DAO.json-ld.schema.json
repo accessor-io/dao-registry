@@ -1,0 +1,260 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dao-registry.org/schemas/DAO.json-ld.schema.json",
+  "title": "DAO JSON-LD Schema",
+  "description": "JSON-LD schema for DAO entities conforming to W3C JSON-LD specification",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "DAO.schema.json"
+    },
+    {
+      "properties": {
+        "@context": {
+          "type": "string",
+          "const": "https://dao-registry.org/contexts/dao.jsonld",
+          "description": "JSON-LD context for DAO entities"
+        },
+        "@type": {
+          "type": "string",
+          "const": "DAO",
+          "description": "The type of the entity"
+        },
+        "@id": {
+          "type": "string",
+          "format": "uri",
+          "description": "The unique identifier for this DAO"
+        },
+        "id": {
+          "type": "string",
+          "description": "The unique identifier for this DAO"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "The name of the DAO"
+        },
+        "symbol": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10,
+          "description": "The symbol/ticker of the DAO"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "description": "A description of the DAO"
+        },
+        "contractAddress": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "description": "The main contract address of the DAO"
+        },
+        "tokenAddress": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "description": "The token contract address"
+        },
+        "treasuryAddress": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "description": "The treasury contract address"
+        },
+        "governanceAddress": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "description": "The governance contract address"
+        },
+        "chainId": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "The blockchain network ID"
+        },
+        "governanceType": {
+          "type": "string",
+          "enum": ["token", "nft", "multisig", "hybrid"],
+          "description": "The type of governance mechanism"
+        },
+        "votingPeriod": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "The voting period in blocks"
+        },
+        "quorum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000,
+          "description": "The quorum requirement for proposals"
+        },
+        "proposalThreshold": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "The minimum tokens required to create a proposal"
+        },
+        "logo": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to the DAO's logo"
+        },
+        "website": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to the DAO's website"
+        },
+        "ensDomain": {
+          "type": "string",
+          "description": "The ENS domain name"
+        },
+        "ensSubdomains": {
+          "type": "object",
+          "properties": {
+            "governance": {
+              "type": "string",
+              "description": "Governance subdomain"
+            },
+            "treasury": {
+              "type": "string",
+              "description": "Treasury subdomain"
+            },
+            "token": {
+              "type": "string",
+              "description": "Token subdomain"
+            },
+            "docs": {
+              "type": "string",
+              "description": "Documentation subdomain"
+            },
+            "forum": {
+              "type": "string",
+              "description": "Forum subdomain"
+            },
+            "analytics": {
+              "type": "string",
+              "description": "Analytics subdomain"
+            }
+          },
+          "required": ["governance", "treasury", "token", "docs", "forum", "analytics"]
+        },
+        "ensMetadata": {
+          "type": "object",
+          "properties": {
+            "textRecords": {
+              "type": "object",
+              "description": "ENS text records"
+            },
+            "contentHash": {
+              "type": "string",
+              "description": "ENS content hash"
+            },
+            "reverseRecord": {
+              "type": "string",
+              "description": "ENS reverse record"
+            }
+          },
+          "required": ["textRecords"]
+        },
+        "socialLinks": {
+          "type": "object",
+          "properties": {
+            "twitter": {
+              "type": "string",
+              "format": "uri",
+              "description": "Twitter profile URL"
+            },
+            "discord": {
+              "type": "string",
+              "format": "uri",
+              "description": "Discord server URL"
+            },
+            "telegram": {
+              "type": "string",
+              "format": "uri",
+              "description": "Telegram group URL"
+            },
+            "github": {
+              "type": "string",
+              "format": "uri",
+              "description": "GitHub repository URL"
+            },
+            "medium": {
+              "type": "string",
+              "format": "uri",
+              "description": "Medium blog URL"
+            },
+            "reddit": {
+              "type": "string",
+              "format": "uri",
+              "description": "Reddit community URL"
+            }
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10,
+          "description": "Tags associated with the DAO"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Pending", "Active", "Suspended", "Inactive", "Banned"],
+          "description": "The current status of the DAO"
+        },
+        "verified": {
+          "type": "boolean",
+          "description": "Whether the DAO has been verified"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the DAO was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the DAO was last updated"
+        },
+        "totalMembers": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of members"
+        },
+        "totalProposals": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of proposals"
+        },
+        "totalVotes": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of votes cast"
+        }
+      },
+      "required": [
+        "@context",
+        "@type",
+        "@id",
+        "id",
+        "name",
+        "symbol",
+        "description",
+        "contractAddress",
+        "tokenAddress",
+        "treasuryAddress",
+        "governanceAddress",
+        "chainId",
+        "governanceType",
+        "votingPeriod",
+        "quorum",
+        "proposalThreshold",
+        "status",
+        "verified",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  ]
+}
