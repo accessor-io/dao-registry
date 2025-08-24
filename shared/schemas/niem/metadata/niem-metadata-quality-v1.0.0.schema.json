@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dao-registry.org/niem/metadata/quality",
+  "title": "NIEM Metadata Quality Schema",
+  "description": "Data quality metrics and validation for DAO registry",
+  "version": "1.0.0",
+  "namespace": "https://dao-registry.org/niem/metadata/quality",
+  "type": "object",
+  "definitions": {
+    "Quality": {
+      "type": "object",
+      "description": "A quality for DAO registry",
+      "properties": {
+        "@context": {
+          "type": "string",
+          "format": "uri",
+          "description": "JSON-LD context for semantic interoperability",
+          "default": "https://dao-registry.org/contexts/metadata.jsonld"
+        },
+        "@type": {
+          "type": "string",
+          "const": "Quality",
+          "description": "Type identifier for quality"
+        },
+        "@id": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for the quality"
+        },
+        "id": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for the quality"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Human-readable name of the quality"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the item was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the item was last updated"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "quality": {
+      "$ref": "#/definitions/Quality"
+    }
+  },
+  "required": [
+    "quality"
+  ],
+  "additionalProperties": false
+}

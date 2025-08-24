@@ -3,7 +3,7 @@
  * Provides cross-system interoperability and data exchange capabilities
  */
 
-const niemCore = require('./niem-core');
+const niemCore = require('./niem-core-service');
 const crypto = require('crypto');
 
 class NIEMIntegrationService {

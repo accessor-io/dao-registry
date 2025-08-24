@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dao-registry.org/niem/treasury/assets",
+  "title": "NIEM Treasury Assets Schema",
+  "description": "Treasury assets and financial management for DAO registry",
+  "version": "1.0.0",
+  "namespace": "https://dao-registry.org/niem/treasury/assets",
+  "type": "object",
+  "definitions": {
+    "Assets": {
+      "type": "object",
+      "description": "A assets for DAO registry",
+      "properties": {
+        "@context": {
+          "type": "string",
+          "format": "uri",
+          "description": "JSON-LD context for semantic interoperability",
+          "default": "https://dao-registry.org/contexts/treasury.jsonld"
+        },
+        "@type": {
+          "type": "string",
+          "const": "Assets",
+          "description": "Type identifier for assets"
+        },
+        "@id": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for the assets"
+        },
+        "id": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for the assets"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Human-readable name of the assets"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the item was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the item was last updated"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "assets": {
+      "$ref": "#/definitions/Assets"
+    }
+  },
+  "required": [
+    "assets"
+  ],
+  "additionalProperties": false
+}

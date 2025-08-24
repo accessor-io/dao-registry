@@ -76,7 +76,7 @@ app.use('/api/ens', require('./routes/ens'));
 app.use('/api/data-points', require('./routes/data-points'));
 
 // Add NIEM-inspired system routes
-app.use('/api/niem', require('./routes/niem'));
+app.use('/api/niem', require('./routes/niem/niem-core-routes'));
 
 // Expose generated JSON Schemas for consumption
 app.get('/api/schemas/:name', (req, res) => {

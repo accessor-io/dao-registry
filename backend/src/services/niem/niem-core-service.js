@@ -40,7 +40,7 @@ class NIEMCoreService {
    * Load all JSON schemas from shared directory
    */
   loadSchemas() {
-    const schemasDir = path.join(__dirname, '../../../shared/schemas');
+    const schemasDir = path.join(__dirname, '../../../shared/schemas/niem');
     
     try {
       const schemaFiles = fs.readdirSync(schemasDir)

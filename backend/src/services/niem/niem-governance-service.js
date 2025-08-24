@@ -3,8 +3,8 @@
  * Provides standards management, compliance monitoring, and policy enforcement
  */
 
-const niemCore = require('./niem-core');
-const niemIntegration = require('./niem-integration');
+const niemCore = require('./niem-core-service');
+const niemIntegration = require('./niem-integration-service');
 
 class NIEMGovernanceService {
   constructor() {

@@ -1,0 +1,282 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dao-registry.org/niem/governance/voting",
+  "title": "NIEM Governance Voting Schema",
+  "description": "Governance voting mechanisms and rules for DAO registry",
+  "version": "1.0.0",
+  "namespace": "https://dao-registry.org/niem/governance/voting",
+  "type": "object",
+  "definitions": {
+    "VotingMechanism": {
+      "type": "object",
+      "description": "A voting mechanism for DAO governance",
+      "properties": {
+        "@context": {
+          "type": "string",
+          "format": "uri",
+          "description": "JSON-LD context for semantic interoperability",
+          "default": "https://dao-registry.org/contexts/governance.jsonld"
+        },
+        "@type": {
+          "type": "string",
+          "const": "VotingMechanism",
+          "description": "Type identifier for voting mechanism"
+        },
+        "@id": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for the voting mechanism"
+        },
+        "id": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for the voting mechanism"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Human-readable name of the voting mechanism"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["token", "reputation", "hybrid", "multisig", "quadratic", "conviction"],
+          "description": "Type of voting mechanism"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Detailed description of the voting mechanism"
+        },
+        "parameters": {
+          "$ref": "#/definitions/VotingParameters"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VotingRule"
+          },
+          "description": "List of voting rules"
+        },
+        "metadata": {
+          "$ref": "#/definitions/VotingMetadata"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the voting mechanism was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the voting mechanism was last updated"
+        }
+      },
+      "required": ["id", "name", "type", "parameters"],
+      "additionalProperties": false
+    },
+    "VotingParameters": {
+      "type": "object",
+      "description": "Parameters for the voting mechanism",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "const": "VotingParameters",
+          "description": "Type identifier for voting parameters"
+        },
+        "quorum": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Minimum percentage of votes required for proposals to pass"
+        },
+        "proposalThreshold": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Minimum voting power required to create proposals"
+        },
+        "votingPeriod": {
+          "type": "number",
+          "minimum": 1,
+          "description": "Duration of voting period in days"
+        },
+        "executionDelay": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Delay before executed proposals can be executed in days"
+        },
+        "minVotingPower": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Minimum voting power required to vote"
+        },
+        "maxVotingPower": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Maximum voting power per voter"
+        },
+        "delegationEnabled": {
+          "type": "boolean",
+          "description": "Whether delegation is enabled"
+        },
+        "delegationPeriod": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Duration of delegation period in days"
+        }
+      },
+      "required": ["quorum", "votingPeriod"],
+      "additionalProperties": false
+    },
+    "VotingRule": {
+      "type": "object",
+      "description": "A voting rule",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "const": "VotingRule",
+          "description": "Type identifier for voting rule"
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the rule"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Name of the rule"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the rule"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["validation", "calculation", "enforcement", "notification"],
+          "description": "Type of rule"
+        },
+        "condition": {
+          "type": "string",
+          "description": "Condition expression for the rule"
+        },
+        "action": {
+          "type": "string",
+          "description": "Action to take when rule is triggered"
+        },
+        "priority": {
+          "type": "number",
+          "minimum": 1,
+          "description": "Priority of the rule (higher numbers = higher priority)"
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether the rule is enabled"
+        }
+      },
+      "required": ["id", "name", "type", "condition", "action"],
+      "additionalProperties": false
+    },
+    "VotingMetadata": {
+      "type": "object",
+      "description": "Metadata about the voting mechanism",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "const": "VotingMetadata",
+          "description": "Type identifier for voting metadata"
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the voting mechanism"
+        },
+        "implementation": {
+          "type": "string",
+          "description": "Implementation details or contract address"
+        },
+        "documentation": {
+          "type": "string",
+          "format": "uri",
+          "description": "Link to documentation"
+        },
+        "audit": {
+          "type": "object",
+          "properties": {
+            "audited": {
+              "type": "boolean",
+              "description": "Whether the mechanism has been audited"
+            },
+            "auditor": {
+              "type": "string",
+              "description": "Name of the auditor"
+            },
+            "auditDate": {
+              "type": "string",
+              "format": "date",
+              "description": "Date of the audit"
+            },
+            "auditReport": {
+              "type": "string",
+              "format": "uri",
+              "description": "Link to audit report"
+            }
+          },
+          "description": "Audit information"
+        },
+        "quality": {
+          "$ref": "#/definitions/VotingQuality"
+        }
+      },
+      "additionalProperties": false
+    },
+    "VotingQuality": {
+      "type": "object",
+      "description": "Quality metrics for the voting mechanism",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "const": "VotingQuality",
+          "description": "Type identifier for voting quality"
+        },
+        "securityScore": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Security score of the voting mechanism"
+        },
+        "participationRate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Average participation rate"
+        },
+        "successRate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Success rate of proposals"
+        },
+        "turnoutRate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Average voter turnout"
+        },
+        "lastUpdated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When quality metrics were last updated"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "votingMechanism": {
+      "$ref": "#/definitions/VotingMechanism"
+    }
+  },
+  "required": ["votingMechanism"],
+  "additionalProperties": false
+}
