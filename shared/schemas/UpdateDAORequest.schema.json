@@ -1,7 +1,4 @@
 {
-  "$id": "https://schemas.dao-registry.com/UpdateDAORequest.schema.json",
-  "title": "UpdateDAORequest",
-  "x-version": "1.0.0",
   "$ref": "#/definitions/UpdateDAORequest",
   "definitions": {
     "UpdateDAORequest": {

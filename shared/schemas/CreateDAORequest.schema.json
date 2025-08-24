@@ -1,7 +1,4 @@
 {
-  "$id": "https://schemas.dao-registry.com/CreateDAORequest.schema.json",
-  "title": "CreateDAORequest",
-  "x-version": "1.0.0",
   "$ref": "#/definitions/CreateDAORequest",
   "definitions": {
     "CreateDAORequest": {

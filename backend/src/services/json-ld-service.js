@@ -8,7 +8,7 @@ class JSONLDService {
 
   loadContext() {
     try {
-      const contextPath = path.join(__dirname, '../../shared/schemas/json-ld-context.json');
+      const contextPath = path.join(__dirname, '../../../shared/schemas/json-ld-context.json');
       const contextData = fs.readFileSync(contextPath, 'utf8');
       return JSON.parse(contextData);
     } catch (error) {

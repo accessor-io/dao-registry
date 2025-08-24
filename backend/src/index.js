@@ -75,6 +75,9 @@ app.use('/api/ens', require('./routes/ens'));
 // Add comprehensive data points API
 app.use('/api/data-points', require('./routes/data-points'));
 
+// Add NIEM-inspired system routes
+app.use('/api/niem', require('./routes/niem'));
+
 // Expose generated JSON Schemas for consumption
 app.get('/api/schemas/:name', (req, res) => {
   const { name } = req.params;
@@ -92,7 +95,7 @@ app.get('/api/contexts/dao.jsonld', (req, res) => {
   try {
     const fs = require('fs');
     const path = require('path');
-    const contextPath = path.join(__dirname, '../shared/schemas/json-ld-context.json');
+    const contextPath = path.join(__dirname, '../../shared/schemas/json-ld-context.json');
     const contextData = fs.readFileSync(contextPath, 'utf8');
     const context = JSON.parse(contextData);
     
@@ -122,18 +125,10 @@ app.get('/api/docs', (req, res) => {
       "/api/ens - ENS integration",
       "/api/reserved-subdomains - Subdomain management",
       "/api/data-points - Data point management",
+      "/api/niem - NIEM-inspired system (validation, integration, governance)",
       "/api/schemas/:name - JSON Schema by name (e.g., CreateDAORequest)"
     ]
   });
-});
-
-// Serve React app for all other routes
-app.get('*', (req, res) => {
-  const indexPath = path.join(FRONTEND_BUILD, 'index.html');
-  if (!fs.existsSync(indexPath)) {
-    return res.status(500).json({ error: 'UI build not found', expectedPath: indexPath });
-  }
-  res.sendFile(indexPath);
 });
 
 // Error handling middleware
@@ -145,13 +140,22 @@ app.use((err, req, res, next) => {
   });
 });
 
-// 404 handler
-app.use('*', (req, res) => {
+// 404 handler for API routes
+app.use('/api/*', (req, res) => {
   res.status(404).json({
-    error: 'Route not found',
+    error: 'API route not found',
     path: req.originalUrl,
     method: req.method
   });
+});
+
+// Serve React app for all other routes
+app.get('*', (req, res) => {
+  const indexPath = path.join(FRONTEND_BUILD, 'index.html');
+  if (!fs.existsSync(indexPath)) {
+    return res.status(500).json({ error: 'UI build not found', expectedPath: indexPath });
+  }
+  res.sendFile(indexPath);
 });
 
 // Graceful shutdown
@@ -176,6 +180,7 @@ app.listen(PORT, () => {
   console.log(`- ENS API:                http://localhost:${PORT}/api/ens`);
   console.log(`- Data Points API:        http://localhost:${PORT}/api/data-points`);
   console.log(`- Reserved Subdomains API: http://localhost:${PORT}/api/reserved-subdomains`);
+  console.log(`- NIEM System API:        http://localhost:${PORT}/api/niem/system`);
   console.log(`- Schemas:                http://localhost:${PORT}/api/schemas/CreateDAORequest`);
   console.log(`- Documentation API:      http://localhost:${PORT}/api/docs`);
   console.log('User Interface:');

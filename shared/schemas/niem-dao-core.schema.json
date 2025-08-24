@@ -1,0 +1,624 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dao-registry.org/niem/dao-core.schema.json",
+  "title": "NIEM DAO Core Schema",
+  "description": "Core data model for DAO registry following NIEM standards for data exchange and interoperability",
+  "version": "1.0.0",
+  "namespace": "https://dao-registry.org/niem/dao-core",
+  "type": "object",
+  "definitions": {
+    "DAO": {
+      "type": "object",
+      "description": "A Decentralized Autonomous Organization",
+      "properties": {
+        "@context": {
+          "type": "string",
+          "format": "uri",
+          "description": "JSON-LD context for semantic interoperability",
+          "default": "https://dao-registry.org/contexts/dao.jsonld"
+        },
+        "@type": {
+          "type": "string",
+          "const": "DAO",
+          "description": "Type identifier for the DAO"
+        },
+        "@id": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for the DAO"
+        },
+        "id": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for the DAO"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Human-readable name of the DAO"
+        },
+        "symbol": {
+          "type": "string",
+          "maxLength": 10,
+          "description": "Short symbol or ticker for the DAO"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Detailed description of the DAO's purpose and activities"
+        },
+        "governance": {
+          "$ref": "#/definitions/Governance"
+        },
+        "treasury": {
+          "$ref": "#/definitions/Treasury"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Member"
+          },
+          "description": "List of DAO members"
+        },
+        "proposals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Proposal"
+          },
+          "description": "List of governance proposals"
+        },
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tags for categorizing the DAO"
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "defi",
+              "governance",
+              "investment",
+              "social",
+              "technology",
+              "art",
+              "gaming",
+              "education",
+              "research",
+              "other"
+            ]
+          },
+          "description": "Categories for classifying the DAO"
+        },
+        "website": {
+          "type": "string",
+          "format": "uri",
+          "description": "Official website URL"
+        },
+        "social": {
+          "$ref": "#/definitions/SocialMedia"
+        },
+        "contact": {
+          "$ref": "#/definitions/Contact"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "inactive", "suspended", "dissolved"],
+          "default": "active",
+          "description": "Current status of the DAO"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the DAO was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the DAO was last updated"
+        }
+      },
+      "required": ["id", "name", "governance"],
+      "additionalProperties": false
+    },
+    "Governance": {
+      "type": "object",
+      "description": "Governance structure and rules for the DAO",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "const": "Governance",
+          "description": "Type identifier for governance"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["token", "reputation", "hybrid", "multisig", "other"],
+          "description": "Type of governance mechanism"
+        },
+        "votingPower": {
+          "type": "string",
+          "description": "How voting power is calculated"
+        },
+        "quorum": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Minimum percentage of votes required for proposals to pass"
+        },
+        "proposalThreshold": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Minimum voting power required to create proposals"
+        },
+        "votingPeriod": {
+          "type": "number",
+          "minimum": 1,
+          "description": "Duration of voting period in days"
+        },
+        "executionDelay": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Delay before executed proposals can be executed in days"
+        },
+        "minVotingPower": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Minimum voting power required to vote"
+        },
+        "governanceToken": {
+          "$ref": "#/definitions/Token"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Additional governance rules"
+        }
+      },
+      "required": ["type"],
+      "additionalProperties": false
+    },
+    "Treasury": {
+      "type": "object",
+      "description": "Treasury information for the DAO",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "const": "Treasury",
+          "description": "Type identifier for treasury"
+        },
+        "address": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "description": "Ethereum address of the treasury"
+        },
+        "balance": {
+          "type": "string",
+          "description": "Current balance in wei"
+        },
+        "tokens": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TokenBalance"
+          },
+          "description": "Token balances in the treasury"
+        },
+        "multisig": {
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "string",
+              "pattern": "^0x[a-fA-F0-9]{40}$"
+            },
+            "threshold": {
+              "type": "number",
+              "minimum": 1
+            },
+            "signers": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^0x[a-fA-F0-9]{40}$"
+              }
+            }
+          },
+          "description": "Multisig wallet configuration"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Member": {
+      "type": "object",
+      "description": "A member of the DAO",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "const": "Member",
+          "description": "Type identifier for member"
+        },
+        "address": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "description": "Ethereum address of the member"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["member", "admin", "moderator", "delegate"],
+          "default": "member",
+          "description": "Role of the member in the DAO"
+        },
+        "votingPower": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Current voting power of the member"
+        },
+        "joinedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the member joined"
+        },
+        "lastActive": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of last activity"
+        },
+        "proposalsCreated": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Number of proposals created by this member"
+        },
+        "proposalsVoted": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Number of proposals voted on by this member"
+        },
+        "delegatedFrom": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^0x[a-fA-F0-9]{40}$"
+          },
+          "description": "Addresses that have delegated voting power to this member"
+        },
+        "delegatedTo": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "description": "Address this member has delegated voting power to"
+        }
+      },
+      "required": ["address", "role"],
+      "additionalProperties": false
+    },
+    "Proposal": {
+      "type": "object",
+      "description": "A governance proposal",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "const": "Proposal",
+          "description": "Type identifier for proposal"
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the proposal"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Title of the proposal"
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the proposal"
+        },
+        "proposer": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "description": "Address of the proposal creator"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "active", "succeeded", "defeated", "executed", "expired"],
+          "description": "Current status of the proposal"
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When voting begins"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When voting ends"
+        },
+        "executionTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the proposal can be executed"
+        },
+        "forVotes": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Number of votes in favor"
+        },
+        "againstVotes": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Number of votes against"
+        },
+        "abstainVotes": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Number of abstaining votes"
+        },
+        "quorumReached": {
+          "type": "boolean",
+          "description": "Whether quorum was reached"
+        },
+        "executed": {
+          "type": "boolean",
+          "description": "Whether the proposal was executed"
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProposalAction"
+          },
+          "description": "Actions to be executed if proposal passes"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the proposal was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the proposal was last updated"
+        }
+      },
+      "required": ["id", "title", "proposer", "status"],
+      "additionalProperties": false
+    },
+    "ProposalAction": {
+      "type": "object",
+      "description": "An action to be executed by a proposal",
+      "properties": {
+        "target": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "description": "Target contract address"
+        },
+        "value": {
+          "type": "string",
+          "description": "ETH value to send with the action"
+        },
+        "signature": {
+          "type": "string",
+          "description": "Function signature"
+        },
+        "data": {
+          "type": "string",
+          "description": "Encoded function data"
+        }
+      },
+      "required": ["target"],
+      "additionalProperties": false
+    },
+    "Token": {
+      "type": "object",
+      "description": "A token (ERC-20, ERC-721, etc.)",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "const": "Token",
+          "description": "Type identifier for token"
+        },
+        "address": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "description": "Token contract address"
+        },
+        "name": {
+          "type": "string",
+          "description": "Token name"
+        },
+        "symbol": {
+          "type": "string",
+          "description": "Token symbol"
+        },
+        "decimals": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 18,
+          "description": "Number of decimal places"
+        },
+        "totalSupply": {
+          "type": "string",
+          "description": "Total supply of the token"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["erc20", "erc721", "erc1155", "other"],
+          "description": "Token standard"
+        }
+      },
+      "required": ["address", "symbol"],
+      "additionalProperties": false
+    },
+    "TokenBalance": {
+      "type": "object",
+      "description": "Token balance information",
+      "properties": {
+        "token": {
+          "$ref": "#/definitions/Token"
+        },
+        "balance": {
+          "type": "string",
+          "description": "Current balance"
+        },
+        "value": {
+          "type": "number",
+          "description": "USD value of the balance"
+        }
+      },
+      "required": ["token", "balance"],
+      "additionalProperties": false
+    },
+    "Metadata": {
+      "type": "object",
+      "description": "Metadata about the DAO",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "const": "Metadata",
+          "description": "Type identifier for metadata"
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the metadata"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the metadata was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the metadata was last updated"
+        },
+        "source": {
+          "type": "string",
+          "description": "Source of the metadata"
+        },
+        "validator": {
+          "type": "string",
+          "description": "Validator that processed this metadata"
+        },
+        "quality": {
+          "$ref": "#/definitions/QualityMetrics"
+        }
+      },
+      "additionalProperties": false
+    },
+    "QualityMetrics": {
+      "type": "object",
+      "description": "Data quality metrics",
+      "properties": {
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Overall quality score"
+        },
+        "completeness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Data completeness percentage"
+        },
+        "accuracy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Data accuracy percentage"
+        },
+        "timeliness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Data timeliness score"
+        },
+        "consistency": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Data consistency score"
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of quality issues found"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SocialMedia": {
+      "type": "object",
+      "description": "Social media links",
+      "properties": {
+        "twitter": {
+          "type": "string",
+          "format": "uri",
+          "description": "Twitter profile URL"
+        },
+        "discord": {
+          "type": "string",
+          "format": "uri",
+          "description": "Discord server URL"
+        },
+        "telegram": {
+          "type": "string",
+          "format": "uri",
+          "description": "Telegram group URL"
+        },
+        "github": {
+          "type": "string",
+          "format": "uri",
+          "description": "GitHub repository URL"
+        },
+        "medium": {
+          "type": "string",
+          "format": "uri",
+          "description": "Medium blog URL"
+        },
+        "reddit": {
+          "type": "string",
+          "format": "uri",
+          "description": "Reddit community URL"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Contact": {
+      "type": "object",
+      "description": "Contact information",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Contact email address"
+        },
+        "website": {
+          "type": "string",
+          "format": "uri",
+          "description": "Contact website"
+        },
+        "support": {
+          "type": "string",
+          "format": "uri",
+          "description": "Support channel URL"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "dao": {
+      "$ref": "#/definitions/DAO"
+    }
+  },
+  "required": ["dao"],
+  "additionalProperties": false
+}
