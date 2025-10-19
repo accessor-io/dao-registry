@@ -1,0 +1,51 @@
+{
+  "name": "dao-registry-naming-toolkit",
+  "version": "1.0.0",
+  "description": "Naming convention toolkit for DAO Registry with ENS integration and metadata standards",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "accessor": "node src/cli/accessor-cli.js",
+    "validate:names": "node src/cli/validate-names.js",
+    "validate:ens": "node src/cli/validate-ens.js",
+    "validate:metadata": "node src/cli/validate-metadata.js",
+    "generate:names": "node src/cli/generate-names.js",
+    "migrate:names": "node src/cli/migrate-names.js",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix"
+  },
+  "keywords": [
+    "dao",
+    "ens",
+    "naming",
+    "conventions",
+    "metadata",
+    "standards",
+    "validation"
+  ],
+  "author": "DAO Registry Team",
+  "license": "MIT",
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "axios": "^1.6.0",
+    "chalk": "^4.1.2",
+    "commander": "^11.1.0",
+    "ethers": "^6.8.1",
+    "joi": "^17.13.3",
+    "punycode": "^2.3.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.8",
+    "eslint": "^8.54.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}

@@ -5,9 +5,9 @@
 
 const express = require('express');
 const router = express.Router();
-const niemCore = require('../services/niem/niem-core-service');
-const niemIntegration = require('../services/niem/niem-integration-service');
-const niemGovernance = require('../services/niem/niem-governance-service');
+const niemCore = require('../../services/niem/niem-core-service');
+const niemIntegration = require('../../services/niem/niem-integration-service');
+const niemGovernance = require('../../services/niem/niem-governance-service');
 
 /**
  * NIEM Core Routes
