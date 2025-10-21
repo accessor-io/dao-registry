@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Marketplace Auction",
+  "description": "Schema for marketplace auctions of ENS domains and DAO registrations",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Unique identifier for the auction"
+    },
+    "seller": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$",
+      "description": "Ethereum address of the seller"
+    },
+    "tokenContract": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$",
+      "description": "Address of the token contract (e.g., ENS Registry)"
+    },
+    "tokenId": {
+      "type": "string",
+      "description": "ID of the token being auctioned"
+    },
+    "startingPrice": {
+      "type": "string",
+      "pattern": "^[0-9]+(\\.[0-9]+)?$",
+      "description": "Starting price for the auction"
+    },
+    "reservePrice": {
+      "type": "string",
+      "pattern": "^[0-9]+(\\.[0-9]+)?$",
+      "description": "Reserve price for the auction"
+    },
+    "paymentToken": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$",
+      "description": "Address of the payment token (0x0 for ETH)"
+    },
+    "startTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the auction starts"
+    },
+    "endTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the auction ends"
+    },
+    "isActive": {
+      "type": "boolean",
+      "description": "Whether the auction is currently active"
+    },
+    "highestBidder": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$",
+      "description": "Address of the current highest bidder"
+    },
+    "highestBid": {
+      "type": "string",
+      "pattern": "^[0-9]+(\\.[0-9]+)?$",
+      "description": "Amount of the current highest bid"
+    },
+    "metadata": {
+      "type": "string",
+      "description": "Additional metadata about the auction"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["ens-domain", "dao-registration", "nft", "other"],
+      "description": "Category of the item being auctioned"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags associated with the auction"
+    },
+    "bidCount": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of bids placed on the auction"
+    }
+  },
+  "required": [
+    "id",
+    "seller",
+    "tokenContract",
+    "tokenId",
+    "startingPrice",
+    "reservePrice",
+    "paymentToken",
+    "startTime",
+    "endTime",
+    "isActive"
+  ],
+  "additionalProperties": false
+}
+
+
+
+

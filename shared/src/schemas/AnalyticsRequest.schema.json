@@ -1,0 +1,45 @@
+{
+  "$ref": "#/definitions/AnalyticsRequest",
+  "definitions": {
+    "AnalyticsRequest": {
+      "type": "object",
+      "properties": {
+        "daoId": {
+          "type": "string"
+        },
+        "timeRange": {
+          "$ref": "#/definitions/TimeRange"
+        },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "includeComparative": {
+          "type": "boolean"
+        },
+        "includeRisk": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "daoId",
+        "metrics",
+        "timeRange"
+      ]
+    },
+    "TimeRange": {
+      "type": "string",
+      "enum": [
+        "1d",
+        "7d",
+        "30d",
+        "90d",
+        "365d",
+        "all"
+      ]
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

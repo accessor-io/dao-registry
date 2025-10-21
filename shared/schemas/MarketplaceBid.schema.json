@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Marketplace Bid",
+  "description": "Schema for bids placed on marketplace auctions",
+  "type": "object",
+  "properties": {
+    "auctionId": {
+      "type": "integer",
+      "description": "ID of the auction this bid is for"
+    },
+    "bidder": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$",
+      "description": "Ethereum address of the bidder"
+    },
+    "amount": {
+      "type": "string",
+      "pattern": "^[0-9]+(\\.[0-9]+)?$",
+      "description": "Bid amount in the payment token"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the bid was placed"
+    },
+    "isActive": {
+      "type": "boolean",
+      "description": "Whether the bid is currently active (not outbid)"
+    },
+    "transactionHash": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{64}$",
+      "description": "Hash of the transaction that placed this bid"
+    }
+  },
+  "required": [
+    "auctionId",
+    "bidder",
+    "amount",
+    "timestamp",
+    "isActive"
+  ],
+  "additionalProperties": false
+}
+
+
+
+

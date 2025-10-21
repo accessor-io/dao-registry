@@ -4,6 +4,8 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "./interfaces/IENS.sol";
+import "./interfaces/IENSMetadata.sol";
 
 /**
  * @title ReservedSubdomains
@@ -18,7 +20,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
  * Reserved subdomains are NOT blocked from registration but provide
  * standardized schemas that can be queried via API and CCIP on-chain reads
  */
-contract ReservedSubdomains is Ownable, ReentrancyGuard {
+contract ReservedSubdomains is Ownable, ReentrancyGuard, IERC173, IENSTextRecords {
     using Strings for string;
 
     /**
@@ -120,6 +122,9 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
         string apiEndpoint;
         string documentationUrl;
         AutoUpdateConfig autoUpdateConfig;
+        mapping(string => string) textRecords; // ENS text records
+        address resolverAddress; // Custom resolver address
+        bool ensEnabled; // Whether ENS integration is enabled
     }
 
     /**
@@ -880,6 +885,89 @@ contract ReservedSubdomains is Ownable, ReentrancyGuard {
      */
     function isAdministrator(address addr) external view returns (bool) {
         return administrators[addr] || owner() == addr;
+    }
+
+    // =======================================================================
+    // ENS TEXT RECORD MANAGEMENT
+    // =======================================================================
+
+    /**
+     * @dev Sets text record for a schema
+     * @param subdomain The subdomain
+     * @param key The text record key
+     * @param value The text record value
+     */
+    function setSchemaTextRecord(string memory subdomain, string memory key, string memory value) 
+        external 
+        onlyAdministrator 
+        schemaExists(subdomain) 
+    {
+        require(bytes(key).length > 0, "Text record key cannot be empty");
+        require(bytes(value).length > 0, "Text record value cannot be empty");
+        require(bytes(value).length <= 1000, "Text record value too long");
+        
+        subdomainSchemas[subdomain].textRecords[key] = value;
+        subdomainSchemas[subdomain].updatedAt = block.timestamp;
+        
+        emit TextRecordSet(address(this), key, value, msg.sender);
+    }
+
+    /**
+     * @dev Gets text record for a schema
+     * @param subdomain The subdomain
+     * @param key The text record key
+     * @return Text record value
+     */
+    function getSchemaTextRecord(string memory subdomain, string memory key) 
+        external 
+        view 
+        schemaExists(subdomain) 
+        returns (string memory) 
+    {
+        return subdomainSchemas[subdomain].textRecords[key];
+    }
+
+    /**
+     * @dev Sets resolver for a schema
+     * @param subdomain The subdomain
+     * @param resolver The resolver address
+     */
+    function setSchemaResolver(string memory subdomain, address resolver) 
+        external 
+        onlyAdministrator 
+        schemaExists(subdomain) 
+    {
+        require(resolver != address(0), "Invalid resolver address");
+        subdomainSchemas[subdomain].resolverAddress = resolver;
+        subdomainSchemas[subdomain].updatedAt = block.timestamp;
+    }
+
+    /**
+     * @dev Enables or disables ENS integration for a schema
+     * @param subdomain The subdomain
+     * @param enabled Whether to enable ENS integration
+     */
+    function enableENSIntegration(string memory subdomain, bool enabled) 
+        external 
+        onlyAdministrator 
+        schemaExists(subdomain) 
+    {
+        subdomainSchemas[subdomain].ensEnabled = enabled;
+        subdomainSchemas[subdomain].updatedAt = block.timestamp;
+    }
+
+    /**
+     * @dev Checks if ENS integration is enabled for a schema
+     * @param subdomain The subdomain
+     * @return True if ENS integration is enabled
+     */
+    function isENSIntegrationEnabled(string memory subdomain) 
+        external 
+        view 
+        schemaExists(subdomain) 
+        returns (bool) 
+    {
+        return subdomainSchemas[subdomain].ensEnabled;
     }
 
     /**

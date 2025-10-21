@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Marketplace Transaction",
+  "description": "Schema for marketplace transactions (sales, auction wins, etc.)",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the transaction"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["listing-sale", "auction-win", "auction-end", "listing-cancel", "auction-cancel"],
+      "description": "Type of marketplace transaction"
+    },
+    "listingId": {
+      "type": "integer",
+      "description": "ID of the listing (if applicable)"
+    },
+    "auctionId": {
+      "type": "integer",
+      "description": "ID of the auction (if applicable)"
+    },
+    "buyer": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$",
+      "description": "Ethereum address of the buyer/winner"
+    },
+    "seller": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$",
+      "description": "Ethereum address of the seller"
+    },
+    "tokenContract": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$",
+      "description": "Address of the token contract"
+    },
+    "tokenId": {
+      "type": "string",
+      "description": "ID of the token"
+    },
+    "price": {
+      "type": "string",
+      "pattern": "^[0-9]+(\\.[0-9]+)?$",
+      "description": "Final sale price"
+    },
+    "paymentToken": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$",
+      "description": "Address of the payment token used"
+    },
+    "platformFee": {
+      "type": "string",
+      "pattern": "^[0-9]+(\\.[0-9]+)?$",
+      "description": "Platform fee charged"
+    },
+    "sellerAmount": {
+      "type": "string",
+      "pattern": "^[0-9]+(\\.[0-9]+)?$",
+      "description": "Amount received by seller after fees"
+    },
+    "transactionHash": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{64}$",
+      "description": "Hash of the blockchain transaction"
+    },
+    "blockNumber": {
+      "type": "integer",
+      "description": "Block number of the transaction"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of the transaction"
+    },
+    "gasUsed": {
+      "type": "string",
+      "description": "Gas used for the transaction"
+    },
+    "gasPrice": {
+      "type": "string",
+      "description": "Gas price for the transaction"
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "buyer",
+    "seller",
+    "tokenContract",
+    "tokenId",
+    "price",
+    "paymentToken",
+    "transactionHash",
+    "timestamp"
+  ],
+  "additionalProperties": false
+}
+
+
+
+

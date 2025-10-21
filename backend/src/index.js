@@ -15,6 +15,10 @@ dotenv.config();
 const daoRoutes = require('./routes/dao');
 const reservedSubdomainsRoutes = require('./routes/reserved-subdomains');
 
+// Import naming standards routes
+const daoRegistrationRoutes = require('./routes/dao-registration');
+const contractNamingRoutes = require('./routes/contract-naming');
+
 // Import services
 const daoService = require('./services/dao');
 
@@ -65,6 +69,10 @@ app.get('/health', (req, res) => {
 // API Routes (frontend expects /api/ not /api/v1/)
 app.use('/api/daos', daoRoutes);
 app.use('/api/reserved-subdomains', reservedSubdomainsRoutes);
+
+// Add naming standards routes
+app.use('/api/dao-registration', daoRegistrationRoutes);
+app.use('/api/contract-naming', contractNamingRoutes);
 
 // Add metadata API endpoints that actually connect to the working services
 app.use('/api/metadata', require('./routes/metadata'));
@@ -118,7 +126,7 @@ app.get('/api/docs', (req, res) => {
   res.json({
     name: "DAO Registry API",
     version: "1.0.0",
-    description: "Professional DAO registry with ISO-compliant metadata management",
+    description: "Professional DAO registry with ISO-compliant metadata management and naming standards",
     endpoints: [
       "/api/daos - DAO management",
       "/api/metadata - Metadata operations", 
@@ -126,6 +134,8 @@ app.get('/api/docs', (req, res) => {
       "/api/reserved-subdomains - Subdomain management",
       "/api/data-points - Data point management",
       "/api/niem - NIEM-inspired system (validation, integration, governance)",
+      "/api/dao-registration - DAO registration with naming standards",
+      "/api/contract-naming - Smart contract naming conventions",
       "/api/schemas/:name - JSON Schema by name (e.g., CreateDAORequest)"
     ]
   });

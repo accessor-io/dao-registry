@@ -1,0 +1,17 @@
+{
+  "$ref": "#/definitions/ENSResolveRequest",
+  "definitions": {
+    "ENSResolveRequest": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "domain"
+      ]
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

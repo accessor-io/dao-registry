@@ -6,7 +6,7 @@ const fs = require('fs');
 async function main() {
   const root = process.cwd();
   const specsRoot = path.join(root, 'docs', 'specifications');
-  const outDir = path.join(root, 'shared', 'schemas');
+  const outDir = path.join(root, 'shared', 'src', 'schemas');
 
   // Allowed TS spec files (explicit list to avoid Solidity-like TS)
   const sources = [

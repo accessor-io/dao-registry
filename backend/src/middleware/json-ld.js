@@ -42,6 +42,7 @@ class JSONLDMiddleware {
       const originalSend = res.send;
 
       // Override send method to convert to JSON-LD
+      const self = this;
       res.send = function(data) {
         try {
           let jsonData;
@@ -58,7 +59,7 @@ class JSONLDMiddleware {
           
           if (jsonData.success === false) {
             // Error response
-            jsonldData = this.jsonldService.toJSONLDError(
+            jsonldData = self.jsonldService.toJSONLDError(
               jsonData.error,
               jsonData.details,
               res.statusCode,
@@ -66,21 +67,21 @@ class JSONLDMiddleware {
             );
           } else if (jsonData.data && Array.isArray(jsonData.data)) {
             // Collection response
-            jsonldData = this.jsonldService.toJSONLDCollection(
+            jsonldData = self.jsonldService.toJSONLDCollection(
               jsonData.data,
               jsonData.pagination,
               req.protocol + '://' + req.get('host')
             );
           } else if (jsonData.data && jsonData.data.id) {
             // Single entity response
-            jsonldData = this.jsonldService.toJSONLDSuccess(
-              this.jsonldService.toJSONLD(jsonData.data, req.protocol + '://' + req.get('host')),
+            jsonldData = self.jsonldService.toJSONLDSuccess(
+              self.jsonldService.toJSONLD(jsonData.data, req.protocol + '://' + req.get('host')),
               jsonData.message,
               req.protocol + '://' + req.get('host')
             );
           } else {
             // Generic success response
-            jsonldData = this.jsonldService.toJSONLDSuccess(
+            jsonldData = self.jsonldService.toJSONLDSuccess(
               jsonData.data || jsonData,
               jsonData.message,
               req.protocol + '://' + req.get('host')
@@ -88,13 +89,13 @@ class JSONLDMiddleware {
           }
 
           // Call original send with JSON-LD data
-          return originalSend.call(this, JSON.stringify(jsonldData));
+          return originalSend.call(res, JSON.stringify(jsonldData));
         } catch (error) {
           // If conversion fails, send original data
           console.error('JSON-LD conversion error:', error);
-          return originalSend.call(this, data);
+          return originalSend.call(res, data);
         }
-      }.bind({ jsonldService: this.jsonldService });
+      };
 
       next();
     };

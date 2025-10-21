@@ -4,6 +4,7 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "./interfaces/IENS.sol";
 
 /**
  * @title RealTimeDataRegistry
@@ -15,7 +16,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
  * - Need CCIP compatibility for cross-chain data access
  * - Require high-frequency updates with minimal gas costs
  */
-contract RealTimeDataRegistry is Ownable, ReentrancyGuard {
+contract RealTimeDataRegistry is Ownable, ReentrancyGuard, IERC173 {
     using Strings for string;
 
     /**
@@ -59,6 +60,8 @@ contract RealTimeDataRegistry is Ownable, ReentrancyGuard {
         bytes[] fieldValues;      // Field values (encoded)
         bytes32 dataHash;         // Hash of current data
         string metadata;          // Additional metadata (JSON)
+        mapping(string => string) textRecords; // ENS text records for data point
+        string ensName; // Associated ENS name
     }
 
     /**
@@ -399,6 +402,71 @@ contract RealTimeDataRegistry is Ownable, ReentrancyGuard {
         dataProviders[provider] = false;
         
         emit DataProviderRemoved(provider, msg.sender);
+    }
+
+    // =======================================================================
+    // ENS MANAGEMENT FUNCTIONS
+    // =======================================================================
+
+    /**
+     * @dev Sets ENS name for a data point
+     * @param dataKey The data point key
+     * @param ensName The ENS name
+     */
+    function setDataPointENSName(string memory dataKey, string memory ensName) 
+        external 
+        onlyDataProvider 
+        dataPointExists(dataKey) 
+    {
+        require(bytes(ensName).length > 0, "ENS name cannot be empty");
+        dataPoints[dataKey].ensName = ensName;
+    }
+
+    /**
+     * @dev Sets text record for a data point
+     * @param dataKey The data point key
+     * @param key The text record key
+     * @param value The text record value
+     */
+    function setDataPointTextRecord(string memory dataKey, string memory key, string memory value) 
+        external 
+        onlyDataProvider 
+        dataPointExists(dataKey) 
+    {
+        require(bytes(key).length > 0, "Text record key cannot be empty");
+        require(bytes(value).length > 0, "Text record value cannot be empty");
+        require(bytes(value).length <= 1000, "Text record value too long");
+        
+        dataPoints[dataKey].textRecords[key] = value;
+    }
+
+    /**
+     * @dev Gets text record for a data point
+     * @param dataKey The data point key
+     * @param key The text record key
+     * @return Text record value
+     */
+    function getDataPointTextRecord(string memory dataKey, string memory key) 
+        external 
+        view 
+        dataPointExists(dataKey) 
+        returns (string memory) 
+    {
+        return dataPoints[dataKey].textRecords[key];
+    }
+
+    /**
+     * @dev Gets ENS name for a data point
+     * @param dataKey The data point key
+     * @return ENS name
+     */
+    function getDataPointENSName(string memory dataKey) 
+        external 
+        view 
+        dataPointExists(dataKey) 
+        returns (string memory) 
+    {
+        return dataPoints[dataKey].ensName;
     }
 
     /**

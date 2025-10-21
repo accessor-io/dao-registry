@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import axios from 'axios';
+import { useWeb3 } from '../hooks/useWeb3';
 import { 
   Plus, 
   Save, 
@@ -55,6 +56,7 @@ import {
 } from 'lucide-react';
 
 const DAORegistration = () => {
+  const { account, isConnected, connectWallet } = useWeb3();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [schema, setSchema] = useState(null);
@@ -103,8 +105,6 @@ const DAORegistration = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState('');
 
   useEffect(() => {
     const loadSchema = async () => {
@@ -266,19 +266,7 @@ const DAORegistration = () => {
     }
   };
 
-  const connectWallet = async () => {
-    try {
-      if (window.ethereum) {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        setWalletAddress(accounts[0]);
-        setWalletConnected(true);
-      } else {
-        alert('Please install MetaMask or another Web3 wallet');
-      }
-    } catch (error) {
-      console.error('Error connecting wallet:', error);
-    }
-  };
+  // Wallet connection is now handled by Web3Context
 
   const handleSubmit = async () => {
     if (!validateStep(step)) return;
@@ -1000,7 +988,7 @@ const DAORegistration = () => {
         </ul>
       </div>
 
-      {!walletConnected && (
+      {!isConnected && (
         <div className="bg-blue-50 p-4 rounded-lg">
           <div className="flex items-center mb-2">
             <Lock className="w-5 h-5 text-blue-600 mr-2" />
@@ -1084,9 +1072,9 @@ const DAORegistration = () => {
               {step === 5 && (
                 <button
                   onClick={handleSubmit}
-                  disabled={loading || !walletConnected}
+                  disabled={loading || !isConnected}
                   className={`px-6 py-2 rounded-lg transition-colors flex items-center space-x-2 ${
-                    loading || !walletConnected
+                    loading || !isConnected
                       ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                       : 'bg-green-600 text-white hover:bg-green-700'
                   }`}

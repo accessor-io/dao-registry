@@ -1,0 +1,100 @@
+{
+  "$ref": "#/definitions/ENSIPXContractRegistrationRequest",
+  "definitions": {
+    "ENSIPXContractRegistrationRequest": {
+      "type": "object",
+      "description": "ENSIP-X Contract Registration Request - Secure Off-chain Metadata Update (SOMU)",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Human-readable name of the contract"
+        },
+        "address": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "description": "Blockchain address of the contract"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["governance", "treasury", "token", "voting", "execution"],
+          "description": "Type of contract following ENSIP-X standards"
+        },
+        "ensDomain": {
+          "type": "string",
+          "pattern": "^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*\\.eth$",
+          "description": "ENS domain associated with the contract"
+        },
+        "metadata": {
+          "$ref": "#/definitions/ENSIPXContractMetadata"
+        }
+      },
+      "required": ["name", "address", "type", "ensDomain"]
+    },
+    "ENSIPXContractMetadata": {
+      "type": "object",
+      "description": "ENSIP-X compliant contract metadata",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the contract"
+        },
+        "version": {
+          "type": "string",
+          "description": "Contract version"
+        },
+        "license": {
+          "type": "string",
+          "enum": ["MIT", "Apache-2.0", "GPL-3.0", "Unlicense"],
+          "description": "License type"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of contract authors"
+        },
+        "source": {
+          "type": "string",
+          "format": "uri",
+          "description": "Source code repository URL"
+        },
+        "documentation": {
+          "type": "string",
+          "format": "uri",
+          "description": "Documentation URL"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Contract tags for categorization"
+        },
+        "compiler": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "type": "string"
+            },
+            "optimizer": {
+              "type": "boolean"
+            },
+            "runs": {
+              "type": "number"
+            }
+          }
+        },
+        "networks": {
+          "type": "object",
+          "description": "Network deployment information"
+        }
+      }
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
+
+
+
+

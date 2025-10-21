@@ -1,12 +1,19 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Web3Provider } from './contexts/Web3Context';
 import SearchPage from './components/SearchPage';
 import DAODetail from './components/DAODetail';
 import RegistryStats from './components/RegistryStats';
 import Documentation from './components/Documentation';
 import DAORegistry from './components/DAORegistry';
 import DAORegistration from './components/DAORegistration';
-import { Search, BarChart3, Home, Database, BookOpen } from 'lucide-react';
+import NamingToolkitDemo from './components/NamingToolkitDemo';
+import MetadataRegistryDemo from './components/MetadataRegistryDemo';
+import ENSIPXContractNaming from './components/ENSIPXContractNaming';
+import NamingStandardsDemo from './components/NamingStandardsDemo';
+import Marketplace from './components/Marketplace';
+import EnhancedMarketplace from './components/EnhancedMarketplace';
+import { Search, BarChart3, Database, BookOpen, Code, Archive, ShoppingCart, Layers } from 'lucide-react';
 import './App.css';
 
 // Navigation component with active state
@@ -17,6 +24,11 @@ const Navigation = () => {
     { path: '/', label: 'Search DAOs', icon: Search },
     { path: '/registry', label: 'DAO Registry', icon: Database },
     { path: '/stats', label: 'Registry Stats', icon: BarChart3 },
+    { path: '/marketplace', label: 'Marketplace', icon: ShoppingCart },
+    { path: '/naming-toolkit', label: 'Naming Toolkit', icon: Code },
+    { path: '/naming-standards', label: 'NIEM Standards', icon: Layers },
+    { path: '/metadata-registry', label: 'Metadata Registry', icon: Archive },
+    { path: '/ensip-x-naming', label: 'ENSIP-X Naming', icon: Code },
     { path: '/docs', label: 'Documentation', icon: BookOpen },
   ];
 
@@ -64,32 +76,39 @@ const Navigation = () => {
 
 function App() {
   return (
-    <Router>
-      <div className="App min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50">
-        <Navigation />
-        
-        <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-          <Routes>
-            <Route path="/" element={<SearchPage />} />
-            <Route path="/dao/:id" element={<DAODetail />} />
-            <Route path="/registry" element={<DAORegistry />} />
-            <Route path="/register" element={<DAORegistration />} />
-            <Route path="/stats" element={<RegistryStats />} />
-            <Route path="/docs" element={<Documentation />} />
-          </Routes>
-        </main>
-        
-        {/* Footer */}
-        <footer className="bg-white/80 backdrop-blur-md border-t border-gray-200 mt-auto">
-          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <div className="text-center text-gray-600 text-sm">
-              <p>DAO Registry - Decentralized Autonomous Organization Directory</p>
-              <p className="mt-1">Built with modern web technologies and blockchain integration</p>
+    <Web3Provider>
+      <Router>
+        <div className="App min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50">
+          <Navigation />
+          
+          <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+            <Routes>
+              <Route path="/" element={<SearchPage />} />
+              <Route path="/dao/:id" element={<DAODetail />} />
+              <Route path="/registry" element={<DAORegistry />} />
+              <Route path="/register" element={<DAORegistration />} />
+              <Route path="/stats" element={<RegistryStats />} />
+              <Route path="/marketplace" element={<EnhancedMarketplace />} />
+              <Route path="/naming-toolkit" element={<NamingToolkitDemo />} />
+              <Route path="/naming-standards" element={<NamingStandardsDemo />} />
+              <Route path="/metadata-registry" element={<MetadataRegistryDemo />} />
+              <Route path="/ensip-x-naming" element={<ENSIPXContractNaming />} />
+              <Route path="/docs" element={<Documentation />} />
+            </Routes>
+          </main>
+          
+          {/* Footer */}
+          <footer className="bg-white/80 backdrop-blur-md border-t border-gray-200 mt-auto">
+            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+              <div className="text-center text-gray-600 text-sm">
+                <p>DAO Registry - Decentralized Autonomous Organization Directory</p>
+                <p className="mt-1">Built with modern web technologies and blockchain integration</p>
+              </div>
             </div>
-          </div>
-        </footer>
-      </div>
-    </Router>
+          </footer>
+        </div>
+      </Router>
+    </Web3Provider>
   );
 }
 

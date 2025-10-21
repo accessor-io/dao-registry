@@ -37,6 +37,63 @@ export interface ENSMetadata {
   url?: string;                 // Website URL
 }
 
+export interface ENSContractMetadata extends ENSMetadata {
+  contractAddress: string;
+  ensName: string;
+  resolverAddress?: string;
+  implementedInterfaces: string[];
+  reverseRecordClaimed: boolean;
+  lastUpdated: Date;
+}
+
+export interface ENSTextRecordValidation {
+  key: string;
+  value: string;
+  isValid: boolean;
+  errors: string[];
+  maxLength: number;
+}
+
+export interface ENSContractIntegration {
+  enabled: boolean;
+  registered: boolean;
+  lastSynced?: Date;
+  syncStatus: 'synced' | 'pending' | 'failed' | 'not_synced';
+}
+
+export interface ENSContractValidation {
+  isValid: boolean;
+  errors: string[];
+  warnings: string[];
+  validatedAt: Date;
+}
+
+export interface CompleteENSContractMetadata {
+  contractAddress: string;
+  ensName: string;
+  textRecords: Record<string, string>;
+  reverseRecord?: string;
+  resolverAddress?: string;
+  metadata: {
+    name: string;
+    description: string;
+    version: string;
+    url?: string;
+    avatar?: string;
+    email?: string;
+    notice?: string;
+    keywords: string[];
+    socialLinks: string[];
+    author: string;
+    createdAt: Date;
+    updatedAt: Date;
+    verified: boolean;
+    implementedInterfaces: string[];
+  };
+  integration: ENSContractIntegration;
+  validation: ENSContractValidation;
+}
+
 export interface ENSResolution {
   domain: string;              // ENS domain
   address?: string;            // Resolved address

@@ -1002,14 +1002,14 @@ export class ISOMetadataService {
    */
   private async calculateMetadataHash(metadata: DAOMetadataSchema): Promise<string> {
     const metadataString = JSON.stringify(metadata, Object.keys(metadata).sort());
-    return ethers.utils.keccak256(ethers.utils.toUtf8Bytes(metadataString));
+    return ethers.keccak256(ethers.toUtf8Bytes(metadataString));
   }
 
   /**
    * Generate unique link ID
    */
   private generateLinkId(): string {
-    return ethers.utils.id(Date.now().toString() + Math.random().toString());
+    return ethers.id(Date.now().toString() + Math.random().toString());
   }
 
   /**
@@ -1032,7 +1032,7 @@ export class ISOMetadataService {
 
   private async storeInIPFS(metadata: any): Promise<string> {
     // Implementation for IPFS storage
-    return 'ipfs_' + ethers.utils.id(JSON.stringify(metadata));
+    return 'ipfs_' + ethers.id(JSON.stringify(metadata));
   }
 
   private async storeEntityLink(link: EntityLink): Promise<void> {

@@ -1,0 +1,89 @@
+{
+  "$ref": "#/definitions/ENSIPXDAORegistrationRequest",
+  "definitions": {
+    "ENSIPXDAORegistrationRequest": {
+      "type": "object",
+      "description": "ENSIP-X DAO Registration Request - Complete DAO structure with strict contract naming",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "DAO name"
+        },
+        "description": {
+          "type": "string",
+          "description": "DAO description"
+        },
+        "ens": {
+          "type": "string",
+          "pattern": "^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*\\.eth$",
+          "description": "Primary ENS domain"
+        },
+        "contracts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["governance", "treasury", "token", "voting", "execution"]
+          },
+          "description": "List of contract types to generate"
+        },
+        "license": {
+          "type": "string",
+          "enum": ["MIT", "Apache-2.0", "GPL-3.0", "Unlicense"],
+          "default": "MIT",
+          "description": "License type"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of DAO authors"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "DAO website URL"
+        },
+        "avatar": {
+          "type": "string",
+          "format": "uri",
+          "description": "DAO avatar image URL"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "DAO keywords for categorization"
+        },
+        "socialLinks": {
+          "type": "object",
+          "properties": {
+            "twitter": {
+              "type": "string"
+            },
+            "github": {
+              "type": "string"
+            },
+            "discord": {
+              "type": "string"
+            },
+            "telegram": {
+              "type": "string"
+            }
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "description": "Additional metadata"
+        }
+      },
+      "required": ["name", "description"]
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
+
+
+
+

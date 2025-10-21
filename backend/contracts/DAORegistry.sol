@@ -1,20 +1,22 @@
     // SPDX-License-Identifier: MIT
     pragma solidity ^0.8.19;
 
-    import "@openzeppelin/contracts/access/Ownable.sol";
-    import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-    import "@openzeppelin/contracts/security/Pausable.sol";
-    import "@openzeppelin/contracts/utils/Counters.sol";
-    import "@openzeppelin/contracts/utils/Strings.sol";
-    import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-    import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "./interfaces/IENS.sol";
+import "./interfaces/IENSMetadata.sol";
 
     /**
     * @title DAO Registry
     * @dev A   registry for managing Decentralized Autonomous Organizations (DAOs)
     * across multiple blockchain networks with governance tracking and analytics support.
     */
-    contract DAORegistry is Ownable, ReentrancyGuard, Pausable {
+    contract DAORegistry is Ownable, ReentrancyGuard, Pausable, IERC173, IReverseClaimer {
         using Counters for Counters.Counter;
         using Strings for uint256;
 
@@ -156,6 +158,12 @@
         mapping(uint256 => Analytics) public analytics;
         mapping(uint256 => mapping(address => bool)) public verifiedAddresses;
 
+        // ENS Integration
+        address public ensRegistryContract;
+        mapping(uint256 => string) public daoENSNames; // daoId => ENS name
+        mapping(uint256 => mapping(string => string)) public daoTextRecords; // daoId => key => value
+        mapping(uint256 => string) public daoReverseRecords; // daoId => reverse ENS record
+
         // Fee structure
         uint256 public registrationFee = 0.1 ether;
         uint256 public verificationFee = 0.05 ether;
@@ -179,6 +187,11 @@
         event MemberRemoved(uint256 indexed daoId, address indexed memberAddress);
         event AnalyticsUpdated(uint256 indexed daoId, uint256 totalProposals, uint256 totalMembers);
         event FeesUpdated(uint256 registrationFee, uint256 verificationFee, uint256 updateFee);
+        
+        // ENS Events
+        event ENSNameSet(uint256 indexed daoId, string ensName);
+        event TextRecordUpdated(uint256 indexed daoId, string indexed key, string value);
+        event ReverseRecordClaimed(uint256 indexed daoId, address indexed claimedBy);
 
         // =======================================================================
         // MODIFIERS
@@ -389,6 +402,75 @@
             }
 
             emit DAOStatusChanged(daoId, oldStatus, newStatus);
+        }
+
+        // =======================================================================
+        // ENS MANAGEMENT FUNCTIONS
+        // =======================================================================
+
+        /**
+        * @dev Sets ENS name for a DAO
+        * @param daoId DAO ID
+        * @param ensName ENS name
+        */
+        function setDAOENSName(uint256 daoId, string memory ensName) external onlyDAOOwner(daoId) {
+            require(bytes(ensName).length > 0, "ENS name cannot be empty");
+            daoENSNames[daoId] = ensName;
+            emit ENSNameSet(daoId, ensName);
+        }
+
+        /**
+        * @dev Sets text record for a DAO
+        * @param daoId DAO ID
+        * @param key Text record key
+        * @param value Text record value
+        */
+        function setDAOTextRecord(uint256 daoId, string memory key, string memory value) external onlyDAOOwner(daoId) {
+            require(bytes(key).length > 0, "Text record key cannot be empty");
+            require(bytes(value).length > 0, "Text record value cannot be empty");
+            require(bytes(value).length <= 1000, "Text record value too long");
+            
+            daoTextRecords[daoId][key] = value;
+            emit TextRecordUpdated(daoId, key, value);
+        }
+
+        /**
+        * @dev Gets text record for a DAO
+        * @param daoId DAO ID
+        * @param key Text record key
+        * @return Text record value
+        */
+        function getDAOTextRecord(uint256 daoId, string memory key) external view returns (string memory) {
+            return daoTextRecords[daoId][key];
+        }
+
+        /**
+        * @dev Claims reverse ENS record for a DAO
+        * @param daoId DAO ID
+        * @param ensName ENS name to claim as reverse record
+        */
+        function claimDAOReverseRecord(uint256 daoId, string memory ensName) external onlyDAOOwner(daoId) {
+            require(bytes(ensName).length > 0, "ENS name cannot be empty");
+            daoReverseRecords[daoId] = ensName;
+            emit ReverseRecordClaimed(daoId, msg.sender);
+        }
+
+        /**
+        * @dev Gets reverse ENS record for a DAO
+        * @param daoId DAO ID
+        * @return Reverse ENS record
+        */
+        function getDAOReverseRecord(uint256 daoId) external view returns (string memory) {
+            return daoReverseRecords[daoId];
+        }
+
+        /**
+        * @dev Sets ENS registry contract address (only owner)
+        * @param ensRegistry Address of ENS registry contract
+        */
+        function setENSRegistry(address ensRegistry) external onlyOwner {
+            require(ensRegistry != address(0), "Invalid ENS registry address");
+            ensRegistryContract = ensRegistry;
         }
 
         // =======================================================================

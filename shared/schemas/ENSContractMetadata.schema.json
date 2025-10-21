@@ -1,0 +1,264 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ENS Contract Metadata Schema",
+  "description": "Schema for ENS contract metadata following ENS-METADATA-TOOLS-REPO standards",
+  "type": "object",
+  "required": [
+    "contractAddress",
+    "ensName"
+  ],
+  "properties": {
+    "contractAddress": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$",
+      "description": "Ethereum contract address"
+    },
+    "ensName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255,
+      "description": "ENS name associated with the contract"
+    },
+    "textRecords": {
+      "type": "object",
+      "description": "ENS text records for the contract",
+      "properties": {
+        "description": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Contract description"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 500,
+          "description": "Documentation or website URL"
+        },
+        "avatar": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 500,
+          "description": "Avatar or logo URL"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 100,
+          "description": "Contact email address"
+        },
+        "notice": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Important notices or warnings"
+        },
+        "keywords": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Comma-separated keywords (max 10 keywords)"
+        },
+        "com.twitter": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Twitter username or URL"
+        },
+        "com.github": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "GitHub username or URL"
+        },
+        "com.discord": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Discord username or invite link"
+        },
+        "org.telegram": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Telegram username or invite link"
+        },
+        "com.reddit": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Reddit username or URL"
+        },
+        "com.youtube": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "YouTube channel or URL"
+        },
+        "com.medium": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Medium username or URL"
+        }
+      },
+      "additionalProperties": {
+        "type": "string",
+        "maxLength": 1000,
+        "description": "Custom text record key-value pairs"
+      }
+    },
+    "reverseRecord": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255,
+      "description": "Reverse ENS record for the contract"
+    },
+    "resolverAddress": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$",
+      "description": "Custom ENS resolver address"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional contract metadata",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Contract name"
+        },
+        "version": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "Contract version"
+        },
+        "author": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "description": "Contract author address"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Contract creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp"
+        },
+        "verified": {
+          "type": "boolean",
+          "description": "Whether the contract is verified"
+        },
+        "implementedInterfaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "description": "List of implemented interfaces"
+        },
+        "socialLinks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "maxItems": 10,
+          "description": "Additional social media links"
+        }
+      }
+    },
+    "integration": {
+      "type": "object",
+      "description": "ENS integration status and configuration",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether ENS integration is enabled"
+        },
+        "registered": {
+          "type": "boolean",
+          "description": "Whether the contract is registered for ENS integration"
+        },
+        "lastSynced": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last sync timestamp with ENS"
+        },
+        "syncStatus": {
+          "type": "string",
+          "enum": ["synced", "pending", "failed", "not_synced"],
+          "description": "Current sync status"
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "description": "Validation results for the metadata",
+      "properties": {
+        "isValid": {
+          "type": "boolean",
+          "description": "Whether the metadata is valid"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Validation errors"
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Validation warnings"
+        },
+        "validatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Validation timestamp"
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "contractAddress": "0x1234567890123456789012345678901234567890",
+      "ensName": "mycontract.eth",
+      "textRecords": {
+        "description": "A smart contract for managing DAO governance",
+        "url": "https://example.com/contract-docs",
+        "avatar": "https://example.com/avatar.png",
+        "email": "contact@example.com",
+        "notice": "This contract is in beta. Use at your own risk.",
+        "keywords": "dao,governance,voting,decentralized",
+        "com.twitter": "example_dao",
+        "com.github": "example/dao-contract",
+        "com.discord": "https://discord.gg/example"
+      },
+      "reverseRecord": "mycontract.eth",
+      "resolverAddress": "0x1234567890123456789012345678901234567890",
+      "metadata": {
+        "name": "DAO Governance Contract",
+        "version": "1.0.0",
+        "author": "0x1234567890123456789012345678901234567890",
+        "createdAt": "2024-01-01T00:00:00Z",
+        "updatedAt": "2024-01-01T00:00:00Z",
+        "verified": true,
+        "implementedInterfaces": ["IERC173", "IReverseClaimer", "IENSTextRecords"],
+        "socialLinks": ["https://example.com", "https://docs.example.com"]
+      },
+      "integration": {
+        "enabled": true,
+        "registered": true,
+        "lastSynced": "2024-01-01T00:00:00Z",
+        "syncStatus": "synced"
+      },
+      "validation": {
+        "isValid": true,
+        "errors": [],
+        "warnings": [],
+        "validatedAt": "2024-01-01T00:00:00Z"
+      }
+    }
+  ]
+}
+
+
+
+

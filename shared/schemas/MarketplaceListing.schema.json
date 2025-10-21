@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Marketplace Listing",
+  "description": "Schema for marketplace listings of ENS domains and DAO registrations",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Unique identifier for the listing"
+    },
+    "seller": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$",
+      "description": "Ethereum address of the seller"
+    },
+    "tokenContract": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$",
+      "description": "Address of the token contract (e.g., ENS Registry)"
+    },
+    "tokenId": {
+      "type": "string",
+      "description": "ID of the token being listed"
+    },
+    "price": {
+      "type": "string",
+      "pattern": "^[0-9]+(\\.[0-9]+)?$",
+      "description": "Price in the payment token (in wei or token units)"
+    },
+    "paymentToken": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$",
+      "description": "Address of the payment token (0x0 for ETH)"
+    },
+    "isActive": {
+      "type": "boolean",
+      "description": "Whether the listing is currently active"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the listing was created"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the listing expires"
+    },
+    "metadata": {
+      "type": "string",
+      "description": "Additional metadata about the listing"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["ens-domain", "dao-registration", "nft", "other"],
+      "description": "Category of the item being listed"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags associated with the listing"
+    }
+  },
+  "required": [
+    "id",
+    "seller",
+    "tokenContract",
+    "tokenId",
+    "price",
+    "paymentToken",
+    "isActive",
+    "createdAt",
+    "expiresAt"
+  ],
+  "additionalProperties": false
+}
+
+
+
+

@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Marketplace Statistics",
+  "description": "Schema for marketplace statistics and analytics",
+  "type": "object",
+  "properties": {
+    "totalListings": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of listings created"
+    },
+    "activeListings": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of currently active listings"
+    },
+    "totalAuctions": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of auctions created"
+    },
+    "activeAuctions": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of currently active auctions"
+    },
+    "totalSales": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of completed sales"
+    },
+    "totalVolume": {
+      "type": "string",
+      "pattern": "^[0-9]+(\\.[0-9]+)?$",
+      "description": "Total trading volume in ETH"
+    },
+    "platformFeePercentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Platform fee percentage"
+    },
+    "feeRecipient": {
+      "type": "string",
+      "pattern": "^0x[a-fA-F0-9]{40}$",
+      "description": "Address that receives platform fees"
+    },
+    "averageSalePrice": {
+      "type": "string",
+      "pattern": "^[0-9]+(\\.[0-9]+)?$",
+      "description": "Average sale price in ETH"
+    },
+    "topCategories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": ["ens-domain", "dao-registration", "nft", "other"]
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "volume": {
+            "type": "string",
+            "pattern": "^[0-9]+(\\.[0-9]+)?$"
+          }
+        },
+        "required": ["category", "count", "volume"]
+      },
+      "description": "Top categories by volume and count"
+    },
+    "recentActivity": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["listing-created", "auction-created", "sale", "bid-placed"]
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": ["type", "timestamp", "description"]
+      },
+      "description": "Recent marketplace activity"
+    },
+    "lastUpdated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when statistics were last updated"
+    }
+  },
+  "required": [
+    "totalListings",
+    "activeListings",
+    "totalAuctions",
+    "activeAuctions",
+    "totalSales",
+    "totalVolume",
+    "platformFeePercentage",
+    "feeRecipient",
+    "lastUpdated"
+  ],
+  "additionalProperties": false
+}
+
+
+
+

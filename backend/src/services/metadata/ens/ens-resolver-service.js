@@ -1,6 +1,12 @@
+const ENSContractService = require('../../blockchain/ens-contract-service');
+
 class ENSResolverService {
-  constructor(provider) {
+  constructor(provider, options = {}) {
     this.provider = provider;
+    this.ensContractService = new ENSContractService({
+      provider,
+      ...options
+    });
   }
 
   /**
@@ -10,13 +16,9 @@ class ENSResolverService {
    */
   async isDomainAvailable(domain) {
     try {
-      // Mock implementation for demo
-      // In a real implementation, this would query the ENS registry
-      const reservedDomains = ['eth', 'test', 'localhost', 'example'];
-      const domainParts = domain.split('.');
-      const topLevel = domainParts[domainParts.length - 1];
-      
-      return !reservedDomains.includes(topLevel);
+      // Check if domain is registered in our ENS registry
+      const isRegistered = await this.isDomainRegistered(domain);
+      return !isRegistered;
     } catch (error) {
       console.error('Error checking domain availability:', error);
       return false;
@@ -30,10 +32,10 @@ class ENSResolverService {
    */
   async isDomainRegistered(domain) {
     try {
-      // Mock implementation for demo
-      // In a real implementation, this would query the ENS registry
-      const registeredDomains = ['vitalik.eth', 'ens.eth', 'uniswap.eth'];
-      return registeredDomains.includes(domain);
+      // Check if domain is registered in our ENS registry
+      // This would query the actual ENS registry contract
+      // For now, we'll use a simple check
+      return false; // Placeholder - would query actual ENS registry
     } catch (error) {
       console.error('Error checking domain registration:', error);
       return false;
